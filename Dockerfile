@@ -126,4 +126,4 @@ COPY ./backend .
 
 EXPOSE 8080
 
-CMD [ "bash", "start.sh"]
+CMD ["tail", "-f", "/dev/null"]
