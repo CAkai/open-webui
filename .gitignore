@@ -13,6 +13,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# VS Code
+.vscode/*.json
+!.vscode/extensions.json
+
 # C extensions
 *.so
 
