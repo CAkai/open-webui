@@ -1,8 +1,8 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { userSignIn, userSignUp } from '$lib/apis/auths';
+	import { userSignIn, userSignUp, iCloudSignIn, iCloudGetUserInfo } from '$lib/apis/auths';
 	import Spinner from '$lib/components/common/Spinner.svelte';
-	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
+	import { COOKIE_TOKEN_KEY } from '$lib/constants';
 	import { WEBUI_NAME, config, user } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -21,23 +21,30 @@
 		if (sessionUser) {
 			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
-			localStorage.setItem(COOKIE_TOKEN_KEY, sessionUser.access_token);
+			localStorage.token = sessionUser.token;
 			await user.set(sessionUser);
 			goto('/');
 		}
 	};
 
-	const signInHandler = async () => {
-		const sessionUser = await userSignIn(empid, password).catch((error) => {
+	const signInHandler = async (iCloudUser) => {
+		console.log("icloud user", iCloudUser);
+		const sessionUser = await userSignIn(empid+"@umc.com", password).catch((error) => {
 			toast.error($i18n.t(error));
 			return null;
 		});
+		
+		if (sessionUser === null) return false;
+
+		// 把 iCloud 的使用者資料合併到 sessionUser
+		sessionUser.role = iCloudUser.role;
 
 		await setSessionUser(sessionUser);
+		return true;
 	};
 
 	const signUpHandler = async () => {
-		const sessionUser = await userSignUp(name, empid, password, generateInitialsImage(name)).catch(
+		const sessionUser = await userSignUp(empid, empid+"@umc.com", password, generateInitialsImage(empid)).catch(
 			(error) => {
 				toast.error(error);
 				return null;
@@ -48,18 +55,27 @@
 	};
 
 	const submitHandler = async () => {
-		if (mode === 'signin') {
-			await signInHandler();
-		} else {
+		// 讀取 iCloud 的使用者資料，讓使用者可以直接使用 iCloud 帳號登入
+		const iCloudUser = await iCloudSignIn(empid, password).catch((error) => {
+			toast.error($i18n.t(error));
+			return null;
+		});
+
+		if (iCloudUser === null) return;
+
+		if (!await signInHandler(iCloudUser)) {
 			await signUpHandler();
 		}
 	};
 
+	
 	onMount(async () => {
+
 		if ($user !== undefined) {
 			await goto('/');
 		}
 		loaded = true;
+		
 		if ($config?.trusted_header_auth ?? false) {
 			await signInHandler();
 		}
@@ -73,13 +89,13 @@
 </svelte:head>
 
 {#if loaded}
-	<div class="fixed m-10 z-50">
+	<!-- <div class="fixed m-10 z-50">
 		<div class="flex space-x-2">
 			<div class=" self-center">
 				<img src="{WEBUI_BASE_URL}/static/favicon.png" class=" w-8 rounded-full" alt="logo" />
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class=" bg-white dark:bg-gray-900 min-h-screen w-full flex justify-center font-mona">
 		<!-- <div class="hidden lg:flex lg:flex-1 px-10 md:px-16 w-full bg-yellow-50 justify-center">

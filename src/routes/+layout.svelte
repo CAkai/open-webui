@@ -12,7 +12,7 @@
 
 	import 'tippy.js/dist/tippy.css';
 
-	import { WEBUI_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
+	import { WEBUI_BASE_URL } from '$lib/constants';
 	import i18n, { initI18n } from '$lib/i18n';
 
 	setContext('i18n', i18n);
@@ -21,7 +21,6 @@
 
 	onMount(async () => {
 		theme.set(localStorage.theme);
-
 		// Check Backend Status
 		const backendConfig = await getBackendConfig();
 
@@ -38,10 +37,9 @@
 			console.log(backendConfig);
 
 			if ($config) {
-				const token = localStorage.getItem(COOKIE_TOKEN_KEY);
-				if (token) {
+				if (localStorage.token) {
 					// Get Session User Info
-					const sessionUser = await getSessionUser(token).catch((error) => {
+					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 						toast.error(error);
 						return null;
 					});
@@ -51,7 +49,7 @@
 						await user.set(sessionUser);
 					} else {
 						// Redirect Invalid Session User to /auth Page
-						localStorage.removeItem(COOKIE_TOKEN_KEY);
+						localStorage.removeItem('token');
 						await goto('/auth');
 					}
 				} else {

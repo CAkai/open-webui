@@ -27,7 +27,36 @@ export const getSessionUser = async (token: string) => {
 	return res;
 };
 
-export const userSignIn = async (empid: string, password: string) => {
+export const iCloudGetUserInfo = async (token: string) => {
+	let error = null;
+
+	// 原本以為客戶端也要設定 CORS，但是後來發現只要 iCloud 補上就行了。 Arvin Yang - 2024/04/30
+	const res = await fetch(`${ICLOUD_API_BASE_URL}/api/v1/auth`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err: {message: string; error: string}) => {
+			console.log(err);
+
+			error = err.error || "Failed to get user info.";
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+export const iCloudSignIn = async (empid: string, password: string) => {
 	let error = null;
 
 	// 設定 FormData
@@ -48,6 +77,37 @@ export const userSignIn = async (empid: string, password: string) => {
 			console.log(err);
 
 			error = "EmpId or password is incorrect.";
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+export const userSignIn = async (email: string, password: string) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/signin`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			email: email,
+			password: password
+		})
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+
+			error = err.detail;
 			return null;
 		});
 
