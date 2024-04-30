@@ -98,7 +98,7 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/node /usr/local/bin/node && \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/npm /usr/local/bin/npm
 
-RUN npm ci
+RUN npm ci && npm run build
 
 WORKDIR /app/backend
 
