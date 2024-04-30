@@ -19,6 +19,7 @@ services:
     environment:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
+      - 'WEBUI_NAME=U-LLaMA'
     # Allow access to host network
     extra_hosts:
       - host.docker.internal:host-gateway
