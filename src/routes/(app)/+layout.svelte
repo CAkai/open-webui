@@ -27,7 +27,7 @@
 		showChangelog,
 		config
 	} from '$lib/stores';
-	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
+	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
 
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
@@ -47,12 +47,12 @@
 	let showShortcuts = false;
 
 	const getModels = async () => {
-		return _getModels(localStorage.token);
+		return _getModels(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "");
 	};
 
 	const setOllamaVersion = async (version: string = '') => {
 		if (version === '') {
-			version = await getOllamaVersion(localStorage.token).catch((error) => {
+			version = await getOllamaVersion(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "").catch((error) => {
 				return '';
 			});
 		}
@@ -90,10 +90,10 @@
 			await models.set(await getModels());
 			await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 
-			await modelfiles.set(await getModelfiles(localStorage.token));
-			await prompts.set(await getPrompts(localStorage.token));
-			await documents.set(await getDocs(localStorage.token));
-			await tags.set(await getAllChatTags(localStorage.token));
+			await modelfiles.set(await getModelfiles(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
+			await prompts.set(await getPrompts(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
+			await documents.set(await getDocs(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
+			await tags.set(await getAllChatTags(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
 
 			modelfiles.subscribe(async () => {
 				// should fetch models
@@ -173,6 +173,7 @@
 		}
 
 		loaded = true;
+		console.log("user", $user, ['user', 'admin'].includes($user.role));
 	});
 </script>
 
@@ -228,7 +229,7 @@
 									<button
 										class="text-xs text-center w-full mt-2 text-gray-400 underline"
 										on:click={async () => {
-											localStorage.removeItem('token');
+											localStorage.removeItem(COOKIE_TOKEN_KEY);
 											location.href = '/auth';
 										}}>{$i18n.t('Sign Out')}</button
 									>

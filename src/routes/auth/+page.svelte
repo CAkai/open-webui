@@ -22,12 +22,7 @@
 			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
 			localStorage.setItem(COOKIE_TOKEN_KEY, sessionUser.access_token);
-			await user.set({
-				id: sessionUser.id,
-				name: sessionUser.name,
-				email: sessionUser.id + '@umc.com',
-				department: sessionUser.department,
-			});
+			await user.set(sessionUser);
 			goto('/');
 		}
 	};

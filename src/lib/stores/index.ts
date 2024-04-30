@@ -146,4 +146,5 @@ type iCloudUser = {
 	email: string;
 	name: string;
 	department: string;
+	role: string;
 };
