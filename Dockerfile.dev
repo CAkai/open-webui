@@ -12,18 +12,7 @@ ARG USE_CUDA_VER=cu121
 ARG USE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 ARG USE_RERANKING_MODEL=""
 
-######## WebUI frontend ########
-FROM --platform=$BUILDPLATFORM node:21-alpine3.19 as build
-
-WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
-COPY . .
-RUN npm run build
-
-######## WebUI backend ########
+######## WebUI frontend & backend ########
 FROM python:3.11-slim-bookworm as base
 
 # Use args
@@ -72,17 +61,19 @@ ENV RAG_EMBEDDING_MODEL="$USE_EMBEDDING_MODEL_DOCKER" \
 ENV HF_HOME="/app/backend/data/cache/embedding/models"
 #### Other models ##########################################################
 
-WORKDIR /app/backend
+WORKDIR /app
+COPY . .
 
-RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
+# 因為有用到 if，所以沒辦法 cache
+RUN set -xe ; \
     if [ "$USE_OLLAMA" = "true" ]; then \
         apt-get update && \
         # Install pandoc and netcat
         apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
         # for RAG OCR
         apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
-        # install helper tools
-        apt-get install -y --no-install-recommends curl && \
+        # install helper tools(wget, xz-utils for Node.js)
+        apt-get install -y --no-install-recommends curl wget xz-utils && \
         # install ollama
         curl -fsSL https://ollama.com/install.sh | sh && \
         # cleanup
@@ -93,12 +84,23 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
         apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
         # for RAG OCR
         apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
+        # for Node.js
+        apt-get install -y --no-install-recommends wget xz-utils && \
         # cleanup
         rm -rf /var/lib/apt/lists/*; \
     fi
 
-# install python dependencies
-COPY ./backend/requirements.txt ./requirements.txt
+# Install NodeJS
+RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
+    set -xe && \
+    wget -P /tmp https://nodejs.org/dist/v21.7.3/node-v21.7.3-linux-x64.tar.xz && \
+    tar xf /tmp/node-v21.7.3-linux-x64.tar.xz -C /tmp && \
+    ln -s /tmp/node-v21.7.3-linux-x64/bin/node /usr/local/bin/node && \
+    ln -s /tmp/node-v21.7.3-linux-x64/bin/npm /usr/local/bin/npm
+
+RUN npm ci
+
+WORKDIR /app/backend
 
 RUN pip3 install uv && \
     if [ "$USE_CUDA" = "true" ]; then \
@@ -114,19 +116,6 @@ RUN pip3 install uv && \
         python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])"; \
     fi
 
-
-
-# copy embedding weight from build
-# RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2
-# COPY --from=build /app/onnx /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx
-
-# copy built frontend files
-COPY --from=build /app/build /app/build
-COPY --from=build /app/CHANGELOG.md /app/CHANGELOG.md
-COPY --from=build /app/package.json /app/package.json
-
-# copy backend files
-COPY ./backend .
 
 EXPOSE 8080
 

@@ -7,9 +7,10 @@ services:
       args:
         OLLAMA_BASE_URL: '/ollama'
         USE_CUDA: true
-        USE_OLLAMA: true
-      dockerfile: Dockerfile
+        USE_OLLAMA: false
+      dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    init: true
     container_name: open-webui
     volumes:
       - open-webui:/app/backend/data
@@ -22,15 +23,6 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
-    # GPU support
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: ${OLLAMA_GPU_DRIVER-nvidia}
-              count: all
-              capabilities:
-                - gpu
 
 volumes:
   open-webui: {}
