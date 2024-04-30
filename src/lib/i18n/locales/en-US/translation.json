@@ -369,5 +369,8 @@
 	"Write a summary in 50 words that summarizes [topic or keyword].": "",
 	"You": "",
 	"You're a helpful assistant.": "",
-	"You're now logged in.": ""
+	"You're now logged in.": "",
+	"EmpId": "Employee ID",
+	"Enter Your EmpId": "Enter Your Employee ID",
+	"EmpId or password is incorrect." : ""
 }

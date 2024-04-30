@@ -13,6 +13,11 @@ export const AUDIO_API_BASE_URL = `${WEBUI_BASE_URL}/audio/api/v1`;
 export const IMAGES_API_BASE_URL = `${WEBUI_BASE_URL}/images/api/v1`;
 export const RAG_API_BASE_URL = `${WEBUI_BASE_URL}/rag/api/v1`;
 
+// region iCloud 設定
+export const ICLOUD_API_BASE_URL = "http://192.168.50.165:3003";
+export const COOKIE_TOKEN_KEY = "umc-camera-access_token";
+// endregion
+
 export const WEBUI_VERSION = APP_VERSION;
 export const REQUIRED_OLLAMA_VERSION = '0.1.16';
 

@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { userSignIn, userSignUp } from '$lib/apis/auths';
 	import Spinner from '$lib/components/common/Spinner.svelte';
-	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
+	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
 	import { WEBUI_NAME, config, user } from '$lib/stores';
 	import { onMount, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -14,22 +14,27 @@
 	let mode = 'signin';
 
 	let name = '';
-	let email = '';
+	let empid = '';
 	let password = '';
 
 	const setSessionUser = async (sessionUser) => {
 		if (sessionUser) {
 			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
-			localStorage.token = sessionUser.token;
-			await user.set(sessionUser);
+			localStorage.setItem(COOKIE_TOKEN_KEY, sessionUser.access_token);
+			await user.set({
+				id: sessionUser.id,
+				name: sessionUser.name,
+				email: sessionUser.id + '@umc.com',
+				department: sessionUser.department,
+			});
 			goto('/');
 		}
 	};
 
 	const signInHandler = async () => {
-		const sessionUser = await userSignIn(email, password).catch((error) => {
-			toast.error(error);
+		const sessionUser = await userSignIn(empid, password).catch((error) => {
+			toast.error($i18n.t(error));
 			return null;
 		});
 
@@ -37,7 +42,7 @@
 	};
 
 	const signUpHandler = async () => {
-		const sessionUser = await userSignUp(name, email, password, generateInitialsImage(name)).catch(
+		const sessionUser = await userSignUp(name, empid, password, generateInitialsImage(name)).catch(
 			(error) => {
 				toast.error(error);
 				return null;
@@ -154,13 +159,13 @@
 							{/if}
 
 							<div class="mb-2">
-								<div class=" text-sm font-semibold text-left mb-1">{$i18n.t('Email')}</div>
+								<div class=" text-sm font-semibold text-left mb-1">{$i18n.t('EmpId')}</div>
 								<input
-									bind:value={email}
-									type="email"
+									bind:value={empid}
+									type="text"
 									class=" border px-4 py-2.5 rounded-2xl w-full text-sm"
-									autocomplete="email"
-									placeholder={$i18n.t('Enter Your Email')}
+									autocomplete="name"
+									placeholder={$i18n.t('Enter Your EmpId')}
 									required
 								/>
 							</div>
@@ -186,7 +191,7 @@
 								{mode === 'signin' ? $i18n.t('Sign in') : $i18n.t('Create Account')}
 							</button>
 
-							<div class=" mt-4 text-sm text-center">
+							<!-- <div class=" mt-4 text-sm text-center">
 								{mode === 'signin'
 									? $i18n.t("Don't have an account?")
 									: $i18n.t('Already have an account?')}
@@ -204,7 +209,7 @@
 								>
 									{mode === 'signin' ? $i18n.t('Sign up') : $i18n.t('Sign in')}
 								</button>
-							</div>
+							</div> -->
 						</div>
 					</form>
 				</div>

@@ -4,7 +4,7 @@ import { type Writable, writable } from 'svelte/store';
 // Backend
 export const WEBUI_NAME = writable(APP_NAME);
 export const config: Writable<Config | undefined> = writable(undefined);
-export const user: Writable<SessionUser | undefined> = writable(undefined);
+export const user: Writable<iCloudUser | undefined> = writable(undefined);
 
 // Frontend
 export const MODEL_DOWNLOAD_POOL = writable({});
@@ -138,4 +138,12 @@ type SessionUser = {
 	name: string;
 	role: string;
 	profile_image_url: string;
+};
+
+// 映射 iCloud API 的用户信息。Arvin Yang - 2024/04/30
+type iCloudUser = {
+	id: string;
+	email: string;
+	name: string;
+	department: string;
 };

@@ -1,4 +1,4 @@
-import { WEBUI_API_BASE_URL } from '$lib/constants';
+import { WEBUI_API_BASE_URL, ICLOUD_API_BASE_URL } from '$lib/constants';
 
 export const getSessionUser = async (token: string) => {
 	let error = null;
@@ -27,27 +27,27 @@ export const getSessionUser = async (token: string) => {
 	return res;
 };
 
-export const userSignIn = async (email: string, password: string) => {
+export const userSignIn = async (empid: string, password: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/signin`, {
+	// 設定 FormData
+	const body = new FormData();
+	body.append('username', empid);
+	body.append('password', password);
+
+	// 原本以為客戶端也要設定 CORS，但是後來發現只要 iCloud 補上就行了。 Arvin Yang - 2024/04/30
+	const res = await fetch(`${ICLOUD_API_BASE_URL}/api/v1/login`, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			email: email,
-			password: password
-		})
+		body: body
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
 			return res.json();
 		})
-		.catch((err) => {
+		.catch((err: {message: string; error: string}) => {
 			console.log(err);
 
-			error = err.detail;
+			error = "EmpId or password is incorrect.";
 			return null;
 		});
 
