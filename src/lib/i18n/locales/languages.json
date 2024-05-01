@@ -76,6 +76,10 @@
 		"title": "Russian (Russia)"
 	},
 	{
+		"code": "sv-SE",
+		"title": "Swedish"
+	},	
+	{
 		"code": "tr-TR",
 		"title": "Turkish"
 	},
@@ -98,9 +102,5 @@
 	{
 		"code": "dg-DG",
 		"title": "Doge 🐶"
-	}
-	{
-		"code": "sv-SE",
-		"title": "Swedish"
 	}
 ]
