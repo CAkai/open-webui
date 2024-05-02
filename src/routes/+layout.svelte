@@ -5,7 +5,8 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser, iCloudGetUserInfo } from '$lib/apis/auths';
+	import { getSessionUser, iCloudGetUserInfo, userSignIn, userSignUp } from '$lib/apis/auths';
+	import { generateInitialsImage } from '$lib/utils';
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -18,6 +19,46 @@
 	setContext('i18n', i18n);
 
 	let loaded = false;
+
+	const setSessionUser = async (sessionUser) => {
+		if (sessionUser) {
+			console.log(sessionUser);
+			localStorage.token = sessionUser.token;
+			await user.set(sessionUser);
+		}
+	};
+
+	const signInHandler = async (iCloudUser) => {
+		console.log("icloud user", iCloudUser);
+		
+		// 透過 iCloud 的使用者資料登入
+		// 由於 password 記錄在 token 會有資安風險，而且我們的密碼沒有有效期限，
+		// 因此這裡的密碼設定為 iCloud 的 access_token
+		const sessionUser = await userSignIn(iCloudUser.name+"@umc.com", iCloudUser.access_token).catch((error) => {
+			toast.error($i18n.t(error));
+			return null;
+		});
+		
+		if (sessionUser === null) return false;
+
+		// 把 iCloud 的使用者資料合併到 sessionUser
+		sessionUser.role = iCloudUser.role;
+
+		await setSessionUser(sessionUser);
+		return true;
+	};
+
+	const signUpHandler = async (iCloudUser) => {
+		const empid = iCloudUser.name;
+		const sessionUser = await userSignUp(empid, empid+"@umc.com", iCloudUser.access_token, generateInitialsImage(empid)).catch(
+			(error) => {
+				toast.error(error);
+				return null;
+			}
+		);
+
+		await setSessionUser(sessionUser);
+	};
 
 	onMount(async () => {
 		theme.set(localStorage.theme);
@@ -35,6 +76,7 @@
 
 			await WEBUI_NAME.set(backendConfig.name);
 			console.log(backendConfig);
+			console.log("iCloud token", localStorage.getItem(COOKIE_TOKEN_KEY) ?? "");
 
 			if ($config) {
 				if (localStorage.token) {
@@ -62,6 +104,7 @@
 						localStorage.removeItem('token');
 						await goto('/auth');
 					}
+				
 				} else {
 					await goto('/auth');
 				}
