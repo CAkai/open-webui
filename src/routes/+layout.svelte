@@ -5,14 +5,14 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	import { getSessionUser, iCloudGetUserInfo } from '$lib/apis/auths';
 
 	import '../tailwind.css';
 	import '../app.css';
 
 	import 'tippy.js/dist/tippy.css';
 
-	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { WEBUI_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
 	import i18n, { initI18n } from '$lib/i18n';
 
 	setContext('i18n', i18n);
@@ -45,6 +45,16 @@
 					});
 
 					if (sessionUser) {
+						// 因為 sessionUser.role 在登入後會變成 pending，所以這邊還是去 iCloud 取得使用者資料
+						const userinfo = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "").catch((error) => {
+							toast.error(error);
+							return null;
+						});
+
+						if (userinfo) {
+							sessionUser.role = userinfo.role;
+						}
+
 						// Save Session User to Store
 						await user.set(sessionUser);
 					} else {

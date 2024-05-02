@@ -47,12 +47,12 @@
 	let showShortcuts = false;
 
 	const getModels = async () => {
-		return _getModels(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "");
+		return _getModels(localStorage.token);
 	};
 
 	const setOllamaVersion = async (version: string = '') => {
 		if (version === '') {
-			version = await getOllamaVersion(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "").catch((error) => {
+			version = await getOllamaVersion(localStorage.token).catch((error) => {
 				return '';
 			});
 		}
@@ -90,10 +90,10 @@
 			await models.set(await getModels());
 			await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 
-			await modelfiles.set(await getModelfiles(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
-			await prompts.set(await getPrompts(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
-			await documents.set(await getDocs(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
-			await tags.set(await getAllChatTags(localStorage.getItem(COOKIE_TOKEN_KEY) ?? ""));
+			await modelfiles.set(await getModelfiles(localStorage.token));
+			await prompts.set(await getPrompts(localStorage.token));
+			await documents.set(await getDocs(localStorage.token));
+			await tags.set(await getAllChatTags(localStorage.token));
 
 			modelfiles.subscribe(async () => {
 				// should fetch models

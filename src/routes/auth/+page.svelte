@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { userSignIn, userSignUp, iCloudSignIn, iCloudGetUserInfo } from '$lib/apis/auths';
+	import { userSignIn, userSignUp, iCloudSignIn } from '$lib/apis/auths';
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import { COOKIE_TOKEN_KEY } from '$lib/constants';
 	import { WEBUI_NAME, config, user } from '$lib/stores';
@@ -63,6 +63,9 @@
 
 		if (iCloudUser === null) return;
 
+		// 儲存 iCloud token
+		localStorage.setItem(COOKIE_TOKEN_KEY, iCloudUser.access_token)
+
 		if (!await signInHandler(iCloudUser)) {
 			await signUpHandler();
 		}
@@ -76,9 +79,9 @@
 		}
 		loaded = true;
 		
-		if ($config?.trusted_header_auth ?? false) {
-			await signInHandler();
-		}
+		// if ($config?.trusted_header_auth ?? false) {
+		// 	await signInHandler();
+		// }
 	});
 </script>
 
