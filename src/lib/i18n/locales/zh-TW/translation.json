@@ -363,5 +363,6 @@
 	"You're now logged in.": "已登入。",
 	"EmpId": "工號",
 	"Enter Your EmpId": "輸入你的工號",
-	"EmpId or password is incorrect.": "工號或密碼不正確。"
+	"EmpId or password is incorrect.": "工號或密碼不正確。",
+	"Received iCloud token.": "成功讀取 iCloud 金鑰。"
 }

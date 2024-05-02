@@ -29,16 +29,19 @@
 	};
 
 	const signInHandler = async (iCloudUser) => {
-		console.log("icloud user", iCloudUser);
-		
+		console.log('icloud user', iCloudUser);
+
 		// 透過 iCloud 的使用者資料登入
 		// 由於 password 記錄在 token 會有資安風險，而且我們的密碼沒有有效期限，
 		// 因此這裡的密碼設定為 iCloud 的 access_token
-		const sessionUser = await userSignIn(iCloudUser.name+"@umc.com", iCloudUser.access_token).catch((error) => {
+		const sessionUser = await userSignIn(
+			iCloudUser.id + '@umc.com',
+			localStorage.getItem(COOKIE_TOKEN_KEY) ?? ''
+		).catch((error) => {
 			toast.error($i18n.t(error));
 			return null;
 		});
-		
+
 		if (sessionUser === null) return false;
 
 		// 把 iCloud 的使用者資料合併到 sessionUser
@@ -49,15 +52,47 @@
 	};
 
 	const signUpHandler = async (iCloudUser) => {
-		const empid = iCloudUser.name;
-		const sessionUser = await userSignUp(empid, empid+"@umc.com", iCloudUser.access_token, generateInitialsImage(empid)).catch(
+		const empid = iCloudUser.id;
+		const sessionUser = await userSignUp(
+			empid,
+			empid + '@umc.com',
+			localStorage.getItem(COOKIE_TOKEN_KEY) ?? '',
+			generateInitialsImage(empid)
+		).catch((error) => {
+			toast.error($i18n.t(error));
+			return null;
+		});
+
+		await setSessionUser(sessionUser);
+	};
+
+	const handleToken = async (event) => {
+		if (
+			event.source !== window.parent ||
+			['handshake', 'detectAngular'].includes(event.data?.topic) ||
+			event.data?.source === 'react-devtools-content-script' ||
+			event.data?.isAngularDevTools
+		)
+			return;
+
+		localStorage.setItem(COOKIE_TOKEN_KEY, event.data);
+
+		const iCloudUser = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? '').catch(
 			(error) => {
 				toast.error(error);
 				return null;
 			}
 		);
 
-		await setSessionUser(sessionUser);
+		if (iCloudUser === null) return;
+
+		if (!(await signInHandler(iCloudUser))) {
+			await signUpHandler(iCloudUser);
+		}
+
+		// 跳轉到首頁
+		toast.success($i18n.t('Received iCloud token.') + ' ' + $i18n.t(`You're now logged in.`));
+		await goto('/');
 	};
 
 	onMount(async () => {
@@ -76,7 +111,6 @@
 
 			await WEBUI_NAME.set(backendConfig.name);
 			console.log(backendConfig);
-			console.log("iCloud token", localStorage.getItem(COOKIE_TOKEN_KEY) ?? "");
 
 			if ($config) {
 				if (localStorage.token) {
@@ -88,23 +122,25 @@
 
 					if (sessionUser) {
 						// 因為 sessionUser.role 在登入後會變成 pending，所以這邊還是去 iCloud 取得使用者資料
-						const userinfo = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? "").catch((error) => {
+						const userinfo = await iCloudGetUserInfo(
+							localStorage.getItem(COOKIE_TOKEN_KEY) ?? ''
+						).catch((error) => {
 							toast.error(error);
 							return null;
 						});
 
 						if (userinfo) {
 							sessionUser.role = userinfo.role;
+							// Save Session User to Store
+							await user.set(sessionUser);
+						} else {
+							await goto('/auth');
 						}
-
-						// Save Session User to Store
-						await user.set(sessionUser);
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						localStorage.removeItem('token');
 						await goto('/auth');
 					}
-				
 				} else {
 					await goto('/auth');
 				}
@@ -121,6 +157,7 @@
 	});
 </script>
 
+<svelte:window on:message={handleToken} />
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
