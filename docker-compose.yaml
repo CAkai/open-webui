@@ -14,7 +14,7 @@ services:
     build: ./web-docs
     command: yarn serve
     ports:
-      - 9999:3000
+      - 9988:3000
 
   open-webui:
     build:
