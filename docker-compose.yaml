@@ -10,6 +10,12 @@ services:
   #   restart: unless-stopped
   #   image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
 
+  open-webui-doc:
+    build: ./web-docs
+    command: yarn serve
+    ports:
+      - 9999:3000
+
   open-webui:
     build:
       context: .

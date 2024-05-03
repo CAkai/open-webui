@@ -52,12 +52,11 @@
 	};
 
 	const signUpHandler = async (iCloudUser) => {
-		const empid = iCloudUser.id;
 		const sessionUser = await userSignUp(
-			empid,
-			empid + '@umc.com',
+			iCloudUser.name,
+			iCloudUser.id + '@umc.com',
 			localStorage.getItem(COOKIE_TOKEN_KEY) ?? '',
-			generateInitialsImage(empid)
+			generateInitialsImage(iCloudUser.name)
 		).catch((error) => {
 			toast.error($i18n.t(error));
 			return null;

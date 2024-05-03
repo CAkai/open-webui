@@ -33,7 +33,7 @@
 		// 透過 iCloud 的使用者資料登入
 		// 由於 password 記錄在 token 會有資安風險，而且我們的密碼沒有有效期限，
 		// 因此這裡的密碼設定為 iCloud 的 access_token
-		const sessionUser = await userSignIn(empid+"@umc.com", iCloudUser.access_token).catch((error) => {
+		const sessionUser = await userSignIn(empid+"@umc.com", localStorage.getItem(COOKIE_TOKEN_KEY) ?? '').catch((error) => {
 			// 這個不用顯示，因為會和 iCloud 的登入訊息打架
 			// toast.error($i18n.t(error));
 			return null;
@@ -49,7 +49,7 @@
 	};
 
 	const signUpHandler = async (iCloudUser) => {
-		const sessionUser = await userSignUp(empid, empid+"@umc.com", iCloudUser.access_token, generateInitialsImage(empid)).catch(
+		const sessionUser = await userSignUp(iCloudUser.name, iCloudUser.id+"@umc.com", localStorage.getItem(COOKIE_TOKEN_KEY) ?? '', generateInitialsImage(iCloudUser.name)).catch(
 			(error) => {
 				toast.error(error);
 				return null;

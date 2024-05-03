@@ -1,6 +1,13 @@
 version: '3.8'
 
 services:
+  open-webui-doc:
+    build: ./web-docs
+    ports:
+      - 9999:3000
+    volumes:
+      - ./web-docs/docs:/app/docs
+
   open-webui:
     build:
       context: .

@@ -33,7 +33,7 @@
 							<img
 								src={modelfiles[model]?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`}
 								alt="modelfile"
-								class=" size-12 rounded-full border-[1px] border-gray-200 dark:border-none"
+								class=" size-12 rounded-full border-[1px] border-gray-200 dark:border-none dark:invert"
 								draggable="false"
 							/>
 						{:else}
@@ -41,7 +41,7 @@
 								src={models.length === 1
 									? `${WEBUI_BASE_URL}/static/favicon.png`
 									: `${WEBUI_BASE_URL}/static/favicon.png`}
-								class=" size-12 rounded-full border-[1px] border-gray-200 dark:border-none"
+								class=" size-12 rounded-full border-[1px] border-gray-200 dark:border-none dark:invert"
 								alt="logo"
 								draggable="false"
 							/>
