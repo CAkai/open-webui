@@ -20,7 +20,7 @@ services:
     build:
       context: .
       args:
-        OLLAMA_BASE_URL: 'http://10.13.186.242:11434; http://10.13.186.242:11434'
+        OLLAMA_BASE_URL: 'http://10.13.186.242:11434'
         USE_CUDA: true
         USE_OLLAMA: false
       dockerfile: Dockerfile
@@ -34,9 +34,10 @@ services:
     ports:
       - 8080:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://10.13.186.242:11434; http://10.13.186.242:11434'
+      - 'OLLAMA_BASE_URL=http://10.13.186.242:11434'
+      - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
       - 'WEBUI_SECRET_KEY='
-      - 'WEBUI_NAME= U-LLaMA'
+      - 'WEBUI_NAME= U-Ai'
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway

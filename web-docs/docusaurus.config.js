@@ -82,56 +82,56 @@ const config = {
         ],
       },
       footer: {
-        logo: {
-          src: "img/logo-dark.png",
-          height: 100,
-        },
-        style: "light",
-        links: [
-          {
-            title: "Docs",
-            items: [
-              {
-                label: "Models",
-                to: "models",
-              },
-              {
-                label: "FAQ",
-                to: "faq",
-              },
-            ],
-          },
-          {
-            title: "Community",
-            items: [
-              {
-                label: "GitHub",
-                href: "https://github.com/open-webui/open-webui",
-              },
-              {
-                label: "Discord",
-                href: "https://discord.gg/5rJgQTnV4s",
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/OpenWebUI",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              {
-                label: "Release Notes",
-                to: "https://github.com/open-webui/open-webui/blob/main/CHANGELOG.md",
-              },
-              {
-                label: "About",
-                to: "https://openwebui.com",
-              },
-            ],
-          },
-        ],
+        // logo: {
+        //   src: "img/logo-dark.png",
+        //   height: 100,
+        // },
+        // style: "light",
+        // links: [
+        //   {
+        //     title: "Docs",
+        //     items: [
+        //       {
+        //         label: "Models",
+        //         to: "models",
+        //       },
+        //       {
+        //         label: "FAQ",
+        //         to: "faq",
+        //       },
+        //     ],
+        //   },
+        //   {
+        //     title: "Community",
+        //     items: [
+        //       {
+        //         label: "GitHub",
+        //         href: "https://github.com/open-webui/open-webui",
+        //       },
+        //       {
+        //         label: "Discord",
+        //         href: "https://discord.gg/5rJgQTnV4s",
+        //       },
+        //       {
+        //         label: "Twitter",
+        //         href: "https://twitter.com/OpenWebUI",
+        //       },
+        //     ],
+        //   },
+        //   {
+        //     title: "More",
+        //     items: [
+        //       {
+        //         label: "Release Notes",
+        //         to: "https://github.com/open-webui/open-webui/blob/main/CHANGELOG.md",
+        //       },
+        //       {
+        //         label: "About",
+        //         to: "https://openwebui.com",
+        //       },
+        //     ],
+        //   },
+        // ],
         // copyright: `Copyright © ${new Date().getFullYear()} OpenWebUI`,
       },
       prism: {
