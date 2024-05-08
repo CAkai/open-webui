@@ -965,23 +965,38 @@
 					: $settings?.title?.model ?? selectedModels[0];
 			const titleModel = $models.find((model) => model.id === titleModelId);
 
-			console.log(titleModel);
-			const title = await generateTitle(
-				localStorage.token,
-				$settings?.title?.prompt ??
-					$i18n.t(
-						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-					) + ' {{prompt}}',
-				titleModelId,
-				userPrompt,
-				titleModel?.external ?? false
-					? titleModel?.source?.toLowerCase() === 'litellm'
-						? `${LITELLM_API_BASE_URL}/v1`
-						: `${OPENAI_API_BASE_URL}`
-					: `${OLLAMA_API_BASE_URL}/v1`
-			);
+			console.log("generate title",titleModel);
+			if (model?.id?.toLowerCase().includes("umc")) {
+				const title = await generateUMCTitle(
+					localStorage.token,
+					$settings?.title?.prompt ??
+						$i18n.t(
+							"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+						) + ' {{prompt}}',
+					titleModelId,
+					userPrompt,
+					`${UMC_API_BASE_URL}`
+				);
 
-			return title;
+				return title;
+			} else {
+				const title = await generateTitle(
+					localStorage.token,
+					$settings?.title?.prompt ??
+						$i18n.t(
+							"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+						) + ' {{prompt}}',
+					titleModelId,
+					userPrompt,
+					titleModel?.external ?? false
+						? titleModel?.source?.toLowerCase() === 'litellm'
+							? `${LITELLM_API_BASE_URL}/v1`
+							: `${OPENAI_API_BASE_URL}`
+						: `${OLLAMA_API_BASE_URL}/v1`
+				);
+
+				return title;
+			}
 		} else {
 			return `${userPrompt}`;
 		}

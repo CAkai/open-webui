@@ -109,6 +109,8 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
         body = json.dumps(body)
     except json.JSONDecodeError as e:
         log.error("Error loading request body into a dictionary:", e)
+        
+    log.info(f"body: {body}")
 
     url = f"{app.state.UMC_API_BASE_URLS[0]}/{path}"
 
