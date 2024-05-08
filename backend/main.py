@@ -29,6 +29,7 @@ from apps.audio.main import app as audio_app
 from apps.images.main import app as images_app
 from apps.rag.main import app as rag_app
 from apps.web.main import app as webui_app
+from apps.umc.main import app as umc_app
 
 import asyncio
 from pydantic import BaseModel
@@ -189,6 +190,8 @@ app.mount("/openai/api", openai_app)
 app.mount("/images/api/v1", images_app)
 app.mount("/audio/api/v1", audio_app)
 app.mount("/rag/api/v1", rag_app)
+
+app.mount("/umc/api/v1", umc_app)
 
 
 @app.get("/api/config")

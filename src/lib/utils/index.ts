@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sha256 from 'js-sha256';
 import { getOllamaModels } from '$lib/apis/ollama';
 import { getOpenAIModels } from '$lib/apis/openai';
+import { getUMCModels } from '$lib/apis/umc';
 import { getLiteLLMModels } from '$lib/apis/litellm';
 
 export const getModels = async (token: string) => {
@@ -17,7 +18,11 @@ export const getModels = async (token: string) => {
 		await getLiteLLMModels(token).catch((error) => {
 			console.log(error);
 			return null;
-		})
+		}),
+		await getUMCModels(token).catch((error) => {
+			console.log(error);
+			return null;
+		}),
 	]);
 
 	models = models.filter((models) => models).reduce((a, e, i, arr) => a.concat(e), []);

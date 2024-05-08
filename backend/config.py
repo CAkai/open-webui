@@ -46,6 +46,7 @@ log_sources = [
     "OPENAI",
     "RAG",
     "WEBHOOK",
+    "UMC"
 ]
 
 SRC_LOG_LEVELS = {}
@@ -593,3 +594,9 @@ LITELLM_PROXY_HOST = os.getenv("LITELLM_PROXY_HOST", "127.0.0.1")
 ####################################
 
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DATA_DIR}/webui.db")
+
+
+####################################
+# UMC
+####################################
+UMC_BASE_URL = os.environ.get("UMC_BASE_URL", "http://localhost:3003")

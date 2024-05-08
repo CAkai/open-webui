@@ -8,8 +8,9 @@
 		getOpenAIKeys,
 		getOpenAIUrls,
 		updateOpenAIKeys,
-		updateOpenAIUrls
+		updateOpenAIUrls,
 	} from '$lib/apis/openai';
+	import { updateUMCUrls, getUMCUrls } from '$lib/apis/umc';
 	import { toast } from 'svelte-sonner';
 
 	const i18n = getContext('i18n');
@@ -20,8 +21,7 @@
 	let OLLAMA_BASE_URL = '';
 	let OLLAMA_BASE_URLS = [''];
 
-	let OPENAI_API_KEY = '';
-	let OPENAI_API_BASE_URL = '';
+	let UMC_API_BASE_URLS = [''];
 
 	let OPENAI_API_KEYS = [''];
 	let OPENAI_API_BASE_URLS = [''];
@@ -29,6 +29,7 @@
 	let showOpenAI = false;
 
 	const updateOpenAIHandler = async () => {
+		UMC_API_BASE_URLS = await updateUMCUrls(localStorage.token, UMC_API_BASE_URLS);
 		OPENAI_API_BASE_URLS = await updateOpenAIUrls(localStorage.token, OPENAI_API_BASE_URLS);
 		OPENAI_API_KEYS = await updateOpenAIKeys(localStorage.token, OPENAI_API_KEYS);
 
@@ -51,6 +52,7 @@
 
 	onMount(async () => {
 		if ($user.role === 'admin') {
+			UMC_API_BASE_URLS = await getUMCUrls(localStorage.token);
 			OLLAMA_BASE_URLS = await getOllamaUrls(localStorage.token);
 			OPENAI_API_BASE_URLS = await getOpenAIUrls(localStorage.token);
 			OPENAI_API_KEYS = await getOpenAIKeys(localStorage.token);
@@ -66,6 +68,17 @@
 	}}
 >
 	<div class="  pr-1.5 overflow-y-scroll max-h-[22rem] space-y-3">
+		<div>
+			<div class=" mb-2.5 text-sm font-medium">{$i18n.t('UMC Base URL')}</div>
+			<input
+				class="w-full rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 outline-none"
+				placeholder="Enter URL"
+				bind:value={UMC_API_BASE_URLS[0]}
+			/>
+		</div>
+
+		<hr class=" dark:border-gray-700" />
+
 		<div class=" space-y-3">
 			<div class="mt-2 space-y-2 pr-1.5">
 				<div class="flex justify-between items-center text-sm">
