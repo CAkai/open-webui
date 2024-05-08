@@ -140,7 +140,7 @@ export const getOpenAIModelsDirect = async (
 		});
 };
 
-export const generateOpenAIChatCompletion = async (
+export const generateUMCChatCompletion = async (
 	token: string = '',
 	body: object,
 	url: string = UMC_API_BASE_URL
@@ -148,7 +148,7 @@ export const generateOpenAIChatCompletion = async (
 	const controller = new AbortController();
 	let error = null;
 
-	const res = await fetch(`${url}/chat/completions`, {
+	const res = await fetch(`${url}/api/chat`, {
 		signal: controller.signal,
 		method: 'POST',
 		headers: {
@@ -182,7 +182,7 @@ export const generateTitle = async (
 
 	console.log(template);
 
-	const res = await fetch(`${url}/chat/completions`, {
+	const res = await fetch(`${url}/api/chat`, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

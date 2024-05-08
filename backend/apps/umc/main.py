@@ -46,7 +46,7 @@ app.state.UMC_API_BASE_URLS = [UMC_BASE_URL]
 
 app.state.MODELS = {
     "data": [
-        {"id": "gpt-4", "name": "GPT-4", "external": False},
+        {"id": "umcgpt-4", "name": "UMCGPT-4", "external": False, "source": "umc"},
     ]
 }
 
@@ -88,24 +88,6 @@ async def fetch_url(url, key):
         return None
 
 
-def merge_models_lists(model_lists):
-    log.info(f"merge_models_lists {model_lists}")
-    merged_list = []
-
-    for idx, models in enumerate(model_lists):
-        if models is not None and "error" not in models:
-            merged_list.extend(
-                [
-                    {**model, "urlIdx": idx}
-                    for model in models
-                    if "api.openai.com" not in app.state.UMC_API_BASE_URLS[idx]
-                    or "gpt" in model["id"]
-                ]
-            )
-
-    return merged_list
-
-
 @app.get("/models")
 @app.get("/models/{url_idx}")
 async def get_models(url_idx: Optional[int] = None, user=Depends(get_current_user)):
@@ -123,37 +105,14 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
         body = body.decode("utf-8")
         body = json.loads(body)
 
-        idx = app.state.MODELS[body.get("model")]["urlIdx"]
-
-        # Check if the model is "gpt-4-vision-preview" and set "max_tokens" to 4000
-        # This is a workaround until OpenAI fixes the issue with this model
-        if body.get("model") == "gpt-4-vision-preview":
-            if "max_tokens" not in body:
-                body["max_tokens"] = 4000
-            log.debug("Modified body_dict:", body)
-
-        # Fix for ChatGPT calls failing because the num_ctx key is in body
-        if "num_ctx" in body:
-            # If 'num_ctx' is in the dictionary, delete it
-            # Leaving it there generates an error with the
-            # OpenAI API (Feb 2024)
-            del body["num_ctx"]
-
         # Convert the modified body back to JSON
         body = json.dumps(body)
     except json.JSONDecodeError as e:
         log.error("Error loading request body into a dictionary:", e)
 
-    url = app.state.UMC_API_BASE_URLS[idx]
-    key = app.state.OPENAI_API_KEYS[idx]
-
-    target_url = f"{url}/{path}"
-
-    if key == "":
-        raise HTTPException(status_code=401, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)
+    url = f"{app.state.UMC_API_BASE_URLS[0]}/{path}"
 
     headers = {}
-    headers["Authorization"] = f"Bearer {key}"
     headers["Content-Type"] = "application/json"
 
     r = None
@@ -161,7 +120,7 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
     try:
         r = requests.request(
             method=request.method,
-            url=target_url,
+            url=url,
             data=body,
             headers=headers,
             stream=True,

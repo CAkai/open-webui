@@ -507,7 +507,7 @@
 							<div class="flex items-center gap-2 text-sm dark:text-gray-500">
 								<img
 									alt="model profile"
-									class="size-5 max-w-[28px] object-cover rounded-full"
+									class="size-5 max-w-[28px] object-cover rounded-full dark:invert"
 									src={$modelfiles.find((modelfile) => modelfile.tagName === selectedModel.id)
 										?.imageUrl ??
 										($i18n.language === 'dg-DG'

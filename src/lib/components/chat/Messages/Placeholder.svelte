@@ -45,7 +45,7 @@
 							<img
 								src={modelfiles[model]?.imageUrl ?? `${WEBUI_BASE_URL}/static/favicon.png`}
 								alt="modelfile"
-								class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none dart:invert"
+								class=" size-[2.7rem] rounded-full border-[1px] border-gray-200 dark:border-none dark:invert"
 								draggable="false"
 							/>
 						{:else}
