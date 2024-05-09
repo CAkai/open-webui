@@ -32,6 +32,7 @@ services:
       - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME= U-Ai'
+      - 'UMC_BASE_URL=http://172.16.128.9:3003'
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
