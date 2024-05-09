@@ -41,9 +41,7 @@
 		OPENAI_API_BASE_URL,
 		OLLAMA_API_BASE_URL,
 		WEBUI_BASE_URL,
-
 		UMC_API_BASE_URL
-
 	} from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 
@@ -291,12 +289,7 @@
 					}
 
 					if (model?.id?.toLowerCase().includes('umc')) {
-						await sendPromptUMC(
-							model,
-							prompt,
-							responseMessageId,
-							_chatId
-						);
+						await sendPromptUMC(model, prompt, responseMessageId, _chatId);
 					} else if (model?.external) {
 						await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
 					} else if (model) {
@@ -737,7 +730,7 @@
 
 	const sendPromptUMC = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
-		console.log("umc model", model);
+		console.log('umc model', model);
 		const docs = messages
 			.filter((message) => message?.files ?? null)
 			.map((message) =>
@@ -745,7 +738,7 @@
 			)
 			.flat(1);
 
-		console.log(docs);
+		console.log('asdufwer', docs);
 
 		scrollToBottom();
 
@@ -788,8 +781,15 @@
 									]
 							  }
 							: {
-									content:
-										arr.length - 1 !== idx ? message.content : message?.raContent ?? message.content
+									content:[
+										{
+											type: 'text',
+											text:
+												arr.length - 1 !== idx
+													? message.content
+													: message?.raContent ?? message.content
+										},
+									]
 							  })
 					})),
 				seed: $settings?.options?.seed ?? undefined,
@@ -984,9 +984,9 @@
 					: $settings?.title?.model ?? selectedModels[0];
 			const titleModel = $models.find((model) => model.id === titleModelId);
 
-			console.log("/c/d/", titleModel);
-			if (model?.id?.toLowerCase().includes === "umc") {
-				const title = await generateTitle(
+			console.log('/c/d/', titleModel);
+			if (model?.id?.toLowerCase().includes === 'umc') {
+				const title = await generateUMCTitle(
 					localStorage.token,
 					$settings?.title?.prompt ??
 						$i18n.t(
@@ -1000,21 +1000,21 @@
 				return title;
 			} else {
 				const title = await generateTitle(
-				localStorage.token,
-				$settings?.title?.prompt ??
-					$i18n.t(
-						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-					) + ' {{prompt}}',
-				titleModelId,
-				userPrompt,
-				titleModel?.external ?? false
-					? titleModel?.source?.toLowerCase() === 'litellm'
-						? `${LITELLM_API_BASE_URL}/v1`
-						: `${OPENAI_API_BASE_URL}`
-					: `${OLLAMA_API_BASE_URL}/v1`
-			);
+					localStorage.token,
+					$settings?.title?.prompt ??
+						$i18n.t(
+							"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+						) + ' {{prompt}}',
+					titleModelId,
+					userPrompt,
+					titleModel?.external ?? false
+						? titleModel?.source?.toLowerCase() === 'litellm'
+							? `${LITELLM_API_BASE_URL}/v1`
+							: `${OPENAI_API_BASE_URL}`
+						: `${OLLAMA_API_BASE_URL}/v1`
+				);
 
-			return title;
+				return title;
 			}
 		} else {
 			return `${userPrompt}`;

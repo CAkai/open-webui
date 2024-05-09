@@ -39,7 +39,12 @@
 	import ModelSelector from '$lib/components/chat/ModelSelector.svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { RAGTemplate } from '$lib/utils/rag';
-	import { LITELLM_API_BASE_URL, OLLAMA_API_BASE_URL, OPENAI_API_BASE_URL, UMC_API_BASE_URL } from '$lib/constants';
+	import {
+		LITELLM_API_BASE_URL,
+		OLLAMA_API_BASE_URL,
+		OPENAI_API_BASE_URL,
+		UMC_API_BASE_URL
+	} from '$lib/constants';
 	import { WEBUI_BASE_URL } from '$lib/constants';
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 
@@ -275,7 +280,7 @@
 							responseMessageId
 						];
 					}
-					
+
 					if (model?.id?.toLowerCase().includes('umc')) {
 						await sendPromptUMC(model, prompt, responseMessageId, _chatId);
 					} else if (model?.external) {
@@ -534,7 +539,7 @@
 
 	const sendPromptUMC = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
-		console.log("umc model", model);
+		console.log('umc model', model);
 		const docs = messages
 			.filter((message) => message?.files ?? null)
 			.map((message) =>
@@ -585,8 +590,15 @@
 									]
 							  }
 							: {
-									content:
-										arr.length - 1 !== idx ? message.content : message?.raContent ?? message.content
+									content:[
+										{
+											type: 'text',
+											text:
+												arr.length - 1 !== idx
+													? message.content
+													: message?.raContent ?? message.content
+										},
+									]
 							  })
 					})),
 				seed: $settings?.options?.seed ?? undefined,
@@ -787,7 +799,9 @@
 			},
 			model?.source?.toLowerCase() === 'litellm'
 				? `${LITELLM_API_BASE_URL}/v1`
-				: (model?.source?.toLowerCase() === 'umc' ? `${UMC_API_BASE_URL}` : `${OPENAI_API_BASE_URL}`)
+				: model?.source?.toLowerCase() === 'umc'
+				? `${UMC_API_BASE_URL}`
+				: `${OPENAI_API_BASE_URL}`
 		);
 
 		// Wait until history/message have been updated
@@ -965,8 +979,8 @@
 					: $settings?.title?.model ?? selectedModels[0];
 			const titleModel = $models.find((model) => model.id === titleModelId);
 
-			console.log("generate title",titleModel);
-			if (model?.id?.toLowerCase().includes("umc")) {
+			console.log('generate title', titleModel);
+			if (model?.id?.toLowerCase().includes('umc')) {
 				const title = await generateUMCTitle(
 					localStorage.token,
 					$settings?.title?.prompt ??

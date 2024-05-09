@@ -148,6 +148,12 @@ export const generateUMCChatCompletion = async (
 	const controller = new AbortController();
 	let error = null;
 
+	try {
+		console.log("umc image body:", JSON.parse(JSON.stringify(body)));
+	} catch(e) {
+		console.log("umc image body error", body);
+	}
+
 	const res = await fetch(`${url}/api/chat`, {
 		signal: controller.signal,
 		method: 'POST',

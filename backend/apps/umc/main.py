@@ -96,8 +96,6 @@ async def get_models(url_idx: Optional[int] = None, user=Depends(get_current_use
 
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
-    idx = 0
-
     body = await request.body()
     # TODO: Remove below after gpt-4-vision fix from Open AI
     # Try to decode the body of the request from bytes to a UTF-8 string (Require add max_token to fix gpt-4-vision)
@@ -110,8 +108,6 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
     except json.JSONDecodeError as e:
         log.error("Error loading request body into a dictionary:", e)
         
-    log.info(f"body: {body}")
-
     url = f"{app.state.UMC_API_BASE_URLS[0]}/{path}"
 
     headers = {}
