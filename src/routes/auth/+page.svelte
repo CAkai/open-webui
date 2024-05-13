@@ -56,6 +56,11 @@
 			}
 		);
 
+		if (sessionUser === null) return;
+
+		// 把 iCloud 的使用者資料合併到 sessionUser
+		sessionUser.role = iCloudUser.role;
+
 		await setSessionUser(sessionUser);
 	};
 

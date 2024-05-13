@@ -73,7 +73,6 @@
 			event.data?.isAngularDevTools
 		)
 			return;
-
 		localStorage.setItem(COOKIE_TOKEN_KEY, event.data);
 
 		const iCloudUser = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? '').catch(
@@ -138,6 +137,7 @@
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						localStorage.removeItem('token');
+						localStorage.removeItem(COOKIE_TOKEN_KEY);
 						await goto('/auth');
 					}
 				} else {
