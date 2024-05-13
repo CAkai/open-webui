@@ -91,6 +91,7 @@ from config import (
     CHUNK_SIZE,
     CHUNK_OVERLAP,
     RAG_TEMPLATE,
+    YOUTUBE_LOADER_LANGUAGE
 )
 
 from constants import ERROR_MESSAGES

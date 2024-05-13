@@ -34,36 +34,27 @@ async function* openAIStreamToIterator(
 			yield { done: true, value: '' };
 			break;
 		}
-		const lines = value.split('\n');
-		for (let line of lines) {
-			if (line.endsWith('\r')) {
-				// Remove trailing \r
-				line = line.slice(0, -1);
-			}
-			if (line !== '') {
-				console.log(line);
-				if (line === 'data: [DONE]') {
-					yield { done: true, value: '' };
-				} else if (line.startsWith(':')) {
-					// Events starting with : are comments https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
-					// OpenRouter sends heartbeats like ": OPENROUTER PROCESSING"
-					continue;
-				} else {
-					try {
-						const data = JSON.parse(line.replace(/^data: /, ''));
-						console.log(data);
+		if (!value) {
+			continue;
+		}
+		const data = value.data;
+		if (data.startsWith('[DONE]')) {
+			yield { done: true, value: '' };
+			break;
+		}
 
-						if (parsedData.citations) {
-							yield { done: false, value: '', citations: parsedData.citations };
-							continue;
-						}
+		try {
+			const parsedData = JSON.parse(data.replace(/^data:\s/, ''));
+			console.log("openAIStreamToIterator", data, parsedData);
 
-						yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
-					} catch (e) {
-						console.error('Error extracting delta from SSE event:', e);
-					}
-				}
+			if (parsedData.citations) {
+				yield { done: false, value: '', citations: parsedData.citations };
+				continue;
 			}
+
+			yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+		} catch (e) {
+			console.error('Error extracting delta from SSE event:', e);
 		}
 	}
 }

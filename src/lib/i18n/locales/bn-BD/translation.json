@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "এপিআই আরপিএম",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "চ্যাট ইতিহাস সংরক্ষণাগার",
 	"are allowed - Activate this command by typing": "অনুমোদিত - কমান্ডটি চালু করার জন্য লিখুন",
 	"Are you sure?": "আপনি নিশ্চিত?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "অডিও",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "উপলব্ধ!",
 	"Back": "পেছনে",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "বিল্ডার মোড",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "চ্যাট মুছে ফেলুন",
 	"Delete Chat": "",
 	"Delete Chats": "চ্যাটগুলো মুছে ফেলুন",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} মুছে ফেলা হয়েছে",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "একাউন্ট নেই?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "ডেটাবেজ ডাউনলোড করুন",
 	"Drop any files here to add to the conversation": "আলোচনায় যুক্ত করার জন্য যে কোন ফাইল এখানে ড্রপ করুন",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "যেমন '30s','10m'. সময়ের অনুমোদিত অনুমোদিত এককগুলি হচ্ছে 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "ডকুমেন্ট এডিট করুন",
 	"Edit User": "ইউজার এডিট করুন",
 	"Email": "ইমেইল",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "চ্যাট হিস্টোরি চালু করুন",
@@ -214,10 +196,7 @@
 	"Export Prompts": "প্রম্পটগুলো একপোর্ট করুন",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "ক্লিপবোর্ডের বিষয়বস্তু পড়া সম্ভব হয়নি",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "ফাইল মোড",
 	"File not found.": "ফাইল পাওয়া যায়নি",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "সর্বোচ্চ টোকন",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "একসঙ্গে সর্বোচ্চ তিনটি মডেল ডাউনলোড করা যায়। দয়া করে পরে আবার চেষ্টা করুন।",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "আপনার মডেলফাইলের নাম দিন",
 	"New Chat": "নতুন চ্যাট",
 	"New Password": "নতুন পাসওয়ার্ড",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "কী যুক্ত করতে হবে নিশ্চিত না?",
 	"Not sure what to write? Switch to": "কী লিখতে হবে নিশ্চিত না? পরিবর্তন করুন:",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "নোটিফিকেশনসমূহ",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "বন্ধ",
 	"Okay, Let's Go!": "ঠিক আছে, চলুন যাই!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "অথবা",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "প্যারামিটারসমূহ",
 	"Password": "পাসওয়ার্ড",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "খেলাঘর",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "প্রম্পট কন্টেন্ট",
 	"Prompt suggestions": "প্রম্পট সাজেশনসমূহ",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "রিলিজ নোটসমূহ",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "রিপিট Last N",
-	"Repeat Penalty": "রিপিট প্যানাল্টি",
-	"Request Mode": "রিকোয়েস্ট মোড",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "রিপিট Last N",
 	"Repeat Penalty": "রিপিট প্যানাল্টি",
 	"Request Mode": "রিকোয়েস্ট মোড",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "ভেক্টর স্টোরেজ রিসেট করুন",
@@ -450,10 +407,7 @@
 	"Sign Out": "সাইন আউট",
 	"Sign up": "সাইন আপ",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "স্পিচ রিকগনিশনে সমস্যা: {{error}}",
 	"Speech-to-Text Engine": "স্পিচ-টু-টেক্সট ইঞ্জিন",
 	"SpeechRecognition API is not supported in this browser.": "এই ব্রাউজার স্পিচরিকগনিশন এপিআই সাপোর্ট করে না।",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "ওহ-হো! {{provider}} এর সাথে কানেকশনে সমস্যা হয়েছে।",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "অপরিচিত ফাইল ফরম্যাট '{{file_type}}', তবে প্লেইন টেক্সট হিসেবে গ্রহণ করা হলো",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "পাসওয়ার্ড আপডেট করুন",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "ভার্সন",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "ওয়েব",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI এড-অনসমূহ",
 	"WebUI Settings": "WebUI সেটিংসমূহ",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "আপনি একজন উপকারী এসিস্ট্যান্ট",
 	"You're now logged in.": "আপনি এখন লগইন করা অবস্থায় আছেন",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }
