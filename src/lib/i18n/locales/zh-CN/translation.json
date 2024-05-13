@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "聊天记录存档",
 	"are allowed - Activate this command by typing": "允许 - 通过输入来激活这个命令",
 	"Are you sure?": "你确定吗？",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "音频",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "可用！",
 	"Back": "返回",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "构建模式",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "删除聊天",
 	"Delete Chat": "",
 	"Delete Chats": "删除聊天记录",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "已删除{{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "没有账户？",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "下载数据库",
 	"Drop any files here to add to the conversation": "拖动文件到此处以添加到对话中",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "例如 '30s','10m'。有效的时间单位是's', 'm', 'h'。",
@@ -175,10 +160,7 @@
 	"Edit Doc": "编辑文档",
 	"Edit User": "编辑用户",
 	"Email": "电子邮件",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "启用聊天历史",
@@ -186,28 +168,17 @@
 	"Enabled": "启用",
 	"Ensure your CSV file includes 4 columns in this order: Name, Email, Password, Role.": "",
 	"Enter {{role}} message here": "在此处输入 {{role}} 信息",
-<<<<<<< HEAD
-	"Enter Chunk Overlap": "输入块重叠(Chunk Overlap)",
-	"Enter Chunk Size": "输入块大小(Chunk Size)",
-	"Enter Image Size (e.g. 512x512)": "输入图片大小(例如 512x512)",
-=======
 	"Enter Chunk Overlap": "输入块重叠 (Chunk Overlap)",
 	"Enter Chunk Size": "输入块大小 (Chunk Size)",
 	"Enter Image Size (e.g. 512x512)": "输入图片大小 (例如 512x512)",
 	"Enter language codes": "",
->>>>>>> main
 	"Enter LiteLLM API Base URL (litellm_params.api_base)": "输入 LiteLLM API 基本 URL (litellm_params.api_base)",
 	"Enter LiteLLM API Key (litellm_params.api_key)": "输入 LiteLLM API 密匙 (litellm_params.api_key)",
 	"Enter LiteLLM API RPM (litellm_params.rpm)": "输入 LiteLLM API 速率限制 (litellm_params.rpm)",
 	"Enter LiteLLM Model (litellm_params.model)": "输入 LiteLLM 模型 (litellm_params.model)",
 	"Enter Max Tokens (litellm_params.max_tokens)": "输入模型的 Max Tokens (litellm_params.max_tokens)",
-<<<<<<< HEAD
-	"Enter model tag (e.g. {{modelTag}})": "输入模型标签(例如{{modelTag}})",
-	"Enter Number of Steps (e.g. 50)": "输入步数(例如50)",
-=======
 	"Enter model tag (e.g. {{modelTag}})": "输入模型标签 (例如{{modelTag}})",
 	"Enter Number of Steps (e.g. 50)": "输入步数 (例如 50)",
->>>>>>> main
 	"Enter Score": "",
 	"Enter stop sequence": "输入停止序列",
 	"Enter Top K": "输入 Top K",
@@ -225,10 +196,7 @@
 	"Export Prompts": "导出提示词",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "无法读取剪贴板内容",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "文件模式",
 	"File not found.": "文件未找到。",
@@ -283,13 +251,9 @@
 	"Manage Ollama Models": "管理 Ollama 模型",
 	"March": "",
 	"Max Tokens": "最大令牌数",
-<<<<<<< HEAD
-	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "最多可以同时下载3个模型，请稍后重试。",
-=======
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "最多可以同时下载 3 个模型，请稍后重试。",
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -320,21 +284,15 @@
 	"Name your modelfile": "命名你的模型文件",
 	"New Chat": "新聊天",
 	"New Password": "新密码",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "不确定要添加什么？",
 	"Not sure what to write? Switch to": "不确定写什么？切换到",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "桌面通知",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "关闭",
 	"Okay, Let's Go!": "好的，我们开始吧！",
 	"OLED Dark": "",
@@ -358,31 +316,20 @@
 	"OpenAI URL/Key required.": "",
 	"or": "或",
 	"Other": "",
-<<<<<<< HEAD
-	"Parameters": "参数",
-	"Password": "密码",
-	"PDF document (.pdf)": "",
-	"PDF Extract Images (OCR)": "PDF图像处理(使用OCR)",
-=======
 	"Overview": "",
 	"Parameters": "参数",
 	"Password": "密码",
 	"PDF document (.pdf)": "",
 	"PDF Extract Images (OCR)": "PDF 图像处理 (使用 OCR)",
->>>>>>> main
 	"pending": "待定",
 	"Permission denied when accessing microphone: {{error}}": "访问麦克风时权限被拒绝：{{error}}",
 	"Plain text (.txt)": "",
 	"Playground": "AI 对话游乐场",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "提示词内容",
 	"Prompt suggestions": "提示词建议",
@@ -400,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "发布说明",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "重复最后 N 次",
-	"Repeat Penalty": "重复惩罚",
-	"Request Mode": "请求模式",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "重复最后 N 次",
 	"Repeat Penalty": "重复惩罚",
 	"Request Mode": "请求模式",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "重置向量存储",
@@ -455,11 +396,7 @@
 	"Settings saved successfully!": "设置已保存",
 	"Share": "",
 	"Share Chat": "",
-<<<<<<< HEAD
-	"Share to OpenWebUI Community": "分享到OpenWebUI社区",
-=======
 	"Share to OpenWebUI Community": "分享到 OpenWebUI 社区",
->>>>>>> main
 	"short-summary": "简短总结",
 	"Show": "显示",
 	"Show Additional Params": "显示额外参数",
@@ -470,10 +407,7 @@
 	"Sign Out": "登出",
 	"Sign up": "注册",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "语音识别错误：{{error}}",
 	"Speech-to-Text Engine": "语音转文字引擎",
 	"SpeechRecognition API is not supported in this browser.": "此浏览器不支持 SpeechRecognition API。",
@@ -500,11 +434,7 @@
 	"This ensures that your valuable conversations are securely saved to your backend database. Thank you!": "这确保了您宝贵的对话被安全保存到后端数据库中。谢谢！",
 	"This setting does not sync across browsers or devices.": "此设置不会在浏览器或设备之间同步。",
 	"Thorough explanation": "",
-<<<<<<< HEAD
-	"Tip: Update multiple variable slots consecutively by pressing the tab key in the chat input after each replacement.": "提示：在每次替换后，在聊天输入中按Tab键可以连续更新多个变量。",
-=======
 	"Tip: Update multiple variable slots consecutively by pressing the tab key in the chat input after each replacement.": "提示：在每次替换后，在聊天输入中按 Tab 键可以连续更新多个变量。",
->>>>>>> main
 	"Title": "标题",
 	"Title (e.g. Tell me a fun fact)": "",
 	"Title Auto-Generation": "标题自动生成",
@@ -525,26 +455,13 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "哎呀！连接到{{provider}}时出现问题。",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "未知文件类型'{{file_type}}'，将视为纯文本进行处理",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-	"Update password": "更新密码",
-	"Update Reranking Model": "",
-	"Update reranking model (e.g. {{model}})": "",
-	"Upload a GGUF model": "上传一个GGUF模型",
-=======
 	"Update password": "更新密码",
 	"Upload a GGUF model": "上传一个 GGUF 模型",
->>>>>>> main
 	"Upload files": "上传文件",
 	"Upload Progress": "上传进度",
 	"URL Mode": "URL 模式",
 	"Use '#' in the prompt input to load and select your documents.": "在提示输入中使用'#'来加载和选择你的文档。",
-<<<<<<< HEAD
-	"Use Gravatar": "使用Gravatar",
-=======
 	"Use Gravatar": "使用 Gravatar",
->>>>>>> main
 	"Use Initials": "",
 	"user": "用户",
 	"User Permissions": "用户权限",
@@ -556,11 +473,8 @@
 	"Version": "版本",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "网页",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI 插件",
 	"WebUI Settings": "WebUI 设置",
@@ -576,10 +490,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "你是一个有帮助的助手。",
 	"You're now logged in.": "已登录。",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

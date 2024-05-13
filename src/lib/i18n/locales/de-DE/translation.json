@@ -1,3 +1,4 @@
+
 {
 	"'s', 'm', 'h', 'd', 'w' or '-1' for no expiration.": "'s', 'm', 'h', 'd', 'w' oder '-1' für kein Ablaufdatum.",
 	"(Beta)": "(Beta)",
@@ -14,22 +15,14 @@
 	"Add a model tag name": "Benenne deinen Modell-Tag",
 	"Add a short description about what this modelfile does": "Füge eine kurze Beschreibung hinzu, was dieses Modelfile kann",
 	"Add a short title for this prompt": "Füge einen kurzen Titel für diesen Prompt hinzu",
-<<<<<<< HEAD
-	"Add a tag": "Tag hinzufügen",
-=======
 	"Add a tag": "benenne",
 	"Add custom prompt": "Eigenen Prompt hinzufügen",
->>>>>>> main
 	"Add Docs": "Dokumente hinzufügen",
 	"Add Files": "Dateien hinzufügen",
 	"Add message": "Nachricht eingeben",
 	"Add Model": "Modell hinzufügen",
 	"Add Tags": "Tags hinzufügen",
-<<<<<<< HEAD
-	"Add User": "",
-=======
 	"Add User": "User hinzufügen",
->>>>>>> main
 	"Adjusting these settings will apply changes universally to all users.": "Das Anpassen dieser Einstellungen wirkt sich universell auf alle Benutzer aus.",
 	"admin": "Administrator",
 	"Admin Panel": "Admin Panel",
@@ -48,22 +41,14 @@
 	"API Base URL": "API Basis URL",
 	"API Key": "API Key",
 	"API Key created.": "API Key erstellt",
-<<<<<<< HEAD
-	"API keys": "",
-	"API RPM": "API RPM",
-=======
 	"API keys": "API Schlüssel",
 	"API RPM": "API RPM",
 	"April": "April",
->>>>>>> main
 	"Archive": "Archivieren",
 	"Archived Chats": "Archivierte Chats",
 	"are allowed - Activate this command by typing": "sind erlaubt - Aktiviere diesen Befehl, indem du",
 	"Are you sure?": "Bist du sicher?",
-<<<<<<< HEAD
-=======
 	"Attach file": "Datei anhängen",
->>>>>>> main
 	"Attention to detail": "Auge fürs Detail",
 	"Audio": "Audio",
 	"August": "August",
@@ -74,10 +59,7 @@
 	"available!": "verfügbar!",
 	"Back": "Zurück",
 	"Bad Response": "Schlechte Antwort",
-<<<<<<< HEAD
-=======
 	"before": "bereits geteilt",
->>>>>>> main
 	"Being lazy": "Faul sein",
 	"Builder Mode": "Builder Modus",
 	"Bypass SSL verification for Websites": "Bypass SSL-Verifizierung für Websites",
@@ -100,11 +82,7 @@
 	"Click here to": "Klicke hier, um",
 	"Click here to check other modelfiles.": "Klicke hier, um andere Modelfiles zu überprüfen.",
 	"Click here to select": "Klicke hier um auszuwählen",
-<<<<<<< HEAD
-	"Click here to select a csv file.": "",
-=======
 	"Click here to select a csv file.": "Klicke hier um eine CSV-Datei auszuwählen.",
->>>>>>> main
 	"Click here to select documents.": "Klicke hier um Dokumente auszuwählen",
 	"click here.": "hier klicken.",
 	"Click on the user role button to change a user's role.": "Klicke auf die Benutzerrollenschaltfläche, um die Rolle eines Benutzers zu ändern.",
@@ -124,11 +102,7 @@
 	"Copy": "Kopieren",
 	"Copy last code block": "Letzten Codeblock kopieren",
 	"Copy last response": "Letzte Antwort kopieren",
-<<<<<<< HEAD
-	"Copy Link": "kopiere Link",
-=======
 	"Copy Link": "Link kopieren",
->>>>>>> main
 	"Copying to clipboard was successful!": "Das Kopieren in die Zwischenablage war erfolgreich!",
 	"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "Erstelle einen prägnanten Satz mit 3-5 Wörtern als Überschrift für die folgende Abfrage. Halte dich dabei strikt an die 3-5-Wort-Grenze und vermeide die Verwendung des Wortes Titel:",
 	"Create a modelfile": "Modelfiles erstellen",
@@ -159,10 +133,7 @@
 	"Delete chat": "Chat löschen",
 	"Delete Chat": "Chat löschen",
 	"Delete Chats": "Chats löschen",
-<<<<<<< HEAD
-=======
 	"delete this link": "diesen Link zu löschen",
->>>>>>> main
 	"Delete User": "Benutzer löschen",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} gelöscht",
 	"Deleted {{tagName}}": "{{tagName}} gelöscht",
@@ -182,10 +153,7 @@
 	"Don't have an account?": "Hast du vielleicht noch kein Konto?",
 	"Don't like the style": "Dir gefällt der Style nicht",
 	"Download": "Herunterladen",
-<<<<<<< HEAD
-=======
 	"Download canceled": "Download abgebrochen",
->>>>>>> main
 	"Download Database": "Datenbank herunterladen",
 	"Drop any files here to add to the conversation": "Ziehe Dateien in diesen Bereich, um sie an den Chat anzuhängen",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "z.B. '30s','10m'. Gültige Zeiteinheiten sind 's', 'm', 'h'.",
@@ -193,14 +161,9 @@
 	"Edit Doc": "Dokument bearbeiten",
 	"Edit User": "Benutzer bearbeiten",
 	"Email": "E-Mail",
-<<<<<<< HEAD
-	"Embedding Model Engine": "",
-	"Embedding model set to \"{{embedding_model}}\"": "Das Embedding Modell wurde auf \"{{embedding_model}}\" gesetzt",
-=======
 	"Embedding Model": "",
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
->>>>>>> main
 	"Enable Chat History": "Chat-Verlauf aktivieren",
 	"Enable New Sign Ups": "Neue Anmeldungen aktivieren",
 	"Enabled": "Aktiviert",
@@ -209,10 +172,7 @@
 	"Enter Chunk Overlap": "Gib den Chunk Overlap ein",
 	"Enter Chunk Size": "Gib die Chunk Size ein",
 	"Enter Image Size (e.g. 512x512)": "Gib die Bildgröße ein (z.B. 512x512)",
-<<<<<<< HEAD
-=======
 	"Enter language codes": "",
->>>>>>> main
 	"Enter LiteLLM API Base URL (litellm_params.api_base)": "Gib die LiteLLM API BASE URL ein (litellm_params.api_base)",
 	"Enter LiteLLM API Key (litellm_params.api_key)": "Gib den LiteLLM API Key ein (litellm_params.api_key)",
 	"Enter LiteLLM API RPM (litellm_params.rpm)": "Gib die LiteLLM API RPM ein (litellm_params.rpm)",
@@ -220,16 +180,6 @@
 	"Enter Max Tokens (litellm_params.max_tokens)": "Gib die maximalen Token ein (litellm_params.max_tokens) an",
 	"Enter model tag (e.g. {{modelTag}})": "Gib den Model-Tag ein",
 	"Enter Number of Steps (e.g. 50)": "Gib die Anzahl an Schritten ein (z.B. 50)",
-<<<<<<< HEAD
-	"Enter Score": "",
-	"Enter stop sequence": "Stop-Sequenz eingeben",
-	"Enter Top K": "Gib Top K ein",
-	"Enter URL (e.g. http://127.0.0.1:7860/)": "Gib die URL ein (z.B. http://127.0.0.1:7860/)",
-	"Enter Your Email": "Gib deine E-Mail-Adresse ein",
-	"Enter Your Full Name": "Gib deinen vollständigen Namen ein",
-	"Enter Your Password": "Gib dein Passwort ein",
-	"Enter Your Role": "",
-=======
 	"Enter Score": "Score eingeben",
 	"Enter stop sequence": "Stop-Sequenz eingeben",
 	"Enter Top K": "Gib Top K ein",
@@ -239,7 +189,6 @@
 	"Enter Your Full Name": "Gib deinen vollständigen Namen ein",
 	"Enter Your Password": "Gib dein Passwort ein",
 	"Enter Your Role": "Gebe deine Rolle ein",
->>>>>>> main
 	"Experimental": "Experimentell",
 	"Export All Chats (All Users)": "Alle Chats exportieren (alle Benutzer)",
 	"Export Chats": "Chats exportieren",
@@ -248,10 +197,7 @@
 	"Export Prompts": "Prompts exportieren",
 	"Failed to create API Key.": "API Key erstellen fehlgeschlagen",
 	"Failed to read clipboard contents": "Fehler beim Lesen des Zwischenablageninhalts",
-<<<<<<< HEAD
-=======
 	"February": "Februar",
->>>>>>> main
 	"Feel free to add specific details": "Ergänze Details.",
 	"File Mode": "File Modus",
 	"File not found.": "Datei nicht gefunden.",
@@ -271,11 +217,7 @@
 	"Help": "Hilfe",
 	"Hide": "Verbergen",
 	"Hide Additional Params": "Verstecke zusätzliche Parameter",
-<<<<<<< HEAD
-	"How can I help you today?": "Wie kann ich Dir heute helfen?",
-=======
 	"How can I help you today?": "Wie kann ich dir heute helfen?",
->>>>>>> main
 	"Hybrid Search": "Hybride Suche",
 	"Image Generation (Experimental)": "Bildgenerierung (experimentell)",
 	"Image Generation Engine": "Bildgenerierungs-Engine",
@@ -311,13 +253,9 @@
 	"March": "März",
 	"Max Tokens": "Maximale Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Es können maximal 3 Modelle gleichzeitig heruntergeladen werden. Bitte versuche es später erneut.",
-<<<<<<< HEAD
-	"Minimum Score": "",
-=======
 	"May": "Mai",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "Fortlaudende Nachrichten in diesem Chat werden nicht automatisch geteilt. Benutzer mit dem Link können den Chat einsehen.",
 	"Minimum Score": "Mindestscore",
->>>>>>> main
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
 	"Mirostat Tau": "Mirostat Tau",
@@ -347,17 +285,6 @@
 	"Name your modelfile": "Benenne dein modelfile",
 	"New Chat": "Neuer Chat",
 	"New Password": "Neues Passwort",
-<<<<<<< HEAD
-	"Not factually correct": "Nicht sachlich korrekt.",
-	"Not sure what to add?": "Nicht sicher, was hinzugefügt werden soll?",
-	"Not sure what to write? Switch to": "Nicht sicher, was Du schreiben sollst? Wechsel zu",
-	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
-	"Notifications": "Desktop-Benachrichtigungen",
-	"Off": "Aus",
-	"Okay, Let's Go!": "Okay, los geht's!",
-	"OLED Dark": "",
-	"Ollama": "",
-=======
 	"No results found": "Keine Ergebnisse gefunden",
 	"No source available": "",
 	"Not factually correct": "Nicht sachlich korrekt.",
@@ -371,7 +298,6 @@
 	"Okay, Let's Go!": "Okay, los geht's!",
 	"OLED Dark": "OLED Dunkel",
 	"Ollama": "Ollama",
->>>>>>> main
 	"Ollama Base URL": "Ollama Basis URL",
 	"Ollama Version": "Ollama-Version",
 	"On": "Ein",
@@ -379,30 +305,19 @@
 	"Only alphanumeric characters and hyphens are allowed in the command string.": "Nur alphanumerische Zeichen und Bindestriche sind im Befehlsstring erlaubt.",
 	"Oops! Hold tight! Your files are still in the processing oven. We're cooking them up to perfection. Please be patient and we'll let you know once they're ready.": "Hoppla! Warte noch einen Moment! Die Dateien sind noch im der Verarbeitung. Bitte habe etwas Geduld und wir informieren Dich, sobald sie bereit sind.",
 	"Oops! Looks like the URL is invalid. Please double-check and try again.": "Hoppla! Es sieht so aus, als wäre die URL ungültig. Bitte überprüfe sie und versuche es nochmal.",
-<<<<<<< HEAD
-	"Oops! You're using an unsupported method (frontend only). Please serve the WebUI from the backend.": "Hoppla! Du verwendest eine nicht unterstützte Methode (nur Frontend). Bitte stelle die WebUI vom Backend aus bereit.",
-=======
 	"Oops! You're using an unsupported method (frontend only). Please serve the WebUI from the backend.": "Hoppla! du verwendest eine nicht unterstützte Methode (nur Frontend). Bitte stelle die WebUI vom Backend aus bereit.",
->>>>>>> main
 	"Open": "Öffne",
 	"Open AI": "Open AI",
 	"Open AI (Dall-E)": "Open AI (Dall-E)",
 	"Open new chat": "Neuen Chat öffnen",
-<<<<<<< HEAD
-	"OpenAI": "",
-=======
 	"OpenAI": "OpenAI",
->>>>>>> main
 	"OpenAI API": "OpenAI-API",
 	"OpenAI API Config": "OpenAI API Konfiguration",
 	"OpenAI API Key is required.": "OpenAI API Key erforderlich.",
 	"OpenAI URL/Key required.": "OpenAI URL/Key erforderlich.",
 	"or": "oder",
 	"Other": "Andere",
-<<<<<<< HEAD
-=======
 	"Overview": "Übersicht",
->>>>>>> main
 	"Parameters": "Parameter",
 	"Password": "Passwort",
 	"PDF document (.pdf)": "PDF-Dokument (.pdf)",
@@ -410,18 +325,12 @@
 	"pending": "ausstehend",
 	"Permission denied when accessing microphone: {{error}}": "Zugriff auf das Mikrofon verweigert: {{error}}",
 	"Plain text (.txt)": "Nur Text (.txt)",
-<<<<<<< HEAD
-	"Playground": "Spielplatz",
-	"Positive attitude": "Positive Einstellung",
-	"Profile Image": "Profilbild",
-=======
 	"Playground": "Testumgebung",
 	"Positive attitude": "Positive Einstellung",
 	"Previous 30 days": "Vorherige 30 Tage",
 	"Previous 7 days": "Vorherige 7 Tage",
 	"Profile Image": "Profilbild",
 	"Prompt": "Prompt",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "Prompt (z.B. Erzähle mir eine interessante Tatsache über das Römische Reich.",
 	"Prompt Content": "Prompt-Inhalt",
 	"Prompt suggestions": "Prompt-Vorschläge",
@@ -439,12 +348,6 @@
 	"Regenerate": "Neu generieren",
 	"Release Notes": "Versionshinweise",
 	"Remove": "Entfernen",
-<<<<<<< HEAD
-	"Repeat Last N": "Repeat Last N",
-	"Repeat Penalty": "Repeat Penalty",
-	"Request Mode": "Request-Modus",
-	"Reranking model disabled": "",
-=======
 	"Remove Model": "Modell entfernen",
 	"Rename": "Umbenennen",
 	"Repeat Last N": "Repeat Last N",
@@ -452,7 +355,6 @@
 	"Request Mode": "Request-Modus",
 	"Reranking Model": "Reranking Modell",
 	"Reranking model disabled": "Rranking Modell deaktiviert",
->>>>>>> main
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Vektorspeicher zurücksetzen",
 	"Response AutoCopy to Clipboard": "Antwort automatisch in die Zwischenablage kopieren",
@@ -463,20 +365,12 @@
 	"Save & Create": "Speichern und erstellen",
 	"Save & Submit": "Speichern und senden",
 	"Save & Update": "Speichern und aktualisieren",
-<<<<<<< HEAD
-	"Saving chat logs directly to your browser's storage is no longer supported. Please take a moment to download and delete your chat logs by clicking the button below. Don't worry, you can easily re-import your chat logs to the backend through": "Das direkte Speichern von Chat-Protokollen im Browser-Speicher wird nicht mehr unterstützt. Bitte nimm Dir einen Moment Zeit, um deine Chat-Protokolle herunterzuladen und zu löschen, indem Du auf die Schaltfläche unten klickst. Keine Sorge, Du kannst deine Chat-Protokolle problemlos über das Backend wieder importieren.",
-=======
 	"Saving chat logs directly to your browser's storage is no longer supported. Please take a moment to download and delete your chat logs by clicking the button below. Don't worry, you can easily re-import your chat logs to the backend through": "Das direkte Speichern von Chat-Protokollen im Browser-Speicher wird nicht mehr unterstützt. Bitte nimm dir einen Moment Zeit, um deine Chat-Protokolle herunterzuladen und zu löschen, indem du auf die Schaltfläche unten klickst. Keine Sorge, du kannst deine Chat-Protokolle problemlos über das Backend wieder importieren.",
->>>>>>> main
 	"Scan": "Scannen",
 	"Scan complete!": "Scan abgeschlossen!",
 	"Scan for documents from {{path}}": "Dokumente von {{path}} scannen",
 	"Search": "Suchen",
-<<<<<<< HEAD
-	"Search a model": "Ein Modell suchen",
-=======
 	"Search a model": "Nach einem Modell suchen",
->>>>>>> main
 	"Search Documents": "Dokumente suchen",
 	"Search Prompts": "Prompts suchen",
 	"See readme.md for instructions": "Anleitung in readme.md anzeigen",
@@ -485,10 +379,7 @@
 	"Select a mode": "Einen Modus auswählen",
 	"Select a model": "Ein Modell auswählen",
 	"Select an Ollama instance": "Eine Ollama Instanz auswählen",
-<<<<<<< HEAD
-=======
 	"Select model": "",
->>>>>>> main
 	"Send a Message": "Eine Nachricht senden",
 	"Send message": "Nachricht senden",
 	"September": "September",
@@ -517,10 +408,7 @@
 	"Sign Out": "Abmelden",
 	"Sign up": "Registrieren",
 	"Signing in": "Anmeldung",
-<<<<<<< HEAD
-=======
 	"Source": "Quellen",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Spracherkennungsfehler: {{error}}",
 	"Speech-to-Text Engine": "Sprache-zu-Text-Engine",
 	"SpeechRecognition API is not supported in this browser.": "Die Spracherkennungs-API wird in diesem Browser nicht unterstützt.",
@@ -542,11 +430,7 @@
 	"Text-to-Speech Engine": "Text-zu-Sprache-Engine",
 	"Tfs Z": "Tfs Z",
 	"Thanks for your feedback!": "Danke für dein Feedback",
-<<<<<<< HEAD
-	"The score should be a value between 0.0 (0%) and 1.0 (100%).": "",
-=======
 	"The score should be a value between 0.0 (0%) and 1.0 (100%).": "Der Score sollte ein Wert zwischen 0,0 (0 %) und 1,0 (100 %) sein.",
->>>>>>> main
 	"Theme": "Design",
 	"This ensures that your valuable conversations are securely saved to your backend database. Thank you!": "Dadurch werden deine wertvollen Unterhaltungen sicher in der Backend-Datenbank gespeichert. Vielen Dank!",
 	"This setting does not sync across browsers or devices.": "Diese Einstellung wird nicht zwischen Browsern oder Geräten synchronisiert.",
@@ -572,27 +456,14 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Ups! Es gab ein Problem bei der Verbindung mit {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Unbekannter Dateityp '{{file_type}}', wird jedoch akzeptiert und als einfacher Text behandelt.",
 	"Update and Copy Link": "Erneuern und kopieren",
-<<<<<<< HEAD
-	"Update Embedding Model": "Embedding Modell aktualisieren",
-	"Update embedding model (e.g. {{model}})": "Embedding Modell aktualisieren (z.B. {{model}})",
 	"Update password": "Passwort aktualisieren",
-	"Update Reranking Model": "Reranking Model aktualisieren",
-	"Update reranking model (e.g. {{model}})": "Reranking Model aktualisieren (z.B. {{model}})",
-=======
-	"Update password": "Passwort aktualisieren",
->>>>>>> main
 	"Upload a GGUF model": "GGUF Model hochladen",
 	"Upload files": "Dateien hochladen",
 	"Upload Progress": "Upload Progress",
 	"URL Mode": "URL Modus",
 	"Use '#' in the prompt input to load and select your documents.": "Verwende '#' in der Prompt-Eingabe, um deine Dokumente zu laden und auszuwählen.",
-<<<<<<< HEAD
-	"Use Gravatar": "verwende Gravatar ",
-	"Use Initials": "verwende Initialen",
-=======
 	"Use Gravatar": "Gravatar verwenden",
 	"Use Initials": "Initialen verwenden",
->>>>>>> main
 	"user": "Benutzer",
 	"User Permissions": "Benutzerberechtigungen",
 	"Users": "Benutzer",
@@ -603,13 +474,9 @@
 	"Version": "Version",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "Warnung: Wenn du dein Einbettungsmodell aktualisierst oder änderst, musst du alle Dokumente erneut importieren.",
 	"Web": "Web",
-<<<<<<< HEAD
-	"Webhook URL": "",
-=======
 	"Web Loader Settings": "",
 	"Web Params": "Web Parameter",
 	"Webhook URL": "Webhook URL",
->>>>>>> main
 	"WebUI Add-ons": "WebUI-Add-Ons",
 	"WebUI Settings": "WebUI-Einstellungen",
 	"WebUI will make requests to": "Wenn aktiviert sendet WebUI externe Anfragen an",
@@ -624,10 +491,6 @@
 	"You have shared this chat": "Du hast diesen Chat",
 	"You're a helpful assistant.": "Du bist ein hilfreicher Assistent.",
 	"You're now logged in.": "Du bist nun eingeloggt.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "YouTube",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

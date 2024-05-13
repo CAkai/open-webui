@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "",
 	"are allowed - Activate this command by typing": "са разрешени - Активирайте тази команда чрез въвеждане",
 	"Are you sure?": "Сигурни ли сте?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Аудио",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "наличен!",
 	"Back": "Назад",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Режим на Създаване",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Изтриване на чат",
 	"Delete Chat": "",
 	"Delete Chats": "Изтриване на Чатове",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "Изтрито {{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "Нямате акаунт?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Сваляне на база данни",
 	"Drop any files here to add to the conversation": "Пускане на файлове тук, за да ги добавите в чата",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "напр. '30с','10м'. Валидни единици са 'с', 'м', 'ч'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Редактиране на документ",
 	"Edit User": "Редактиране на потребител",
 	"Email": "Имейл",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Вклюване на Чат История",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Експортване на промптове",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Грешка при четене на съдържанието от клипборда",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Файл Мод",
 	"File not found.": "Файл не е намерен.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Max Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Максимум 3 модели могат да бъдат сваляни едновременно. Моля, опитайте отново по-късно.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Име на модфайла",
 	"New Chat": "Нов чат",
 	"New Password": "Нова парола",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "Не сте сигурни, какво да добавите?",
 	"Not sure what to write? Switch to": "Не сте сигурни, какво да напишете? Превключете към",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Десктоп Известия",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Изкл.",
 	"Okay, Let's Go!": "ОК, Нека започваме!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "или",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Параметри",
 	"Password": "Парола",
 	"PDF document (.pdf)": "",
@@ -358,17 +325,12 @@
 	"Permission denied when accessing microphone: {{error}}": "Permission denied when accessing microphone: {{error}}",
 	"Plain text (.txt)": "",
 	"Playground": "Плейграунд",
-<<<<<<< HEAD
-	"Archived Chats": "Архив истории чата",
-	"Profile": "Профил",
-=======
 	"Positive attitude": "",
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
->>>>>>> main
 	"Prompt Content": "Съдържание на промпта",
 	"Prompt suggestions": "Промпт предложения",
 	"Prompts": "Промптове",
@@ -385,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Бележки по изданието",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Repeat Last N",
-	"Repeat Penalty": "Repeat Penalty",
-	"Request Mode": "Request Mode",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Repeat Last N",
 	"Repeat Penalty": "Repeat Penalty",
 	"Request Mode": "Request Mode",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Ресет Vector Storage",
@@ -451,10 +407,7 @@
 	"Sign Out": "Изход",
 	"Sign up": "Регистрация",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Speech recognition error: {{error}}",
 	"Speech-to-Text Engine": "Speech-to-Text Engine",
 	"SpeechRecognition API is not supported in this browser.": "SpeechRecognition API is not supported in this browser.",
@@ -502,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "О, не! Възникна проблем при свързването с {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Непознат файлов тип '{{file_type}}', но се приема и обработва като текст",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Обновяване на парола",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -527,11 +475,8 @@
 	"Version": "Версия",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Уеб",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI Добавки",
 	"WebUI Settings": "WebUI Настройки",
@@ -547,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Вие сте полезен асистент.",
 	"You're now logged in.": "Сега, вие влязохте в системата.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

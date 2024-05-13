@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "RPM de l'API",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "Arxiu d'historial de xat",
 	"are allowed - Activate this command by typing": "estan permesos - Activa aquesta comanda escrivint",
 	"Are you sure?": "Estàs segur?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Àudio",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "disponible!",
 	"Back": "Enrere",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Mode Constructor",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Esborra xat",
 	"Delete Chat": "",
 	"Delete Chats": "Esborra Xats",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "Esborrat {{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "No tens un compte?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Descarrega Base de Dades",
 	"Drop any files here to add to the conversation": "Deixa qualsevol arxiu aquí per afegir-lo a la conversa",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "p. ex. '30s','10m'. Les unitats de temps vàlides són 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Edita Document",
 	"Edit User": "Edita Usuari",
 	"Email": "Correu electrònic",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Activa Historial de Xat",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Exporta Prompts",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "No s'ha pogut llegir el contingut del porta-retalls",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Mode Arxiu",
 	"File not found.": "Arxiu no trobat.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Màxim de Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Es poden descarregar un màxim de 3 models simultàniament. Si us plau, prova-ho més tard.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Eta de Mirostat",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Nomena el teu fitxer de model",
 	"New Chat": "Xat Nou",
 	"New Password": "Nova Contrasenya",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "No estàs segur del que afegir?",
 	"Not sure what to write? Switch to": "No estàs segur del que escriure? Canvia a",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Notificacions d'Escriptori",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Desactivat",
 	"Okay, Let's Go!": "D'acord, Anem!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "o",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Paràmetres",
 	"Password": "Contrasenya",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Zona de Jocs",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Contingut del Prompt",
 	"Prompt suggestions": "Suggeriments de Prompt",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Notes de la Versió",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Repeteix Últim N",
-	"Repeat Penalty": "Penalització de Repetició",
-	"Request Mode": "Mode de Sol·licitud",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Repeteix Últim N",
 	"Repeat Penalty": "Penalització de Repetició",
 	"Request Mode": "Mode de Sol·licitud",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Reinicia l'Emmagatzematge de Vectors",
@@ -450,10 +407,7 @@
 	"Sign Out": "Tanca sessió",
 	"Sign up": "Registra't",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Error de reconeixement de veu: {{error}}",
 	"Speech-to-Text Engine": "Motor de Veu a Text",
 	"SpeechRecognition API is not supported in this browser.": "L'API de Reconèixer Veu no és compatible amb aquest navegador.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Uf! Hi va haver un problema connectant-se a {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Tipus d'Arxiu Desconegut '{{file_type}}', però acceptant i tractant com a text pla",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Actualitza contrasenya",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Versió",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Web",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "Complements de WebUI",
 	"WebUI Settings": "Configuració de WebUI",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Ets un assistent útil.",
 	"You're now logged in.": "Ara estàs connectat.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

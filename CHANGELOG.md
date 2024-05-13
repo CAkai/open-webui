@@ -5,57 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-=======
-## [0.1.124] - 2024-05-08
-
-### Added
-
-- **🖼️ Improved Chat Sidebar**: Now conveniently displays time ranges and organizes chats by today, yesterday, and more.
-- **📜 Citations in RAG Feature**: Easily track the context fed to the LLM with added citations in the RAG feature.
-- **🔒 Auth Disable Option**: Introducing the ability to disable authentication. Set 'WEBUI_AUTH' to False to disable authentication. Note: Only applicable for fresh installations without existing users.
-- **📹 Enhanced YouTube RAG Pipeline**: Now supports non-English videos for an enriched experience.
-- **🔊 Specify OpenAI TTS Models**: Customize your TTS experience by specifying OpenAI TTS models.
-- **🔧 Additional Environment Variables**: Discover more environment variables in our comprehensive documentation at Open WebUI Documentation (https://docs.openwebui.com).
-- **🌐 Language Support**: Arabic, Finnish, and Hindi added; Improved support for German, Vietnamese, and Chinese.
-
-### Fixed
-
-- **🛠️ Model Selector Styling**: Addressed styling issues for improved user experience.
-- **⚠️ Warning Messages**: Resolved backend warning messages.
-
-### Changed
-
-- **📝 Title Generation**: Limited output to 50 tokens.
-- **📦 Helm Charts**: Removed Helm charts, now available in a separate repository (https://github.com/open-webui/helm-charts).
-
->>>>>>> main
-## [0.1.123] - 2024-05-02
-
-### Added
-
-- **🎨 New Landing Page Design**: Refreshed design for a more modern look and optimized use of screen space.
-- **📹 Youtube RAG Pipeline**: Introduces dedicated RAG pipeline for Youtube videos, enabling interaction with video transcriptions directly.
-- **🔧 Enhanced Admin Panel**: Streamlined user management with options to add users directly or in bulk via CSV import.
-- **👥 '@' Model Integration**: Easily switch to specific models during conversations; old collaborative chat feature phased out.
-- **🌐 Language Enhancements**: Swedish translation added, plus improvements to German, Spanish, and the addition of Doge translation.
-
-### Fixed
-
-- **🗑️ Delete Chat Shortcut**: Addressed issue where shortcut wasn't functioning.
-- **🖼️ Modal Closing Bug**: Resolved unexpected closure of modal when dragging from within.
-- **✏️ Edit Button Styling**: Fixed styling inconsistency with edit buttons.
-- **🌐 Image Generation Compatibility Issue**: Rectified image generation compatibility issue with third-party APIs.
-- **📱 iOS PWA Icon Fix**: Corrected iOS PWA home screen icon shape.
-- **🔍 Scroll Gesture Bug**: Adjusted gesture sensitivity to prevent accidental activation when scrolling through code on mobile; now requires scrolling from the leftmost side to open the sidebar.
-
-### Changed
-
-- **🔄 Unlimited Context Length**: Advanced settings now allow unlimited max context length (previously limited to 16000).
-- **👑 Super Admin Assignment**: The first signup is automatically assigned a super admin role, unchangeable by other admins.
-- **🛡️ Admin User Restrictions**: User action buttons from the admin panel are now disabled for users with admin roles.
-- **🔝 Default Model Selector**: Set as default model option now exclusively available on the landing page.
-
 ## [0.1.122] - 2024-04-27
 
 ### Added

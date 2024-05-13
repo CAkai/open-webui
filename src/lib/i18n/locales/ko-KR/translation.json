@@ -1,3 +1,4 @@
+
 {
 	"'s', 'm', 'h', 'd', 'w' or '-1' for no expiration.": "'s', 'm', 'h', 'd', 'w' 또는 만료 없음 '-1'",
 	"(Beta)": "(Beta)",
@@ -42,18 +43,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "채팅 기록 아카이브",
 	"are allowed - Activate this command by typing": "허용됩니다 - 이 명령을 활성화하려면 입력하세요.",
 	"Are you sure?": "확실합니까?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "오디오",
 	"August": "",
@@ -64,10 +59,7 @@
 	"available!": "사용 가능!",
 	"Back": "뒤로가기",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "빌더 모드",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +133,7 @@
 	"Delete chat": "채팅 삭제",
 	"Delete Chat": "",
 	"Delete Chats": "채팅들 삭제",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} 삭제됨",
 	"Deleted {{tagName}}": "",
@@ -164,10 +153,7 @@
 	"Don't have an account?": "계정이 없으신가요?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "데이터베이스 다운로드",
 	"Drop any files here to add to the conversation": "대화에 추가할 파일을 여기에 드롭하세요.",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "예: '30s','10m'. 유효한 시간 단위는 's', 'm', 'h'입니다.",
@@ -175,10 +161,7 @@
 	"Edit Doc": "문서 편집",
 	"Edit User": "사용자 편집",
 	"Email": "이메일",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "채팅 기록 활성화",
@@ -214,10 +197,7 @@
 	"Export Prompts": "프롬프트 내보내기",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "클립보드 내용을 읽는 데 실패했습니다.",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "파일 모드",
 	"File not found.": "파일을 찾을 수 없습니다.",
@@ -248,10 +228,7 @@
 	"Import Modelfiles": "모델파일 가져오기",
 	"Import Prompts": "프롬프트 가져오기",
 	"Include `--api` flag when running stable-diffusion-webui": "",
-<<<<<<< HEAD
-=======
 	"Input commands": "",
->>>>>>> main
 	"Interface": "인터페이스",
 	"Invalid Tag": "",
 	"January": "",
@@ -276,11 +253,8 @@
 	"March": "",
 	"Max Tokens": "최대 토큰 수",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "최대 3개의 모델을 동시에 다운로드할 수 있습니다. 나중에 다시 시도하세요.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -311,21 +285,15 @@
 	"Name your modelfile": "모델파일 이름 지정",
 	"New Chat": "새 채팅",
 	"New Password": "새 비밀번호",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "추가할 것이 궁금하세요?",
 	"Not sure what to write? Switch to": "무엇을 쓸지 모르겠나요? 전환하세요.",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "알림",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "끄기",
 	"Okay, Let's Go!": "그렇습니다, 시작합시다!",
 	"OLED Dark": "",
@@ -349,10 +317,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "또는",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "매개변수",
 	"Password": "비밀번호",
 	"PDF document (.pdf)": "",
@@ -362,14 +327,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "놀이터",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "프롬프트 내용",
 	"Prompt suggestions": "프롬프트 제안",
@@ -387,18 +348,12 @@
 	"Regenerate": "",
 	"Release Notes": "릴리스 노트",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "마지막 N 반복",
-	"Repeat Penalty": "반복 패널티",
-	"Request Mode": "요청 모드",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "마지막 N 반복",
 	"Repeat Penalty": "반복 패널티",
 	"Request Mode": "요청 모드",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "벡터 스토리지 초기화",
@@ -453,10 +408,7 @@
 	"Sign Out": "로그아웃",
 	"Sign up": "가입",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "음성 인식 오류: {{error}}",
 	"Speech-to-Text Engine": "음성-텍스트 엔진",
 	"SpeechRecognition API is not supported in this browser.": "이 브라우저에서는 SpeechRecognition API를 지원하지 않습니다.",
@@ -504,11 +456,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "앗! {{provider}}에 연결하는 데 문제가 있었습니다.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "알 수 없는 파일 유형 '{{file_type}}', 하지만 일반 텍스트로 허용하고 처리합니다.",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "비밀번호 업데이트",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -529,11 +476,8 @@
 	"Version": "버전",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "웹",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI 애드온",
 	"WebUI Settings": "WebUI 설정",
@@ -549,10 +493,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "당신은 유용한 어시스턴트입니다.",
 	"You're now logged in.": "로그인되었습니다.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "チャット記録",
 	"are allowed - Activate this command by typing": "が許可されています - 次のように入力してこのコマンドをアクティブ化します",
 	"Are you sure?": "よろしいですか？",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "オーディオ",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "利用可能！",
 	"Back": "戻る",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "ビルダーモード",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "チャットを削除",
 	"Delete Chat": "",
 	"Delete Chats": "チャットを削除",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} を削除しました",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "アカウントをお持ちではありませんか？",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "データベースをダウンロード",
 	"Drop any files here to add to the conversation": "会話を追加するには、ここにファイルをドロップしてください",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "例: '30秒'、'10分'。有効な時間単位は '秒'、'分'、'時間' です。",
@@ -175,10 +160,7 @@
 	"Edit Doc": "ドキュメントを編集",
 	"Edit User": "ユーザーを編集",
 	"Email": "メールアドレス",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "チャット履歴を有効化",
@@ -214,10 +196,7 @@
 	"Export Prompts": "プロンプトをエクスポート",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "クリップボードの内容を読み取れませんでした",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "ファイルモード",
 	"File not found.": "ファイルが見つかりません。",
@@ -248,10 +227,7 @@
 	"Import Modelfiles": "モデルファイルをインポート",
 	"Import Prompts": "プロンプトをインポート",
 	"Include `--api` flag when running stable-diffusion-webui": "",
-<<<<<<< HEAD
-=======
 	"Input commands": "",
->>>>>>> main
 	"Interface": "インターフェース",
 	"Invalid Tag": "",
 	"January": "",
@@ -276,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "最大トークン数",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "同時にダウンロードできるモデルは最大 3 つです。後でもう一度お試しください。",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "ミロスタット",
 	"Mirostat Eta": "ミロスタット Eta",
@@ -311,21 +284,15 @@
 	"Name your modelfile": "モデルファイルに名前を付ける",
 	"New Chat": "新しいチャット",
 	"New Password": "新しいパスワード",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "何を追加すればよいかわからない？",
 	"Not sure what to write? Switch to": "何を書けばよいかわからない？ 次に切り替える",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "デスクトップ通知",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "オフ",
 	"Okay, Let's Go!": "OK、始めましょう！",
 	"OLED Dark": "",
@@ -349,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "または",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "パラメーター",
 	"Password": "パスワード",
 	"PDF document (.pdf)": "",
@@ -362,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "プレイグラウンド",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "プロンプトの内容",
 	"Prompt suggestions": "プロンプトの提案",
@@ -387,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "リリースノート",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "最後の N を繰り返す",
-	"Repeat Penalty": "繰り返しペナルティ",
-	"Request Mode": "リクエストモード",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "最後の N を繰り返す",
 	"Repeat Penalty": "繰り返しペナルティ",
 	"Request Mode": "リクエストモード",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "ベクトルストレージをリセット",
@@ -453,10 +407,7 @@
 	"Sign Out": "サインアウト",
 	"Sign up": "サインアップ",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "音声認識エラー: {{error}}",
 	"Speech-to-Text Engine": "音声テキスト変換エンジン",
 	"SpeechRecognition API is not supported in this browser.": "このブラウザでは SpeechRecognition API がサポートされていません。",
@@ -504,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "おっと！ {{provider}} への接続に問題が発生しました。",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "不明なファイルタイプ '{{file_type}}' ですが、プレーンテキストとして受け入れて処理します",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "パスワードを更新",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -529,11 +475,8 @@
 	"Version": "バージョン",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "ウェブ",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI アドオン",
 	"WebUI Settings": "WebUI 設定",
@@ -549,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "あなたは役に立つアシスタントです。",
 	"You're now logged in.": "ログインしました。",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

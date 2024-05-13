@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "chatrecord",
 	"are allowed - Activate this command by typing": "zijn toegestaan - Activeer deze commando door te typen",
 	"Are you sure?": "Zeker weten?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Audio",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "beschikbaar!",
 	"Back": "Terug",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Bouwer Modus",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Verwijder chat",
 	"Delete Chat": "",
 	"Delete Chats": "Verwijder Chats",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} is verwijderd",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "Heb je geen account?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Download Database",
 	"Drop any files here to add to the conversation": "Sleep bestanden hier om toe te voegen aan het gesprek",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "bijv. '30s', '10m'. Geldige tijdseenheden zijn 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Wijzig Doc",
 	"Edit User": "Wijzig Gebruiker",
 	"Email": "Email",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Schakel Chat Geschiedenis in",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Exporteer Prompts",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Kan klembord inhoud niet lezen",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Bestandsmodus",
 	"File not found.": "Bestand niet gevonden.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Max Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Maximaal 3 modellen kunnen tegelijkertijd worden gedownload. Probeer het later opnieuw.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Benoem je modelfile",
 	"New Chat": "Nieuwe Chat",
 	"New Password": "Nieuw Wachtwoord",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "Niet zeker wat toe te voegen?",
 	"Not sure what to write? Switch to": "Niet zeker wat te schrijven? Schakel over naar",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Desktop Notificaties",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Uit",
 	"Okay, Let's Go!": "Okay, Laten we gaan!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "of",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Parameters",
 	"Password": "Wachtwoord",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Speeltuin",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Prompt Inhoud",
 	"Prompt suggestions": "Prompt suggesties",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Release Notes",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Herhaal Laatste N",
-	"Repeat Penalty": "Herhaal Straf",
-	"Request Mode": "Request Modus",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Herhaal Laatste N",
 	"Repeat Penalty": "Herhaal Straf",
 	"Request Mode": "Request Modus",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Reset Vector Opslag",
@@ -450,10 +407,7 @@
 	"Sign Out": "Uitloggen",
 	"Sign up": "Registreren",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Spraakherkenning fout: {{error}}",
 	"Speech-to-Text Engine": "Spraak-naar-tekst Engine",
 	"SpeechRecognition API is not supported in this browser.": "SpeechRecognition API wordt niet ondersteund in deze browser.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Uh-oh! Er was een probleem met verbinden met {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Onbekend Bestandstype '{{file_type}}', maar accepteren en behandelen als platte tekst",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Wijzig wachtwoord",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Versie",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Web",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI Add-ons",
 	"WebUI Settings": "WebUI Instellingen",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Jij bent een behulpzame assistent.",
 	"You're now logged in.": "Je bent nu ingelogd.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

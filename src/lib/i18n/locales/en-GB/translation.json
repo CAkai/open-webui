@@ -15,10 +15,7 @@
 	"Add a short description about what this modelfile does": "",
 	"Add a short title for this prompt": "",
 	"Add a tag": "",
-<<<<<<< HEAD
-=======
 	"Add custom prompt": "",
->>>>>>> main
 	"Add Docs": "",
 	"Add Files": "",
 	"Add message": "",
@@ -31,10 +28,7 @@
 	"Admin Settings": "",
 	"Advanced Parameters": "",
 	"all": "",
-<<<<<<< HEAD
-=======
 	"All Documents": "",
->>>>>>> main
 	"All Users": "",
 	"Allow": "",
 	"Allow Chat Deletion": "",
@@ -42,32 +36,21 @@
 	"Already have an account?": "",
 	"an assistant": "",
 	"and": "",
-<<<<<<< HEAD
-=======
 	"and create a new shared link.": "",
->>>>>>> main
 	"API Base URL": "",
 	"API Key": "",
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "",
 	"are allowed - Activate this command by typing": "",
 	"Are you sure?": "",
-<<<<<<< HEAD
-	"Attention to detail": "",
-	"Audio": "",
-=======
 	"Attach file": "",
 	"Attention to detail": "",
 	"Audio": "",
 	"August": "",
->>>>>>> main
 	"Auto-playback response": "",
 	"Auto-send input after 3 sec.": "",
 	"AUTOMATIC1111 Base URL": "",
@@ -75,15 +58,10 @@
 	"available!": "",
 	"Back": "",
 	"Bad Response": "",
-<<<<<<< HEAD
-	"Being lazy": "",
-	"Builder Mode": "",
-=======
 	"before": "",
 	"Being lazy": "",
 	"Builder Mode": "",
 	"Bypass SSL verification for Websites": "",
->>>>>>> main
 	"Cancel": "",
 	"Categories": "",
 	"Change Password": "",
@@ -98,13 +76,9 @@
 	"Chunk Overlap": "",
 	"Chunk Params": "",
 	"Chunk Size": "",
-<<<<<<< HEAD
-	"Click here for help.": "",
-=======
 	"Citation": "",
 	"Click here for help.": "",
 	"Click here to": "",
->>>>>>> main
 	"Click here to check other modelfiles.": "",
 	"Click here to select": "",
 	"Click here to select a csv file.": "",
@@ -132,11 +106,8 @@
 	"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':": "",
 	"Create a modelfile": "",
 	"Create Account": "",
-<<<<<<< HEAD
-=======
 	"Create new key": "",
 	"Create new secret key": "",
->>>>>>> main
 	"Created at": "",
 	"Created At": "",
 	"Current Model": "",
@@ -144,15 +115,10 @@
 	"Custom": "",
 	"Customize Ollama models for a specific purpose": "",
 	"Dark": "",
-<<<<<<< HEAD
-	"Database": "",
-	"DD/MM/YYYY HH:mm": "",
-=======
 	"Dashboard": "",
 	"Database": "",
 	"DD/MM/YYYY HH:mm": "",
 	"December": "",
->>>>>>> main
 	"Default": "",
 	"Default (Automatic1111)": "",
 	"Default (SentenceTransformers)": "",
@@ -166,10 +132,7 @@
 	"Delete chat": "",
 	"Delete Chat": "",
 	"Delete Chats": "",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "",
 	"Deleted {{tagName}}": "",
@@ -189,10 +152,7 @@
 	"Don't have an account?": "",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "",
 	"Drop any files here to add to the conversation": "",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "",
@@ -200,10 +160,7 @@
 	"Edit Doc": "",
 	"Edit User": "",
 	"Email": "",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "",
@@ -214,10 +171,7 @@
 	"Enter Chunk Overlap": "",
 	"Enter Chunk Size": "",
 	"Enter Image Size (e.g. 512x512)": "",
-<<<<<<< HEAD
-=======
 	"Enter language codes": "",
->>>>>>> main
 	"Enter LiteLLM API Base URL (litellm_params.api_base)": "",
 	"Enter LiteLLM API Key (litellm_params.api_key)": "",
 	"Enter LiteLLM API RPM (litellm_params.rpm)": "",
@@ -229,10 +183,7 @@
 	"Enter stop sequence": "",
 	"Enter Top K": "",
 	"Enter URL (e.g. http://127.0.0.1:7860/)": "",
-<<<<<<< HEAD
-=======
 	"Enter URL (e.g. http://localhost:11434)": "",
->>>>>>> main
 	"Enter Your Email": "",
 	"Enter Your Full Name": "",
 	"Enter Your Password": "",
@@ -245,10 +196,7 @@
 	"Export Prompts": "",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "",
 	"File not found.": "",
@@ -265,10 +213,7 @@
 	"Good Response": "",
 	"has no conversations.": "",
 	"Hello, {{name}}": "",
-<<<<<<< HEAD
-=======
 	"Help": "",
->>>>>>> main
 	"Hide": "",
 	"Hide Additional Params": "",
 	"How can I help you today?": "",
@@ -282,11 +227,6 @@
 	"Import Modelfiles": "",
 	"Import Prompts": "",
 	"Include `--api` flag when running stable-diffusion-webui": "",
-<<<<<<< HEAD
-	"Interface": "",
-	"join our Discord for help.": "",
-	"JSON": "",
-=======
 	"Input commands": "",
 	"Interface": "",
 	"Invalid Tag": "",
@@ -295,7 +235,6 @@
 	"JSON": "",
 	"July": "",
 	"June": "",
->>>>>>> main
 	"JWT Expiration": "",
 	"JWT Token": "",
 	"Keep Alive": "",
@@ -310,16 +249,11 @@
 	"Manage LiteLLM Models": "",
 	"Manage Models": "",
 	"Manage Ollama Models": "",
-<<<<<<< HEAD
-	"Max Tokens": "",
-	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "",
-=======
 	"March": "",
 	"Max Tokens": "",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "",
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "",
 	"Mirostat Eta": "",
@@ -350,21 +284,15 @@
 	"Name your modelfile": "",
 	"New Chat": "",
 	"New Password": "",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "",
 	"Not sure what to write? Switch to": "",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "",
 	"Okay, Let's Go!": "",
 	"OLED Dark": "",
@@ -388,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "",
 	"Password": "",
 	"PDF document (.pdf)": "",
@@ -401,22 +326,15 @@
 	"Plain text (.txt)": "",
 	"Playground": "",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "",
 	"Prompt suggestions": "",
 	"Prompts": "",
-<<<<<<< HEAD
-=======
 	"Pull \"{{searchValue}}\" from Ollama.com": "",
->>>>>>> main
 	"Pull a model from Ollama.com": "",
 	"Pull Progress": "",
 	"Query Params": "",
@@ -429,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "",
-	"Repeat Penalty": "",
-	"Request Mode": "",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "",
 	"Repeat Penalty": "",
 	"Request Mode": "",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "",
@@ -466,14 +378,6 @@
 	"Select a mode": "",
 	"Select a model": "",
 	"Select an Ollama instance": "",
-<<<<<<< HEAD
-	"Send a Message": "",
-	"Send message": "",
-	"Server connection verified": "",
-	"Set as default": "",
-	"Set Default Model": "",
-	"Set Image Size": "",
-=======
 	"Select model": "",
 	"Send a Message": "",
 	"Send message": "",
@@ -485,7 +389,6 @@
 	"Set Image Size": "",
 	"Set Model": "",
 	"Set reranking model (e.g. {{model}})": "",
->>>>>>> main
 	"Set Steps": "",
 	"Set Title Auto-Generation Model": "",
 	"Set Voice": "",
@@ -504,10 +407,7 @@
 	"Sign Out": "",
 	"Sign up": "",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "",
 	"Speech-to-Text Engine": "",
 	"SpeechRecognition API is not supported in this browser.": "",
@@ -517,10 +417,7 @@
 	"Subtitle (e.g. about the Roman Empire)": "",
 	"Success": "",
 	"Successfully updated.": "",
-<<<<<<< HEAD
-=======
 	"Suggested": "",
->>>>>>> main
 	"Sync All": "",
 	"System": "",
 	"System Prompt": "",
@@ -541,19 +438,13 @@
 	"Title": "",
 	"Title (e.g. Tell me a fun fact)": "",
 	"Title Auto-Generation": "",
-<<<<<<< HEAD
-=======
 	"Title cannot be an empty string.": "",
->>>>>>> main
 	"Title Generation Prompt": "",
 	"to": "",
 	"To access the available model names for downloading,": "",
 	"To access the GGUF models available for downloading,": "",
 	"to chat input.": "",
-<<<<<<< HEAD
-=======
 	"Today": "",
->>>>>>> main
 	"Toggle settings": "",
 	"Toggle sidebar": "",
 	"Top K": "",
@@ -564,15 +455,7 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
 	"Update password": "",
-	"Update Reranking Model": "",
-	"Update reranking model (e.g. {{model}})": "",
-=======
-	"Update password": "",
->>>>>>> main
 	"Upload a GGUF model": "",
 	"Upload files": "",
 	"Upload Progress": "",
@@ -590,11 +473,8 @@
 	"Version": "",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "",
 	"WebUI Settings": "",
@@ -604,12 +484,6 @@
 	"Whisper (Local)": "",
 	"Write a prompt suggestion (e.g. Who are you?)": "",
 	"Write a summary in 50 words that summarizes [topic or keyword].": "",
-<<<<<<< HEAD
-	"You": "",
-	"You're a helpful assistant.": "",
-	"You're now logged in.": "",
-	"Youtube": ""
-=======
 	"Yesterday": "",
 	"You": "",
 	"You have no archived conversations.": "",
@@ -618,5 +492,4 @@
 	"You're now logged in.": "",
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

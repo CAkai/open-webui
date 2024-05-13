@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "Bate-papos arquivados",
 	"are allowed - Activate this command by typing": "são permitidos - Ative este comando digitando",
 	"Are you sure?": "Tem certeza?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Áudio",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "disponível!",
 	"Back": "Voltar",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Modo de Construtor",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Excluir bate-papo",
 	"Delete Chat": "",
 	"Delete Chats": "Excluir Bate-papos",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} excluído",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "Não tem uma conta?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Baixar Banco de Dados",
 	"Drop any files here to add to the conversation": "Solte os arquivos aqui para adicionar à conversa",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "por exemplo, '30s', '10m'. Unidades de tempo válidas são 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Editar Documento",
 	"Edit User": "Editar Usuário",
 	"Email": "E-mail",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Ativar Histórico de Bate-papo",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Exportar Prompts",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Falha ao ler o conteúdo da área de transferência",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Modo de Arquivo",
 	"File not found.": "Arquivo não encontrado.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Máximo de Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Máximo de 3 modelos podem ser baixados simultaneamente. Tente novamente mais tarde.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Nomeie seu arquivo de modelo",
 	"New Chat": "Novo Bate-papo",
 	"New Password": "Nova Senha",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "Não tem certeza do que adicionar?",
 	"Not sure what to write? Switch to": "Não tem certeza do que escrever? Mude para",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Notificações da Área de Trabalho",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Desligado",
 	"Okay, Let's Go!": "Ok, Vamos Lá!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "ou",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Parâmetros",
 	"Password": "Senha",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Parque infantil",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Conteúdo do Prompt",
 	"Prompt suggestions": "Sugestões de Prompt",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Notas de Lançamento",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Repetir Últimos N",
-	"Repeat Penalty": "Penalidade de Repetição",
-	"Request Mode": "Modo de Solicitação",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Repetir Últimos N",
 	"Repeat Penalty": "Penalidade de Repetição",
 	"Request Mode": "Modo de Solicitação",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Redefinir Armazenamento de Vetor",
@@ -450,10 +407,7 @@
 	"Sign Out": "Sair",
 	"Sign up": "Inscrever-se",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Erro de reconhecimento de fala: {{error}}",
 	"Speech-to-Text Engine": "Mecanismo de Fala para Texto",
 	"SpeechRecognition API is not supported in this browser.": "A API SpeechRecognition não é suportada neste navegador.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Opa! Houve um problema ao conectar-se a {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Tipo de arquivo desconhecido '{{file_type}}', mas aceitando e tratando como texto simples",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Atualizar senha",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Versão",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Web",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "Complementos WebUI",
 	"WebUI Settings": "Configurações WebUI",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Você é um assistente útil.",
 	"You're now logged in.": "Você está conectado agora.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

@@ -1,3 +1,4 @@
+
 {
 	"'s', 'm', 'h', 'd', 'w' or '-1' for no expiration.": "'s', 'm', 'h', 'd', 'w' یا '-1' برای غیر فعال کردن انقضا.",
 	"(Beta)": "(بتا)",
@@ -42,18 +43,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "آرشیو تاریخچه چت",
 	"are allowed - Activate this command by typing": "مجاز هستند - این دستور را با تایپ کردن این فعال کنید:",
 	"Are you sure?": "آیا مطمئن هستید؟",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "صدا",
 	"August": "",
@@ -64,10 +59,7 @@
 	"available!": "در دسترس!",
 	"Back": "بازگشت",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "حالت سازنده",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +133,7 @@
 	"Delete chat": "حذف گپ",
 	"Delete Chat": "",
 	"Delete Chats": "حذف گپ\u200cها",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} پاک شد",
 	"Deleted {{tagName}}": "",
@@ -164,10 +153,7 @@
 	"Don't have an account?": "حساب کاربری ندارید؟",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "دانلود پایگاه داده",
 	"Drop any files here to add to the conversation": "هر فایلی را اینجا رها کنید تا به مکالمه اضافه شود",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "به طور مثال '30s','10m'. واحد\u200cهای زمانی معتبر 's', 'm', 'h' هستند.",
@@ -175,10 +161,7 @@
 	"Edit Doc": "ویرایش سند",
 	"Edit User": "ویرایش کاربر",
 	"Email": "ایمیل",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "تاریخچه چت را فعال کنید",
@@ -214,10 +197,7 @@
 	"Export Prompts": "اکسپورت از پرامپت\u200cها",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "خواندن محتوای کلیپ بورد ناموفق بود",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "حالت فایل",
 	"File not found.": "فایل یافت نشد.",
@@ -273,11 +253,8 @@
 	"March": "",
 	"Max Tokens": "حداکثر توکن",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "حداکثر 3 مدل را می توان به طور همزمان دانلود کرد. لطفاً بعداً دوباره امتحان کنید.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +285,15 @@
 	"Name your modelfile": "فایل مدل را نام\u200cگذاری کنید",
 	"New Chat": "گپ جدید",
 	"New Password": "رمز عبور جدید",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "مطمئن نیستید چه چیزی را اضافه کنید؟",
 	"Not sure what to write? Switch to": "مطمئن نیستید چه بنویسید؟ تغییر به",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "اعلان",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "خاموش",
 	"Okay, Let's Go!": "باشه، بزن بریم!",
 	"OLED Dark": "",
@@ -346,10 +317,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "روشن",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "پارامترها",
 	"Password": "رمز عبور",
 	"PDF document (.pdf)": "",
@@ -359,14 +327,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "زمین بازی",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "محتویات پرامپت",
 	"Prompt suggestions": "پیشنهادات پرامپت",
@@ -384,18 +348,12 @@
 	"Regenerate": "",
 	"Release Notes": "یادداشت\u200cهای انتشار",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Repeat Last N",
-	"Repeat Penalty": "Repeat Penalty",
-	"Request Mode": "حالت درخواست",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Repeat Last N",
 	"Repeat Penalty": "Repeat Penalty",
 	"Request Mode": "حالت درخواست",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "بازنشانی ذخیره سازی برداری",
@@ -450,10 +408,7 @@
 	"Sign Out": "خروج",
 	"Sign up": "ثبت نام",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "خطای تشخیص گفتار: {{error}}",
 	"Speech-to-Text Engine": "موتور گفتار به متن",
 	"SpeechRecognition API is not supported in this browser.": "API تشخیص گفتار در این مرورگر پشتیبانی نمی شود.",
@@ -501,11 +456,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "اوه اوه! مشکلی در اتصال به {{provider}} وجود داشت.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "نوع فایل '{{file_type}}' ناشناخته است، به عنوان یک فایل متنی ساده با آن برخورد می شود.",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "به روزرسانی رمزعبور",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +476,8 @@
 	"Version": "نسخه",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "وب",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI افزونه\u200cهای",
 	"WebUI Settings": "تنظیمات WebUI",
@@ -546,10 +493,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "تو یک دستیار سودمند هستی.",
 	"You're now logged in.": "شما اکنون وارد شده\u200cاید.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

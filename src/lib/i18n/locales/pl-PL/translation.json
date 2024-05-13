@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "Pakiet API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "",
 	"are allowed - Activate this command by typing": "są dozwolone - Aktywuj to polecenie, wpisując",
 	"Are you sure?": "Jesteś pewien?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Dźwięk",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "dostępny!",
 	"Back": "Wstecz",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Tryb budowniczego",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Usuń czat",
 	"Delete Chat": "",
 	"Delete Chats": "Usuń czaty",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "Usunięto {{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "Nie masz konta?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Pobierz bazę danych",
 	"Drop any files here to add to the conversation": "Upuść pliki tutaj, aby dodać do rozmowy",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "np. '30s', '10m'. Poprawne jednostki czasu to 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Edytuj dokument",
 	"Edit User": "Edytuj użytkownika",
 	"Email": "Email",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Włącz historię czatu",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Eksportuj prompty",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Nie udało się odczytać zawartości schowka",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Tryb pliku",
 	"File not found.": "Plik nie został znaleziony.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Maksymalna liczba tokenów",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Maksymalnie 3 modele można pobierać jednocześnie. Spróbuj ponownie później.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Nadaj nazwę swojemu plikowi modelu",
 	"New Chat": "Nowy czat",
 	"New Password": "Nowe hasło",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "Nie wiesz, co dodać?",
 	"Not sure what to write? Switch to": "Nie wiesz, co napisać? Przełącz się na",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Powiadomienia",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Wyłączony",
 	"Okay, Let's Go!": "Okej, zaczynamy!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "lub",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Parametry",
 	"Password": "Hasło",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Plac zabaw",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Zawartość prompta",
 	"Prompt suggestions": "Sugestie prompta",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Notatki wydania",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Powtórz ostatnie N",
-	"Repeat Penalty": "Kara za powtórzenie",
-	"Request Mode": "Tryb żądania",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Powtórz ostatnie N",
 	"Repeat Penalty": "Kara za powtórzenie",
 	"Request Mode": "Tryb żądania",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Resetuj przechowywanie wektorów",
@@ -450,10 +407,7 @@
 	"Sign Out": "Wyloguj się",
 	"Sign up": "Zarejestruj się",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Błąd rozpoznawania mowy: {{error}}",
 	"Speech-to-Text Engine": "Silnik mowy na tekst",
 	"SpeechRecognition API is not supported in this browser.": "API Rozpoznawania Mowy nie jest obsługiwane w tej przeglądarce.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "O nie! Wystąpił problem z połączeniem z {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Nieznany typ pliku '{{file_type}}', ale akceptowany i traktowany jako zwykły tekst",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Aktualizacja hasła",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Wersja",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Sieć",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "Dodatki do interfejsu WebUI",
 	"WebUI Settings": "Ustawienia interfejsu WebUI",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Jesteś pomocnym asystentem.",
 	"You're now logged in.": "Jesteś teraz zalogowany.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

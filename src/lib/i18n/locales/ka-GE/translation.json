@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "ჩატის ისტორიის არქივი",
 	"are allowed - Activate this command by typing": "დაშვებულია - ბრძანების გასააქტიურებლად აკრიფეთ:",
 	"Are you sure?": "დარწმუნებული ხარ?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "ხმოვანი",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "ხელმისაწვდომია!",
 	"Back": "უკან",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "მოდელის შექმნა",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "შეტყობინების წაშლა",
 	"Delete Chat": "",
 	"Delete Chats": "შეტყობინებების წაშლა",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "{{deleteModelTag}} წაშლილია",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "არ გაქვს ანგარიში?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "გადმოწერე მონაცემთა ბაზა",
 	"Drop any files here to add to the conversation": "გადაიტანეთ ფაილები აქ, რათა დაამატოთ ისინი მიმოწერაში",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "მაგალითად, '30წ', '10მ'. მოქმედი დროის ერთეულები: 'წ', 'წთ', 'სთ'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "დოკუმენტის ედიტირება",
 	"Edit User": "მომხმარებლის ედიტირება",
 	"Email": "ელ-ფოსტა",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "მიმოწერის ისტორიის ჩართვა",
@@ -214,10 +196,7 @@
 	"Export Prompts": "მოთხოვნების ექსპორტი",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "ბუფერში შიგთავსის წაკითხვა ვერ მოხერხდა",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "ფაილური რეჟიმი",
 	"File not found.": "ფაილი ვერ მოიძებნა",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "მაქსიმალური ტოკენები",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "მაქსიმუმ 3 მოდელის ჩამოტვირთვა შესაძლებელია ერთდროულად. Გთხოვთ სცადოთ მოგვიანებით.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "მიროსტატი",
 	"Mirostat Eta": "მიროსტატი ეტა",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "თქვენი მოდელური ფაილის სახელი",
 	"New Chat": "ახალი მიმოწერა",
 	"New Password": "ახალი პაროლი",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "არ იცი რა დაამატო?",
 	"Not sure what to write? Switch to": "არ იცი რა დაწერო? გადართვა:",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "შეტყობინება",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "გამორთვა",
 	"Okay, Let's Go!": "კარგი, წავედით!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "ან",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "პარამეტრები",
 	"Password": "პაროლი",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "სათამაშო მოედანი",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "მოთხოვნის შინაარსი",
 	"Prompt suggestions": "მოთხოვნის რჩევები",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Გამოშვების შენიშვნები",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "გაიმეორეთ ბოლო N",
-	"Repeat Penalty": "გაიმეორეთ პენალტი",
-	"Request Mode": "მოთხოვნის რეჟიმი",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "გაიმეორეთ ბოლო N",
 	"Repeat Penalty": "გაიმეორეთ პენალტი",
 	"Request Mode": "მოთხოვნის რეჟიმი",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "ვექტორული მეხსიერების გადატვირთვა",
@@ -450,10 +407,7 @@
 	"Sign Out": "გასვლა",
 	"Sign up": "რეგისტრაცია",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "მეტყველების ამოცნობის შეცდომა: {{error}}",
 	"Speech-to-Text Engine": "ხმოვან-ტექსტური ძრავი",
 	"SpeechRecognition API is not supported in this browser.": "მეტყველების ამოცნობის API არ არის მხარდაჭერილი ამ ბრაუზერში.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "{{provider}}-თან დაკავშირების პრობლემა წარმოიშვა.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "უცნობი ფაილის ტიპი „{{file_type}}“, მაგრამ მიიღება და განიხილება როგორც მარტივი ტექსტი",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "პაროლის განახლება",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "ვერსია",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "ვები",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "WebUI დანამატები",
 	"WebUI Settings": "WebUI პარამეტრები",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "თქვენ სასარგებლო ასისტენტი ხართ.",
 	"You're now logged in.": "თქვენ შესული ხართ.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

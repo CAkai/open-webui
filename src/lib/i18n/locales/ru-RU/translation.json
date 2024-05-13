@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "запис на чат",
 	"are allowed - Activate this command by typing": "разрешено - активируйте эту команду вводом",
 	"Are you sure?": "Вы уверены?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "",
 	"Audio": "Аудио",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "доступный!",
 	"Back": "Назад",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "",
 	"Builder Mode": "Режим конструктор",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Удалить чат",
 	"Delete Chat": "",
 	"Delete Chats": "Удалить чаты",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "Удалено {{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "у вас не есть аккаунт?",
 	"Don't like the style": "",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Загрузить базу данных",
 	"Drop any files here to add to the conversation": "Перетащите сюда файлы, чтобы добавить их в разговор",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "например, '30с','10м'. Допустимые единицы времени: 'с', 'м', 'ч'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Редактировать документ",
 	"Edit User": "Редактировать пользователя",
 	"Email": "Электронная почта",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Включить историю чата",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Экспортировать промты",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Не удалось прочитать содержимое буфера обмена",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "",
 	"File Mode": "Режим файла",
 	"File not found.": "Файл не найден.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Максимальное количество токенов",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Максимальное количество моделей для загрузки одновременно - 3. Пожалуйста, попробуйте позже.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Назовите свой файл модели",
 	"New Chat": "Новый чат",
 	"New Password": "Новый пароль",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "",
 	"Not sure what to add?": "Не уверены, что добавить?",
 	"Not sure what to write? Switch to": "Не уверены, что написать? Переключитесь на",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Уведомления на рабочем столе",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Выключено.",
 	"Okay, Let's Go!": "Давайте начнём!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "или",
 	"Other": "",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Параметры",
 	"Password": "Пароль",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Площадка",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Содержание промпта",
 	"Prompt suggestions": "Предложения промптов",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Примечания к выпуску",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Повторить последние N",
-	"Repeat Penalty": "Штраф за повтор",
-	"Request Mode": "Режим запроса",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Повторить последние N",
 	"Repeat Penalty": "Штраф за повтор",
 	"Request Mode": "Режим запроса",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Сбросить векторное хранилище",
@@ -450,10 +407,7 @@
 	"Sign Out": "Выход",
 	"Sign up": "зарегистрировать",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Ошибка распознавания речи: {{error}}",
 	"Speech-to-Text Engine": "Система распознавания речи",
 	"SpeechRecognition API is not supported in this browser.": "API распознавания речи не поддерживается в этом браузере.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Упс! Возникла проблема подключения к {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Неизвестный тип файла '{{file_type}}', но принимается и обрабатывается как обычный текст",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Обновить пароль",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Версия",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Веб",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "Дополнения для WebUI",
 	"WebUI Settings": "Настройки WebUI",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Вы полезный ассистент.",
 	"You're now logged in.": "Вы вошли в систему.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }

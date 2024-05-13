@@ -42,18 +42,12 @@
 	"API Key created.": "",
 	"API keys": "",
 	"API RPM": "API RPM",
-<<<<<<< HEAD
-=======
 	"April": "",
->>>>>>> main
 	"Archive": "",
 	"Archived Chats": "bản ghi trò chuyện",
 	"are allowed - Activate this command by typing": "được phép - Kích hoạt lệnh này bằng cách gõ",
 	"Are you sure?": "Bạn có chắc chắn không?",
-<<<<<<< HEAD
-=======
 	"Attach file": "",
->>>>>>> main
 	"Attention to detail": "Có sự chú ý đến chi tiết của vấn đề",
 	"Audio": "Âm thanh",
 	"August": "",
@@ -64,10 +58,7 @@
 	"available!": "có sẵn!",
 	"Back": "Quay lại",
 	"Bad Response": "",
-<<<<<<< HEAD
-=======
 	"before": "",
->>>>>>> main
 	"Being lazy": "Lười biếng",
 	"Builder Mode": "Chế độ Builder",
 	"Bypass SSL verification for Websites": "",
@@ -141,10 +132,7 @@
 	"Delete chat": "Xóa nội dung chat",
 	"Delete Chat": "",
 	"Delete Chats": "Xóa nội dung chat",
-<<<<<<< HEAD
-=======
 	"delete this link": "",
->>>>>>> main
 	"Delete User": "",
 	"Deleted {{deleteModelTag}}": "Đã xóa {{deleteModelTag}}",
 	"Deleted {{tagName}}": "",
@@ -164,10 +152,7 @@
 	"Don't have an account?": "Không có tài khoản?",
 	"Don't like the style": "Không thích phong cách trả lời",
 	"Download": "",
-<<<<<<< HEAD
-=======
 	"Download canceled": "",
->>>>>>> main
 	"Download Database": "Tải xuống Cơ sở dữ liệu",
 	"Drop any files here to add to the conversation": "Thả bất kỳ tệp nào ở đây để thêm vào nội dung chat",
 	"e.g. '30s','10m'. Valid time units are 's', 'm', 'h'.": "vd: '30s','10m'. Đơn vị thời gian hợp lệ là 's', 'm', 'h'.",
@@ -175,10 +160,7 @@
 	"Edit Doc": "Thay đổi tài liệu",
 	"Edit User": "Thay đổi thông tin người sử dụng",
 	"Email": "Email",
-<<<<<<< HEAD
-=======
 	"Embedding Model": "",
->>>>>>> main
 	"Embedding Model Engine": "",
 	"Embedding model set to \"{{embedding_model}}\"": "",
 	"Enable Chat History": "Bật Lịch sử chat",
@@ -214,10 +196,7 @@
 	"Export Prompts": "Tải các prompt về máy",
 	"Failed to create API Key.": "",
 	"Failed to read clipboard contents": "Không thể đọc nội dung clipboard",
-<<<<<<< HEAD
-=======
 	"February": "",
->>>>>>> main
 	"Feel free to add specific details": "Mô tả chi tiết về chất lượng của câu hỏi và phương án trả lời",
 	"File Mode": "Chế độ Tệp văn bản",
 	"File not found.": "Không tìm thấy tệp.",
@@ -273,11 +252,8 @@
 	"March": "",
 	"Max Tokens": "Max Tokens",
 	"Maximum of 3 models can be downloaded simultaneously. Please try again later.": "Tối đa 3 mô hình có thể được tải xuống cùng lúc. Vui lòng thử lại sau.",
-<<<<<<< HEAD
-=======
 	"May": "",
 	"Messages you send after creating your link won't be shared. Users with the URL will beable to view the shared chat.": "",
->>>>>>> main
 	"Minimum Score": "",
 	"Mirostat": "Mirostat",
 	"Mirostat Eta": "Mirostat Eta",
@@ -308,21 +284,15 @@
 	"Name your modelfile": "Đặt tên cho tệp mô hình của bạn",
 	"New Chat": "Tạo cuộc trò chuyện mới",
 	"New Password": "Mật khẩu mới",
-<<<<<<< HEAD
-=======
 	"No results found": "",
 	"No source available": "",
->>>>>>> main
 	"Not factually correct": "Không chính xác so với thực tế",
 	"Not sure what to add?": "Không chắc phải thêm gì?",
 	"Not sure what to write? Switch to": "Không chắc phải viết gì? Chuyển sang",
 	"Note: If you set a minimum score, the search will only return documents with a score greater than or equal to the minimum score.": "",
 	"Notifications": "Thông báo trên máy tính (Notification)",
-<<<<<<< HEAD
-=======
 	"November": "",
 	"October": "",
->>>>>>> main
 	"Off": "Tắt",
 	"Okay, Let's Go!": "Được rồi, Bắt đầu thôi!",
 	"OLED Dark": "",
@@ -346,10 +316,7 @@
 	"OpenAI URL/Key required.": "",
 	"or": "hoặc",
 	"Other": "Khác",
-<<<<<<< HEAD
-=======
 	"Overview": "",
->>>>>>> main
 	"Parameters": "Tham số",
 	"Password": "Mật khẩu",
 	"PDF document (.pdf)": "",
@@ -359,14 +326,10 @@
 	"Plain text (.txt)": "",
 	"Playground": "Thử nghiệm (Playground)",
 	"Positive attitude": "",
-<<<<<<< HEAD
-	"Profile Image": "",
-=======
 	"Previous 30 days": "",
 	"Previous 7 days": "",
 	"Profile Image": "",
 	"Prompt": "",
->>>>>>> main
 	"Prompt (e.g. Tell me a fun fact about the Roman Empire)": "",
 	"Prompt Content": "Nội dung prompt",
 	"Prompt suggestions": "Gợi ý prompt",
@@ -384,18 +347,12 @@
 	"Regenerate": "",
 	"Release Notes": "Mô tả những cập nhật mới",
 	"Remove": "",
-<<<<<<< HEAD
-	"Repeat Last N": "Repeat Last N",
-	"Repeat Penalty": "Repeat Penalty",
-	"Request Mode": "Request Mode",
-=======
 	"Remove Model": "",
 	"Rename": "",
 	"Repeat Last N": "Repeat Last N",
 	"Repeat Penalty": "Repeat Penalty",
 	"Request Mode": "Request Mode",
 	"Reranking Model": "",
->>>>>>> main
 	"Reranking model disabled": "",
 	"Reranking model set to \"{{reranking_model}}\"": "",
 	"Reset Vector Storage": "Cài đặt lại Vector Storage",
@@ -450,10 +407,7 @@
 	"Sign Out": "Đăng xuất",
 	"Sign up": "Đăng ký",
 	"Signing in": "",
-<<<<<<< HEAD
-=======
 	"Source": "",
->>>>>>> main
 	"Speech recognition error: {{error}}": "Lỗi nhận dạng giọng nói: {{error}}",
 	"Speech-to-Text Engine": "Công cụ Nhận dạng Giọng nói",
 	"SpeechRecognition API is not supported in this browser.": "Trình duyệt này không hỗ trợ API Nhận dạng Giọng nói.",
@@ -501,11 +455,6 @@
 	"Uh-oh! There was an issue connecting to {{provider}}.": "Ồ! Đã xảy ra sự cố khi kết nối với {{provider}}.",
 	"Unknown File Type '{{file_type}}', but accepting and treating as plain text": "Loại Tệp Không xác định '{{file_type}}', nhưng đang chấp nhận và xử lý như văn bản thô",
 	"Update and Copy Link": "",
-<<<<<<< HEAD
-	"Update Embedding Model": "",
-	"Update embedding model (e.g. {{model}})": "",
-=======
->>>>>>> main
 	"Update password": "Cập nhật mật khẩu",
 	"Update Reranking Model": "",
 	"Update reranking model (e.g. {{model}})": "",
@@ -526,11 +475,8 @@
 	"Version": "Version",
 	"Warning: If you update or change your embedding model, you will need to re-import all documents.": "",
 	"Web": "Web",
-<<<<<<< HEAD
-=======
 	"Web Loader Settings": "",
 	"Web Params": "",
->>>>>>> main
 	"Webhook URL": "",
 	"WebUI Add-ons": "Tiện ích WebUI",
 	"WebUI Settings": "Cài đặt WebUI",
@@ -546,10 +492,6 @@
 	"You have shared this chat": "",
 	"You're a helpful assistant.": "Bạn là một trợ lý hữu ích.",
 	"You're now logged in.": "Bạn đã đăng nhập.",
-<<<<<<< HEAD
-	"Youtube": ""
-=======
 	"Youtube": "",
 	"Youtube Loader Settings": ""
->>>>>>> main
 }
