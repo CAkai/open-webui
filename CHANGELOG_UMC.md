@@ -1,5 +1,18 @@
 # 更新日誌
 
+## Unreleased - 2024-05-13
+### Added:
+- 可上傳圖片與中繼機溝通。([9dd0894])
+
+### Fixed:
+- 修正有時候會跳出「無效的Token」的問題。([e5cde24])
+- 修正生產環境無法解析 Stream Data「syntax: "data: {'id': ...}" is invalid format 'd' json」的問題。([325bc7a])
+
+
+[e5cde24]: https://github.com/CAkai/open-webui/commit/e5cde247144572354ba30c42cb76fbda024b85a7
+[325bc7a]: https://github.com/CAkai/open-webui/commit/325bc7a56d4750d0b3dcc431912b99dfb78433cf
+[9dd0894]: https://github.com/CAkai/open-webui/commit/9dd08946e2e7a4811cbdf024b2cda3c544dd6d8f
+
 ## [0.2.0] - 2024-05-08
 ### Added:
 - 加入中繼機。
