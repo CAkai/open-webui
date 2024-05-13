@@ -642,7 +642,7 @@
 				if (responseMessage.content == '' && value == '\n') {
 					continue;
 				} else {
-					responseMessage.content += value;
+					responseMessage.content += value.replace(/data:\s/g, '');
 					messages = messages;
 				}
 
@@ -679,7 +679,7 @@
 		} else {
 			if (res !== null) {
 				const error = await res.json();
-				console.log(error);
+				console.log("split error", error);
 				if ('detail' in error) {
 					toast.error(error.detail);
 					responseMessage.content = error.detail;

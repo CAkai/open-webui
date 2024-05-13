@@ -162,8 +162,9 @@ export const generateUMCChatCompletion = async (
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(body)
-	}).catch((err) => {
-		console.log(err);
+	})
+	.catch((err) => {
+		console.log("umc /api/chat error", err);
 		error = err;
 		return null;
 	});
@@ -208,10 +209,14 @@ export const generateTitle = async (
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
-			return res.json();
+			// 如果返回的文本有 data: ，需要刪除後再轉成 json
+			let s = await res.text();
+			console.log("umc title data", s);
+			s = s.replace(/data:\s/g, '');
+			return JSON.parse(s);
 		})
 		.catch((err) => {
-			console.log(err);
+			console.error("umc /api/chat error", err);
 			if ('detail' in err) {
 				error = err.detail;
 			}

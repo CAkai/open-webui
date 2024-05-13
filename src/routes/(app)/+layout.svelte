@@ -66,6 +66,7 @@
 	};
 
 	onMount(async () => {
+		console.log('token', localStorage.token);
 		if ($user === undefined) {
 			await goto('/auth');
 		} else if (['user', 'admin'].includes($user.role)) {
