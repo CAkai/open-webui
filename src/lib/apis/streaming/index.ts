@@ -42,8 +42,9 @@ async function* openAIStreamToIterator(
 		}
 
 		try {
-			const parsedData = JSON.parse(data);
-			console.log(parsedData);
+			// 移除 'data: ' prefix，解決生產環境會讀到的問題。 Arvin Yang - 2024/05/13
+			const parsedData = JSON.parse(data.replace(/data:\s/g, ''));
+			console.log("openAIStreamToIterator", data, parsedData);
 
 			yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
 		} catch (e) {
