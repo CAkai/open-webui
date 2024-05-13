@@ -1,6 +1,10 @@
 {
 	"name": "open-webui",
+<<<<<<< HEAD
 	"version": "0.1.123",
+=======
+	"version": "0.1.124",
+>>>>>>> main
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host",

@@ -79,6 +79,7 @@ from config import (
     RAG_EMBEDDING_MODEL_AUTO_UPDATE,
     RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE,
     ENABLE_RAG_HYBRID_SEARCH,
+    ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION,
     RAG_RERANKING_MODEL,
     PDF_EXTRACT_IMAGES,
     RAG_RERANKING_MODEL_AUTO_UPDATE,
@@ -90,7 +91,6 @@ from config import (
     CHUNK_SIZE,
     CHUNK_OVERLAP,
     RAG_TEMPLATE,
-    ENABLE_LOCAL_WEB_FETCH,
 )
 
 from constants import ERROR_MESSAGES
@@ -104,6 +104,9 @@ app.state.TOP_K = RAG_TOP_K
 app.state.RELEVANCE_THRESHOLD = RAG_RELEVANCE_THRESHOLD
 
 app.state.ENABLE_RAG_HYBRID_SEARCH = ENABLE_RAG_HYBRID_SEARCH
+app.state.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION = (
+    ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION
+)
 
 app.state.CHUNK_SIZE = CHUNK_SIZE
 app.state.CHUNK_OVERLAP = CHUNK_OVERLAP
@@ -113,10 +116,15 @@ app.state.RAG_EMBEDDING_MODEL = RAG_EMBEDDING_MODEL
 app.state.RAG_RERANKING_MODEL = RAG_RERANKING_MODEL
 app.state.RAG_TEMPLATE = RAG_TEMPLATE
 
+
 app.state.OPENAI_API_BASE_URL = RAG_OPENAI_API_BASE_URL
 app.state.OPENAI_API_KEY = RAG_OPENAI_API_KEY
 
 app.state.PDF_EXTRACT_IMAGES = PDF_EXTRACT_IMAGES
+
+
+app.state.YOUTUBE_LOADER_LANGUAGE = YOUTUBE_LOADER_LANGUAGE
+app.state.YOUTUBE_LOADER_TRANSLATION = None
 
 
 def update_embedding_model(
@@ -308,6 +316,11 @@ async def get_rag_config(user=Depends(get_admin_user)):
             "chunk_size": app.state.CHUNK_SIZE,
             "chunk_overlap": app.state.CHUNK_OVERLAP,
         },
+        "web_loader_ssl_verification": app.state.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION,
+        "youtube": {
+            "language": app.state.YOUTUBE_LOADER_LANGUAGE,
+            "translation": app.state.YOUTUBE_LOADER_TRANSLATION,
+        },
     }
 
 
@@ -316,16 +329,53 @@ class ChunkParamUpdateForm(BaseModel):
     chunk_overlap: int
 
 
+class YoutubeLoaderConfig(BaseModel):
+    language: List[str]
+    translation: Optional[str] = None
+
+
 class ConfigUpdateForm(BaseModel):
-    pdf_extract_images: bool
-    chunk: ChunkParamUpdateForm
+    pdf_extract_images: Optional[bool] = None
+    chunk: Optional[ChunkParamUpdateForm] = None
+    web_loader_ssl_verification: Optional[bool] = None
+    youtube: Optional[YoutubeLoaderConfig] = None
 
 
 @app.post("/config/update")
 async def update_rag_config(form_data: ConfigUpdateForm, user=Depends(get_admin_user)):
-    app.state.PDF_EXTRACT_IMAGES = form_data.pdf_extract_images
-    app.state.CHUNK_SIZE = form_data.chunk.chunk_size
-    app.state.CHUNK_OVERLAP = form_data.chunk.chunk_overlap
+    app.state.PDF_EXTRACT_IMAGES = (
+        form_data.pdf_extract_images
+        if form_data.pdf_extract_images != None
+        else app.state.PDF_EXTRACT_IMAGES
+    )
+
+    app.state.CHUNK_SIZE = (
+        form_data.chunk.chunk_size if form_data.chunk != None else app.state.CHUNK_SIZE
+    )
+
+    app.state.CHUNK_OVERLAP = (
+        form_data.chunk.chunk_overlap
+        if form_data.chunk != None
+        else app.state.CHUNK_OVERLAP
+    )
+
+    app.state.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION = (
+        form_data.web_loader_ssl_verification
+        if form_data.web_loader_ssl_verification != None
+        else app.state.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION
+    )
+
+    app.state.YOUTUBE_LOADER_LANGUAGE = (
+        form_data.youtube.language
+        if form_data.youtube != None
+        else app.state.YOUTUBE_LOADER_LANGUAGE
+    )
+
+    app.state.YOUTUBE_LOADER_TRANSLATION = (
+        form_data.youtube.translation
+        if form_data.youtube != None
+        else app.state.YOUTUBE_LOADER_TRANSLATION
+    )
 
     return {
         "status": True,
@@ -333,6 +383,11 @@ async def update_rag_config(form_data: ConfigUpdateForm, user=Depends(get_admin_
         "chunk": {
             "chunk_size": app.state.CHUNK_SIZE,
             "chunk_overlap": app.state.CHUNK_OVERLAP,
+        },
+        "web_loader_ssl_verification": app.state.ENABLE_RAG_WEB_LOADER_SSL_VERIFICATION,
+        "youtube": {
+            "language": app.state.YOUTUBE_LOADER_LANGUAGE,
+            "translation": app.state.YOUTUBE_LOADER_TRANSLATION,
         },
     }
 
@@ -436,9 +491,9 @@ def query_collection_handler(
             return query_collection_with_hybrid_search(
                 collection_names=form_data.collection_names,
                 query=form_data.query,
-                embedding_function=app.state.EMBEDDING_FUNCTION,
-                k=form_data.k if form_data.k else app.state.TOP_K,
+                embeddings_function=app.state.EMBEDDING_FUNCTION,
                 reranking_function=app.state.sentence_transformer_rf,
+                k=form_data.k if form_data.k else app.state.TOP_K,
                 r=form_data.r if form_data.r else app.state.RELEVANCE_THRESHOLD,
             )
         else:
@@ -457,35 +512,11 @@ def query_collection_handler(
         )
 
 
-@app.post("/youtube")
-def store_youtube_video(form_data: UrlForm, user=Depends(get_current_user)):
-    try:
-        loader = YoutubeLoader.from_youtube_url(form_data.url, add_video_info=False)
-        data = loader.load()
-
-        collection_name = form_data.collection_name
-        if collection_name == "":
-            collection_name = calculate_sha256_string(form_data.url)[:63]
-
-        store_data_in_vector_db(data, collection_name, overwrite=True)
-        return {
-            "status": True,
-            "collection_name": collection_name,
-            "filename": form_data.url,
-        }
-    except Exception as e:
-        log.exception(e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=ERROR_MESSAGES.DEFAULT(e),
-        )
-
-
 @app.post("/web")
 def store_web(form_data: UrlForm, user=Depends(get_current_user)):
     # "https://www.gutenberg.org/files/1727/1727-h/1727-h.htm"
     try:
-        loader = get_web_loader(form_data.url)
+        loader = WebBaseLoader(form_data.url)
         data = loader.load()
 
         collection_name = form_data.collection_name
@@ -504,37 +535,6 @@ def store_web(form_data: UrlForm, user=Depends(get_current_user)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=ERROR_MESSAGES.DEFAULT(e),
         )
-
-
-def get_web_loader(url: str):
-    # Check if the URL is valid
-    if isinstance(validators.url(url), validators.ValidationError):
-        raise ValueError(ERROR_MESSAGES.INVALID_URL)
-    if not ENABLE_LOCAL_WEB_FETCH:
-        # Local web fetch is disabled, filter out any URLs that resolve to private IP addresses
-        parsed_url = urllib.parse.urlparse(url)
-        # Get IPv4 and IPv6 addresses
-        ipv4_addresses, ipv6_addresses = resolve_hostname(parsed_url.hostname)
-        # Check if any of the resolved addresses are private
-        # This is technically still vulnerable to DNS rebinding attacks, as we don't control WebBaseLoader
-        for ip in ipv4_addresses:
-            if validators.ipv4(ip, private=True):
-                raise ValueError(ERROR_MESSAGES.INVALID_URL)
-        for ip in ipv6_addresses:
-            if validators.ipv6(ip, private=True):
-                raise ValueError(ERROR_MESSAGES.INVALID_URL)
-    return WebBaseLoader(url)
-
-
-def resolve_hostname(hostname):
-    # Get address information
-    addr_info = socket.getaddrinfo(hostname, None)
-
-    # Extract IP addresses from address information
-    ipv4_addresses = [info[4][0] for info in addr_info if info[0] == socket.AF_INET]
-    ipv6_addresses = [info[4][0] for info in addr_info if info[0] == socket.AF_INET6]
-
-    return ipv4_addresses, ipv6_addresses
 
 
 def store_data_in_vector_db(data, collection_name, overwrite: bool = False) -> bool:
@@ -594,7 +594,7 @@ def store_docs_in_vector_db(docs, collection_name, overwrite: bool = False) -> b
 
         for batch in create_batches(
             api=CHROMA_CLIENT,
-            ids=[str(uuid.uuid1()) for _ in texts],
+            ids=[str(uuid.uuid4()) for _ in texts],
             metadatas=metadatas,
             embeddings=embeddings,
             documents=texts,

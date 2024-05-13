@@ -1,5 +1,6 @@
 version: 2
 updates:
+<<<<<<< HEAD
 - package-ecosystem: pip
   directory: "/backend"
   schedule:
@@ -9,3 +10,14 @@ updates:
     python-packages:
       patterns:
         - "*"
+=======
+  - package-ecosystem: pip
+    directory: '/backend'
+    schedule:
+      interval: weekly
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: 'weekly'
+>>>>>>> main

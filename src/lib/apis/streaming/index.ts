@@ -4,6 +4,8 @@ import type { ParsedEvent } from 'eventsource-parser';
 type TextStreamUpdate = {
 	done: boolean;
 	value: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	citations?: any;
 };
 
 // createOpenAITextStream takes a responseBody with a SSE response,
@@ -32,23 +34,36 @@ async function* openAIStreamToIterator(
 			yield { done: true, value: '' };
 			break;
 		}
-		if (!value) {
-			continue;
-		}
-		const data = value.data;
-		if (data.startsWith('[DONE]')) {
-			yield { done: true, value: '' };
-			break;
-		}
+		const lines = value.split('\n');
+		for (let line of lines) {
+			if (line.endsWith('\r')) {
+				// Remove trailing \r
+				line = line.slice(0, -1);
+			}
+			if (line !== '') {
+				console.log(line);
+				if (line === 'data: [DONE]') {
+					yield { done: true, value: '' };
+				} else if (line.startsWith(':')) {
+					// Events starting with : are comments https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format
+					// OpenRouter sends heartbeats like ": OPENROUTER PROCESSING"
+					continue;
+				} else {
+					try {
+						const data = JSON.parse(line.replace(/^data: /, ''));
+						console.log(data);
 
-		try {
-			// 移除 'data: ' prefix，解決生產環境會讀到的問題。 Arvin Yang - 2024/05/13
-			const parsedData = JSON.parse(data.replace(/data:\s/g, ''));
-			console.log("openAIStreamToIterator", data, parsedData);
+						if (parsedData.citations) {
+							yield { done: false, value: '', citations: parsedData.citations };
+							continue;
+						}
 
-			yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
-		} catch (e) {
-			console.error('Error extracting delta from SSE event:', e);
+						yield { done: false, value: parsedData.choices?.[0]?.delta?.content ?? '' };
+					} catch (e) {
+						console.error('Error extracting delta from SSE event:', e);
+					}
+				}
+			}
 		}
 	}
 }
@@ -62,6 +77,10 @@ async function* streamLargeDeltasAsRandomChunks(
 		if (textStreamUpdate.done) {
 			yield textStreamUpdate;
 			return;
+		}
+		if (textStreamUpdate.citations) {
+			yield textStreamUpdate;
+			continue;
 		}
 		let content = textStreamUpdate.value;
 		if (content.length < 5) {

@@ -75,6 +75,14 @@ ENV HF_HOME="/app/backend/data/cache/embedding/models"
 
 WORKDIR /app/backend
 
+ENV HOME /root
+RUN mkdir -p $HOME/.cache/chroma
+RUN echo -n 00000000-0000-0000-0000-000000000000 > $HOME/.cache/chroma/telemetry_user_id
+
+ENV HOME /root
+RUN mkdir -p $HOME/.cache/chroma
+RUN echo -n 00000000-0000-0000-0000-000000000000 > $HOME/.cache/chroma/telemetry_user_id
+
 
 ENV HOME /root
 RUN mkdir -p $HOME/.cache/chroma
