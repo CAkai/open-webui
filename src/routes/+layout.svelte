@@ -109,6 +109,7 @@
 
 			await WEBUI_NAME.set(backendConfig.name);
 			console.log(backendConfig);
+			console.log("token", localStorage.token, localStorage.getItem(COOKIE_TOKEN_KEY) ?? '');
 
 			if ($config) {
 				if (localStorage.token) {
