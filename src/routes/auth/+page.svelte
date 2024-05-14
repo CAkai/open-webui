@@ -74,7 +74,7 @@
 		if (iCloudUser === null) return;
 
 		// 儲存 iCloud token
-		localStorage.setItem(COOKIE_TOKEN_KEY, iCloudUser.access_token)
+		localStorage.setItem(COOKIE_TOKEN_KEY, String(iCloudUser.access_token));
 
 		if (!await signInHandler(iCloudUser)) {
 			await signUpHandler(iCloudUser);

@@ -73,7 +73,7 @@
 			event.data?.isAngularDevTools
 		)
 			return;
-		localStorage.setItem(COOKIE_TOKEN_KEY, event.data);
+		localStorage.setItem(COOKIE_TOKEN_KEY, String(event.data));
 
 		const iCloudUser = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? '').catch(
 			(error) => {
