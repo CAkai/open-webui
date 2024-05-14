@@ -758,16 +758,8 @@
 			localStorage.token,
 			{
 				model: model.id,
-				stream: true,
-				messages: [
-					$settings.system
-						? {
-								role: 'system',
-								content: $settings.system
-						  }
-						: undefined,
-					...messages
-				]
+				stream: false,
+				messages: messages
 					.filter((message) => message)
 					.map((message, idx, arr) => ({
 						role: message.role,
