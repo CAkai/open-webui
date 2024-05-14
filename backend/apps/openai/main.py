@@ -300,6 +300,7 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
 
         # Convert the modified body back to JSON
         body = json.dumps(body)
+        log.info("body_json:", body)
     except json.JSONDecodeError as e:
         log.error("Error loading request body into a dictionary:", e)
 
@@ -307,6 +308,7 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
     key = app.state.OPENAI_API_KEYS[idx]
 
     target_url = f"{url}/{path}"
+    log.info(f"proxy: {target_url}")
 
     if key == "":
         raise HTTPException(status_code=401, detail=ERROR_MESSAGES.API_KEY_NOT_FOUND)

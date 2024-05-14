@@ -802,6 +802,9 @@
 								decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
 						  )
 						: undefined,
+				// backend/main.py 有 middleware 會把 docs 轉成 rag
+				docs: docs.length > 0 ? docs : undefined,
+				citations: docs.length > 0
 			},
 			`${UMC_API_BASE_URL}`
 		);
