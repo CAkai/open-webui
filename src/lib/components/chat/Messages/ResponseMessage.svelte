@@ -325,6 +325,7 @@
 
 	onMount(async () => {
 		await tick();
+		console.log("response message", message);
 		renderStyling();
 	});
 </script>

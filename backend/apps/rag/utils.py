@@ -238,7 +238,7 @@ def rag_messages(
     r,
     hybrid_search,
 ):
-    log.debug(f"docs: {docs} {messages} {embedding_function} {reranking_function}")
+    log.warn(f"docs: {docs} {messages} {embedding_function} {reranking_function}")
 
     last_user_message_idx = None
     for i in range(len(messages) - 1, -1, -1):
@@ -315,8 +315,23 @@ def rag_messages(
 
     citations = []
     for context in relevant_contexts:
-        items = context["documents"][0]
-        context_string += "\n\n".join(items)
+        try:
+            if "documents" in context:
+                context_string += "\n\n".join(
+                    [text for text in context["documents"][0] if text is not None]
+                )
+
+                if "metadatas" in context:
+                    citations.append(
+                        {
+                            "source": context["source"],
+                            "document": context["documents"][0],
+                            "metadata": context["metadatas"][0],
+                        }
+                    )
+        except Exception as e:
+            log.exception(e)
+
     context_string = context_string.strip()
 
     ra_content = rag_template(
