@@ -9,6 +9,7 @@
 - 修正有時候會跳出「無效的Token」的問題。([e5cde24])
   - 透過強制轉型為 String 再儲存來解決這個問題。([147c4b1])
 - 修正生產環境無法解析 Stream Data「syntax: "data: {'id': ...}" is invalid format 'd' json」的問題。([325bc7a])
+- 修正 sendPromptUMC 在接收回傳時，沒有記錄 citations，導致 response message 不會顯示相關文件的問題。
 
 
 [147c4b1]: https://github.com/CAkai/open-webui/commit/147c4b1fe838d3ff7c1294680ca654a00836ac09

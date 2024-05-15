@@ -238,7 +238,7 @@ def rag_messages(
     r,
     hybrid_search,
 ):
-    log.warn(f"docs: {docs} {messages} {embedding_function} {reranking_function}")
+    log.debug(f"docs: {docs} {messages} {embedding_function} {reranking_function}")
 
     last_user_message_idx = None
     for i in range(len(messages) - 1, -1, -1):

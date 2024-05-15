@@ -818,7 +818,7 @@
 			const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 
 			for await (const update of textStream) {
-				const { value, done } = update;
+				const { value, done, citations } = update;
 				if (done || stopResponseFlag || _chatId !== $chatId) {
 					responseMessage.done = true;
 					messages = messages;
@@ -828,6 +828,11 @@
 					}
 
 					break;
+				}
+
+				if (citations) {
+					responseMessage.citations = citations;
+					continue;
 				}
 
 				if (responseMessage.content == '' && value == '\n') {

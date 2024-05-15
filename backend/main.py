@@ -106,8 +106,8 @@ origins = ["*"]
 class RAGMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         return_citations = False
-        log.warn("request.method: %s", request.method)
-        log.warn("request.url.path: %s", request.url.path)
+        # log.warn("request.method: %s", request.method)
+        # log.warn("request.url.path: %s", request.url.path)
         
         if request.method == "POST" and (
             "/api/chat" in request.url.path or "/chat/completions" in request.url.path
@@ -122,13 +122,13 @@ class RAGMiddleware(BaseHTTPMiddleware):
             data = json.loads(body_str) if body_str else {}
 
             return_citations = data.get("citations", False)
-            log.warn(f"return_citations: {'citations' in data}")
+            # log.warn(f"return_citations: {'citations' in data}")
             if "citations" in data:
                 del data["citations"]
 
             # Example: Add a new key-value pair or modify existing ones
             # data["modified"] = True  # Example modification
-            log.warn(f"docs in data: {'docs' in data}")
+            # log.warn(f"docs in data: {'docs' in data}")
             if "docs" in data:
                 data = {**data}
                 data["messages"], citations = rag_messages(
@@ -143,12 +143,12 @@ class RAGMiddleware(BaseHTTPMiddleware):
                 )
                 del data["docs"]
 
-                log.warn(
+                log.debug(
                     f"data['messages']: {data['messages']}, citations: {citations}"
                 )
 
             modified_body_bytes = json.dumps(data).encode("utf-8")
-            log.warn(f"modified_body_bytes: {modified_body_bytes}")
+            # log.warn(f"modified_body_bytes: {modified_body_bytes}")
 
             # Replace the request body with the modified one
             request._body = modified_body_bytes
@@ -166,10 +166,10 @@ class RAGMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
 
         if return_citations:
-            log.warn("response type %s", type(response))
+            # log.warn("response type %s", type(response))
             # Inject the citations into the response
             if isinstance(response, StreamingResponse):
-                log.warn("content-type: %s", response.headers.get("Content-Type"))
+                # log.warn("content-type: %s", response.headers.get("Content-Type"))
                 # If it's a streaming response, inject it as SSE event or NDJSON line
                 content_type = response.headers.get("Content-Type")
                 if "text/event-stream" in content_type or "application/json" in content_type:
