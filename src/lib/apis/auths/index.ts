@@ -43,7 +43,7 @@ export const iCloudGetUserInfo = async (token: string) => {
 			return res.json();
 		})
 		.catch((err: {message: string; error: string}) => {
-			console.log(err);
+			console.log(`${ICLOUD_API_BASE_URL}/api/v1/auth error`, err);
 
 			error = err.error || "Failed to get user info.";
 			return null;

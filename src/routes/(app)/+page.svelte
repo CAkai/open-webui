@@ -566,11 +566,12 @@
 
 		scrollToBottom();
 
+		//! 因為 UMC GPT 是 stream=false，導致多個網頁同時使用時，會阻塞。
 		const [res, controller] = await generateUMCChatCompletion(
 			localStorage.token,
 			{
 				model: model.id,
-				stream: false,
+				stream: true,
 				messages: messages
 					.filter((message) => message)
 					.map((message, idx, arr) => ({

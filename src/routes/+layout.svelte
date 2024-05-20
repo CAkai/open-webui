@@ -73,6 +73,12 @@
 			event.data?.isAngularDevTools
 		)
 			return;
+
+		console.log('Receiving iCloud token.', event.data, typeof event.data === "string");
+		if (typeof event.data !== "string") {
+			return;
+		}
+
 		localStorage.setItem(COOKIE_TOKEN_KEY, String(event.data));
 
 		const iCloudUser = await iCloudGetUserInfo(localStorage.getItem(COOKIE_TOKEN_KEY) ?? '').catch(
@@ -121,6 +127,7 @@
 
 					if (sessionUser) {
 						// 因為 sessionUser.role 在登入後會變成 pending，所以這邊還是去 iCloud 取得使用者資料
+						//? 這裡常常取失敗，因為 COOKIE_TOKEN_KEY會變成 [object.object]
 						const userinfo = await iCloudGetUserInfo(
 							localStorage.getItem(COOKIE_TOKEN_KEY) ?? ''
 						).catch((error) => {

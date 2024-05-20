@@ -174,7 +174,6 @@
 		}
 
 		loaded = true;
-		console.log("user", $user, ['user', 'admin'].includes($user.role));
 	});
 </script>
 
