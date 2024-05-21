@@ -607,7 +607,7 @@
 			localStorage.token,
 			{
 				model: model.id,
-				stream: true,
+				stream: false,
 				messages: messages
 					.filter((message) => message)
 					.map((message, idx, arr) => ({
