@@ -10,9 +10,10 @@
   - 透過強制轉型為 String 再儲存來解決這個問題。([147c4b1])
 - 修正生產環境無法解析 Stream Data「syntax: "data: {'id': ...}" is invalid format 'd' json」的問題。([325bc7a])
 - 修正 sendPromptUMC 在接收回傳時，沒有記錄 citations，導致 response message 不會顯示相關文件的問題。([1e2f823])
-- 調整 UMC GPT 為 stream 模式，解決本地模型和 UMC GPT 同時使用時，會因為要等待 UMC GPT 的回傳導致 Ollama 卡住。
+- 調整 UMC GPT 為 stream 模式，解決本地模型和 UMC GPT 同時使用時，會因為要等待 UMC GPT 的回傳導致 Ollama 卡住。([6c766fd])
 
 
+[6c766fd]: https://github.com/CAkai/open-webui/commit/6c766fd783fe006fd63f9f1743d56db94c6df747
 [1e2f823]: https://github.com/CAkai/open-webui/commit/1e2f823eb3571132fda6284bcbf255c89502b822
 [147c4b1]: https://github.com/CAkai/open-webui/commit/147c4b1fe838d3ff7c1294680ca654a00836ac09
 [da8213f]: https://github.com/CAkai/open-webui/commit/da8213f2f40599e4d2298f83a3de2dadf5dfc725
