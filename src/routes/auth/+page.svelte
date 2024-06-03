@@ -132,7 +132,7 @@
 		</div> -->
 
 		<div class="w-full sm:max-w-md px-10 min-h-screen flex flex-col text-center">
-			{#if ($config?.trusted_header_auth ?? false) || $config?.auth === false}
+			{#if ($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false}
 				<div class=" my-auto pb-10 w-full">
 					<div
 						class="flex items-center justify-center gap-3 text-xl sm:text-2xl text-center font-bold dark:text-gray-200"

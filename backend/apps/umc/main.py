@@ -11,7 +11,7 @@ import logging
 from pydantic import BaseModel
 
 
-from apps.web.models.users import Users
+from apps.webui.models.users import Users
 from constants import ERROR_MESSAGES
 from utils.utils import (
     decode_token,
@@ -44,11 +44,9 @@ app.add_middleware(
 
 app.state.UMC_API_BASE_URLS = [UMC_BASE_URL]
 
-app.state.MODELS = {
-    "data": [
-        {"id": "umcgpt-4", "name": "UMCGPT-4", "external": False, "source": "umc"},
-    ]
-}
+app.state.MODELS = [
+    {"id": "umcgpt-4o", "name": "UMCGPT-4o", "external": False, "source": "umc"},
+]
 
 
 @app.middleware("http")

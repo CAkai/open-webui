@@ -14,7 +14,7 @@
 	import 'tippy.js/dist/tippy.css';
 
 	import { WEBUI_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
-	import i18n, { initI18n } from '$lib/i18n';
+	import i18n, { initI18n, getLanguages } from '$lib/i18n';
 
 	setContext('i18n', i18n);
 
@@ -123,7 +123,14 @@
 		}
 		// Initialize i18n even if we didn't get a backend config,
 		// so `/error` can show something that's not `undefined`.
-		initI18n(backendConfig?.default_locale);
+
+		const languages = await getLanguages();
+
+		const browserLanguage = navigator.languages
+			? navigator.languages[0]
+			: navigator.language || navigator.userLanguage;
+
+		initI18n(languages.includes(browserLanguage) ? browserLanguage : backendConfig?.default_locale);
 
 		if (backendConfig) {
 			// Save Backend Status to Store
