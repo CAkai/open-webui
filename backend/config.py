@@ -602,6 +602,20 @@ WEBUI_BANNERS = PersistentConfig(
     [BannerModel(**banner) for banner in json.loads("[]")],
 )
 
+
+SHOW_ADMIN_DETAILS = PersistentConfig(
+    "SHOW_ADMIN_DETAILS",
+    "auth.admin.show",
+    os.environ.get("SHOW_ADMIN_DETAILS", "true").lower() == "true",
+)
+
+ADMIN_EMAIL = PersistentConfig(
+    "ADMIN_EMAIL",
+    "auth.admin.email",
+    os.environ.get("ADMIN_EMAIL", None),
+)
+
+
 ####################################
 # WEBUI_SECRET_KEY
 ####################################
@@ -682,6 +696,12 @@ RAG_EMBEDDING_MODEL_AUTO_UPDATE = (
 
 RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE = (
     os.environ.get("RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE", "").lower() == "true"
+)
+
+RAG_EMBEDDING_OPENAI_BATCH_SIZE = PersistentConfig(
+    "RAG_EMBEDDING_OPENAI_BATCH_SIZE",
+    "rag.embedding_openai_batch_size",
+    os.environ.get("RAG_EMBEDDING_OPENAI_BATCH_SIZE", 1),
 )
 
 RAG_RERANKING_MODEL = PersistentConfig(

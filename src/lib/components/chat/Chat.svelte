@@ -18,7 +18,8 @@
 		tags as _tags,
 		WEBUI_NAME,
 		banners,
-		user
+		user,
+		socket
 	} from '$lib/stores';
 	import {
 		convertMessagesToHistory,
@@ -281,6 +282,16 @@
 		}
 	};
 
+	const getChatEventEmitter = async (modelId: string, chatId: string = '') => {
+		return setInterval(() => {
+			$socket?.emit('usage', {
+				action: 'chat',
+				model: modelId,
+				chat_id: chatId
+			});
+		}, 1000);
+	};
+
 	//////////////////////////
 	// Ollama functions
 	//////////////////////////
@@ -452,6 +463,8 @@
 					}
 					responseMessage.userContext = userContext;
 
+					const chatEventEmitter = await getChatEventEmitter(model.id, _chatId);
+
 					if (webSearchEnabled) {
 						await getWebSearchResults(model.id, parentId, responseMessageId);
 					}
@@ -463,6 +476,10 @@
 					} else if (model) {
 						await sendPromptOllama(model, prompt, responseMessageId, _chatId);
 					}
+
+					console.log('chatEventEmitter', chatEventEmitter);
+
+					if (chatEventEmitter) clearInterval(chatEventEmitter);
 				} else {
 					toast.error($i18n.t(`Model {{modelId}} not found`, { modelId }));
 				}
@@ -727,6 +744,7 @@
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
 		model = model.id;
+
 		const responseMessage = history.messages[responseMessageId];
 
 		// Wait until history/message have been updated
@@ -1362,7 +1380,7 @@
 
 {#if !chatIdProp || (loaded && chatIdProp)}
 	<div
-		class="min-h-screen max-h-screen {$showSidebar
+		class="h-screen max-h-[100dvh] {$showSidebar
 			? 'md:max-w-[calc(100%-260px)]'
 			: ''} w-full max-w-full flex flex-col"
 	>
