@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getAdminDetails } from '$lib/apis/auths';
 	import { onMount, tick, getContext } from 'svelte';
+	import { COOKIE_TOKEN_KEY } from '$lib/constants';
 
 	const i18n = getContext('i18n');
 
