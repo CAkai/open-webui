@@ -17,17 +17,21 @@
 		getOpenAIUrls,
 		updateOpenAIConfig,
 		updateOpenAIKeys,
-		updateOpenAIUrls,
+		updateOpenAIUrls
 	} from '$lib/apis/openai';
 	import { updateUMCUrls, getUMCUrls } from '$lib/apis/umc';
 	import { toast } from 'svelte-sonner';
 	import Switch from '$lib/components/common/Switch.svelte';
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
+	import { getModels as _getModels } from '$lib/apis';
 
 	const i18n = getContext('i18n');
 
-	export let getModels: Function;
+	const getModels = async () => {
+		const models = await _getModels(localStorage.token);
+		return models;
+	};
 
 	// External
 	let OLLAMA_BASE_URLS = [''];
@@ -77,7 +81,6 @@
 	};
 
 	const updateOpenAIHandler = async () => {
-		UMC_API_BASE_URLS = await updateUMCUrls(localStorage.token, UMC_API_BASE_URLS);
 		// Check if API KEYS length is same than API URLS length
 		if (OPENAI_API_KEYS.length !== OPENAI_API_BASE_URLS.length) {
 			// if there are more keys than urls, remove the extra keys
@@ -96,6 +99,7 @@
 
 		OPENAI_API_BASE_URLS = await updateOpenAIUrls(localStorage.token, OPENAI_API_BASE_URLS);
 		OPENAI_API_KEYS = await updateOpenAIKeys(localStorage.token, OPENAI_API_KEYS);
+		UMC_API_BASE_URLS = await updateUMCUrls(localStorage.token, UMC_API_BASE_URLS);
 		await models.set(await getModels());
 	};
 
@@ -165,7 +169,7 @@
 		dispatch('save');
 	}}
 >
-	<div class="space-y-3 pr-1.5 overflow-y-scroll h-[24rem] max-h-[25rem]">
+	<div class="space-y-3 overflow-y-scroll scrollbar-hidden h-full">
 		<div>
 			<div class=" mb-2.5 text-sm font-medium">{$i18n.t('UMC Base URL')}</div>
 			<input
@@ -175,7 +179,7 @@
 			/>
 		</div>
 
-		<hr class=" dark:border-gray-700" />
+		<hr class=" dark:border-gray-850" />
 
 		{#if ENABLE_OPENAI_API !== null && ENABLE_OLLAMA_API !== null}
 			<div class=" space-y-3">
@@ -318,7 +322,7 @@
 				</div>
 			</div>
 
-			<hr class=" dark:border-gray-700" />
+			<hr class=" dark:border-gray-850" />
 
 			<div class="pr-1.5 space-y-2">
 				<div class="flex justify-between items-center text-sm">

@@ -45,7 +45,7 @@ app.add_middleware(
 app.state.UMC_API_BASE_URLS = [UMC_BASE_URL]
 
 app.state.MODELS = [
-    {"id": "umcgpt-4o", "name": "UMCGPT-4o", "external": False, "source": "umc"},
+    {"id": "umcgpt-4o", "name": "UMCGPT-4o", "external": False, "source": "umc", "own_by": "umc"},
 ]
 
 
@@ -91,6 +91,76 @@ async def fetch_url(url, key):
 async def get_models(url_idx: Optional[int] = None, user=Depends(get_current_user)):
     return app.state.MODELS
 
+@app.post("/chat/completions")
+async def generate_chat_completion(
+    form_data: dict,
+    user=Depends(get_verified_user),
+):
+    payload = {**form_data}
+
+
+    if "pipeline" in model and model.get("pipeline"):
+        payload["user"] = {"name": user.name, "id": user.id}
+
+    # Convert the modified body back to JSON
+    payload = json.dumps(payload)
+
+    print(payload)
+
+    url = app.state.config.UMC_API_BASE_URLS[0]
+
+    print(payload)
+
+    headers = {}
+    headers["Content-Type"] = "application/json"
+
+    r = None
+    session = None
+    streaming = False
+
+    try:
+        session = aiohttp.ClientSession(trust_env=True)
+        r = await session.request(
+            method="POST",
+            url=f"{url}/chat/completions",
+            data=payload,
+            headers=headers,
+        )
+
+        r.raise_for_status()
+
+        # Check if response is SSE
+        if "text/event-stream" in r.headers.get("Content-Type", ""):
+            streaming = True
+            return StreamingResponse(
+                r.content,
+                status_code=r.status,
+                headers=dict(r.headers),
+                background=BackgroundTask(
+                    cleanup_response, response=r, session=session
+                ),
+            )
+        else:
+            response_data = await r.json()
+            return response_data
+    except Exception as e:
+        log.exception(e)
+        error_detail = "Open WebUI: Server Connection Error"
+        if r is not None:
+            try:
+                res = await r.json()
+                print(res)
+                if "error" in res:
+                    error_detail = f"External: {res['error']['message'] if 'message' in res['error'] else res['error']}"
+            except:
+                error_detail = f"External: {e}"
+        raise HTTPException(status_code=r.status if r else 500, detail=error_detail)
+    finally:
+        if not streaming and session:
+            if r:
+                r.close()
+            await session.close()
+            
 
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def proxy(path: str, request: Request, user=Depends(get_verified_user)):

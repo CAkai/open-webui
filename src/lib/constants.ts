@@ -14,8 +14,8 @@ export const IMAGES_API_BASE_URL = `${WEBUI_BASE_URL}/images/api/v1`;
 export const RAG_API_BASE_URL = `${WEBUI_BASE_URL}/rag/api/v1`;
 
 // region iCloud 設定
-// export const ICLOUD_API_BASE_URL = "http://192.168.50.165:3003";
-export const ICLOUD_API_BASE_URL = "http://172.16.32.95/backend";
+export const ICLOUD_API_BASE_URL = "http://192.168.50.165:3003";
+// export const ICLOUD_API_BASE_URL = "http://172.16.32.95/backend";
 export const COOKIE_TOKEN_KEY = "umc-camera-access_token";
 export const UMC_API_BASE_URL = `${WEBUI_BASE_URL}/umc/api/v1`;
 // endregion
@@ -96,7 +96,8 @@ export const SUPPORTED_FILE_EXTENSIONS = [
 	'xls',
 	'xlsx',
 	'pptx',
-	'ppt'
+	'ppt',
+	'msg'
 ];
 
 // Source: https://kit.svelte.dev/docs/modules#$env-static-public
