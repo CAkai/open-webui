@@ -1,0 +1,93 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build dev",
+            "type": "shell",
+            "command": "docker-compose -f ${input:compose_file} up -d --build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "options": {
+                "statusbar": {
+                    "label": "$(beaker)建構容器"
+                }
+            }
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "docker-compose -f ${input:compose_file} up -d",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "options": {
+                "statusbar": {
+                    "label": "$(debug-start)啟動容器"
+                }
+            }
+        },
+        {
+            "label": "down",
+            "type": "shell",
+            "command": "docker-compose -f ${input:compose_file} down --remove-orphans", 
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "options": {
+                "statusbar": {
+                    "label": "$(debug-pause)終止容器"
+                }
+            }
+        },
+        {
+            "label": "watch",
+            "type": "shell",
+            "command": "docker-compose -f ${input:compose_file} watch",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "options": {
+                "statusbar": {
+                    "label": "$(eye-watch)監控容器"
+                }
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "env_file",
+            "type": "pickString",
+            "description": "選擇環境檔",
+            "options": [
+                ".env",
+                ".env.dev"
+            ],
+            "default": ".env.dev"
+        },
+        {
+            "id": "compose_file",
+            "type": "pickString",
+            "description": "選擇 docker-compose 檔案",
+            "options": [
+                "docker-compose.dev.yaml",
+                "docker-compose.umc.yaml",
+                "docker-compose.a1111-test.yaml",
+                "docker-compose.amdgpu.yaml",
+                "docker-compose.data.yaml",
+                "docker-compose.api.yaml",
+                "docker-compose.gpu.yaml",
+                "docker-compose.yaml"
+            ],
+            "default": "docker-compose.dev.yaml"
+        }
+    ]
+}
