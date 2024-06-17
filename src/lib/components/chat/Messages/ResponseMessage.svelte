@@ -877,8 +877,8 @@
 												<button
 													class="{isLastMessage
 														? 'visible'
-														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {message
-														?.annotation?.rating === 1
+														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {(message
+														?.annotation?.rating ?? null) === 1
 														? 'bg-gray-100 dark:bg-gray-800'
 														: ''} dark:hover:text-white hover:text-black transition"
 													on:click={() => {
@@ -912,8 +912,8 @@
 												<button
 													class="{isLastMessage
 														? 'visible'
-														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {message
-														?.annotation?.rating === -1
+														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg {(message
+														?.annotation?.rating ?? null) === -1
 														? 'bg-gray-100 dark:bg-gray-800'
 														: ''} dark:hover:text-white hover:text-black transition"
 													on:click={() => {
@@ -983,6 +983,7 @@
 														? 'visible'
 														: 'invisible group-hover:visible'} p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg dark:hover:text-white hover:text-black transition regenerate-response-button"
 													on:click={() => {
+														showRateComment = false;
 														regenerateResponse(message);
 													}}
 												>
