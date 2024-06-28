@@ -29,7 +29,8 @@
 		showChangelog,
 		config,
 		showCallOverlay,
-		tools
+		tools,
+		functions
 	} from '$lib/stores';
 	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL, COOKIE_TOKEN_KEY } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
@@ -38,6 +39,7 @@
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import AccountPending from '$lib/components/layout/Overlay/AccountPending.svelte';
+	import { getFunctions } from '$lib/apis/functions';
 
 	const i18n = getContext('i18n');
 
@@ -95,6 +97,9 @@
 				})(),
 				(async () => {
 					tools.set(await getTools(localStorage.token));
+				})(),
+				(async () => {
+					functions.set(await getFunctions(localStorage.token));
 				})(),
 				(async () => {
 					banners.set(await getBanners(localStorage.token));
