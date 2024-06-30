@@ -1,13 +1,48 @@
 services:
-  # ollama:
-  #   volumes:
-  #     - ollama:/root/.ollama
-  #   container_name: ollama
-  #   pull_policy: always
-  #   tty: true
-  #   restart: unless-stopped
-  #   image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
-  
+  ollama:
+    image: ollama/ollama:0.1.48
+    ports:
+      - "11434:11434"
+    restart: always
+    volumes:
+      - .:/code
+      - ollama_data:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_NUM_PARALLEL=10
+      - OLLAMA_MAX_LOADED_MODELS=10
+
+    healthcheck:
+      test: ollama --version || exit 1
+      interval: 600s
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.10
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    init: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.99
+
   open-webui:
     build:
       context: .
@@ -48,3 +83,12 @@ services:
 volumes:
   # ollama: {}
   open-webui: {}
+  ollama_data:
+
+networks:
+  ollama_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.29.0.0/16
