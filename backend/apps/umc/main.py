@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Response, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse, FileResponse
+from starlette.background import BackgroundTask
 
 import requests
 import aiohttp
@@ -162,6 +163,15 @@ async def generate_chat_completion(
             await session.close()
             
 
+async def cleanup_response(
+    response: Optional[aiohttp.ClientResponse],
+    session: Optional[aiohttp.ClientSession],
+):
+    if response:
+        response.close()
+    if session:
+        await session.close()
+
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
     body = await request.body()
@@ -176,45 +186,54 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
     except json.JSONDecodeError as e:
         log.error("Error loading request body into a dictionary:", e)
         
-    url = f"{app.state.UMC_API_BASE_URLS[0]}/{path}"
+    target_url = f"{app.state.UMC_API_BASE_URLS[0]}/{path}"
 
     headers = {}
     headers["Content-Type"] = "application/json"
 
     r = None
+    session = None
+    streaming = False
 
     try:
-        r = requests.request(
+        session = aiohttp.ClientSession(trust_env=True)
+        r = await session.request(
             method=request.method,
-            url=url,
+            url=target_url,
             data=body,
             headers=headers,
-            stream=True,
         )
 
         r.raise_for_status()
 
         # Check if response is SSE
         if "text/event-stream" in r.headers.get("Content-Type", ""):
+            streaming = True
             return StreamingResponse(
-                r.iter_content(chunk_size=8192),
-                status_code=r.status_code,
+                r.content,
+                status_code=r.status,
                 headers=dict(r.headers),
+                background=BackgroundTask(
+                    cleanup_response, response=r, session=session
+                ),
             )
         else:
-            response_data = r.json()
+            response_data = await r.json()
             return response_data
     except Exception as e:
         log.exception(e)
         error_detail = "Open WebUI: Server Connection Error"
         if r is not None:
             try:
-                res = r.json()
+                res = await r.json()
+                print(res)
                 if "error" in res:
                     error_detail = f"External: {res['error']['message'] if 'message' in res['error'] else res['error']}"
             except:
                 error_detail = f"External: {e}"
-
-        raise HTTPException(
-            status_code=r.status_code if r else 500, detail=error_detail
-        )
+        raise HTTPException(status_code=r.status if r else 500, detail=error_detail)
+    finally:
+        if not streaming and session:
+            if r:
+                r.close()
+            await session.close()
