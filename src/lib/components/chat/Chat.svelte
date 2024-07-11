@@ -64,6 +64,7 @@
 	import { UMC_API_BASE_URL } from '$lib/constants';
 	import ChatControls from './ChatControls.svelte';
 	import EventConfirmDialog from '../common/ConfirmDialog.svelte';
+	import { getTaskConfig } from '$lib/apis';
 
 	const i18n: Writable<i18nType> = getContext('i18n');
 
@@ -106,6 +107,14 @@
 	};
 
 	let params = {};
+
+	let taskConfig = {
+		TASK_MODEL: '',
+		TASK_MODEL_EXTERNAL: '',
+		TITLE_GENERATION_PROMPT_TEMPLATE: '',
+		SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE: '',
+		SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD: 0
+	};
 
 	$: if (history.currentId !== null) {
 		let _messages = [];
@@ -173,6 +182,9 @@
 	};
 
 	onMount(async () => {
+		// 取得 Search Query Generation Prompt - Arvin Yang 2024/07/11
+		taskConfig = await getTaskConfig(localStorage.token);
+
 		const onMessageHandler = async (event) => {
 			if (event.origin === window.origin) {
 				// Replace with your iframe's origin
@@ -650,43 +662,56 @@
 			{
 				model: model.id,
 				stream: true,
-				messages: messages
-					.filter((message) => message?.content?.trim())
-					.map((message, idx, arr) => ({
-						role: message.role,
-						...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
-						message.role === 'user'
-							? {
-									content: [
-										{
-											type: 'text',
-											text:
-												arr.length - 1 !== idx
-													? message.content
-													: message?.raContent ?? message.content
-										},
-										...message.files
-											.filter((file) => file.type === 'image')
-											.map((file) => ({
-												type: 'image_url',
-												image_url: {
-													url: file.url
-												}
-											}))
-									]
-							  }
-							: {
-									content: [
-										{
-											type: 'text',
-											text:
-												arr.length - 1 !== idx
-													? message.content
-													: message?.raContent ?? message.content
-										}
-									]
-							  })
-					})),
+				messages: [
+					...messages
+						.filter((message) => message?.content?.trim())
+						.map((message, idx, arr) => ({
+							role: message.role,
+							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
+							message.role === 'user'
+								? {
+										content: [
+											{
+												type: 'text',
+												text:
+													arr.length - 1 !== idx
+														? message.content
+														: message?.raContent ?? message.content
+											},
+											...message.files
+												.filter((file) => file.type === 'image')
+												.map((file) => ({
+													type: 'image_url',
+													image_url: {
+														url: file.url
+													}
+												}))
+										]
+								  }
+								: {
+										content: [
+											{
+												type: 'text',
+												text:
+													arr.length - 1 !== idx
+														? message.content
+														: message?.raContent ?? message.content
+											}
+										]
+								  })
+						})),
+					// 讓 admin panel/interface/search query generation prompt 能夠傳進去
+					// Arvin Yang - 2024/07/11
+					{
+						role: 'user',
+						content: [
+							{
+								type: 'text',
+								text: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
+							}
+						]
+					}
+				],
 				stop:
 					$settings?.options?.stop ?? undefined
 						? $settings?.options?.stop.map((str) =>
@@ -695,7 +720,7 @@
 						: undefined,
 				// backend/main.py 有 middleware 會把 docs 轉成 rag
 				tool_ids: selectedToolIds.length > 0 ? selectedToolIds : undefined,
-				files: files.length > 0 ? files : undefined,
+				files: files.length > 0 ? files : undefined
 			},
 			`${UMC_API_BASE_URL}`
 		);
@@ -919,6 +944,13 @@
 				}
 				return baseMessage;
 			});
+
+		// 讓 admin panel/interface/search query generation prompt 能夠傳進去
+		// Arvin Yang - 2024/07/11
+		messagesBody.push({
+			role: 'user',
+			content: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
+		});
 
 		let lastImageIndex = -1;
 
@@ -1226,55 +1258,68 @@
 							  }
 							: undefined,
 					messages: [
-						params?.system || $settings.system || (responseMessage?.userContext ?? null)
-							? {
-									role: 'system',
-									content: `${promptTemplate(
-										params?.system ?? $settings?.system ?? '',
-										$user.name,
-										$settings?.userLocation
-											? await getAndUpdateUserLocation(localStorage.token)
-											: undefined
-									)}${
-										responseMessage?.userContext ?? null
-											? `\n\nUser Context:\n${responseMessage?.userContext ?? ''}`
-											: ''
-									}`
-							  }
-							: undefined,
-						...messages
-					]
-						.filter((message) => message?.content?.trim())
-						.map((message, idx, arr) => ({
-							role: message.role,
-							...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
-							message.role === 'user'
+						[
+							params?.system || $settings.system || (responseMessage?.userContext ?? null)
 								? {
-										content: [
-											{
-												type: 'text',
-												text:
-													arr.length - 1 !== idx
-														? message.content
-														: message?.raContent ?? message.content
-											},
-											...message.files
-												.filter((file) => file.type === 'image')
-												.map((file) => ({
-													type: 'image_url',
-													image_url: {
-														url: file.url
-													}
-												}))
-										]
+										role: 'system',
+										content: `${promptTemplate(
+											params?.system ?? $settings?.system ?? '',
+											$user.name,
+											$settings?.userLocation
+												? await getAndUpdateUserLocation(localStorage.token)
+												: undefined
+										)}${
+											responseMessage?.userContext ?? null
+												? `\n\nUser Context:\n${responseMessage?.userContext ?? ''}`
+												: ''
+										}`
 								  }
-								: {
-										content:
-											arr.length - 1 !== idx
-												? message.content
-												: message?.raContent ?? message.content
-								  })
-						})),
+								: undefined,
+							...messages
+						]
+							.filter((message) => message?.content?.trim())
+							.map((message, idx, arr) => ({
+								role: message.role,
+								...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
+								message.role === 'user'
+									? {
+											content: [
+												{
+													type: 'text',
+													text:
+														arr.length - 1 !== idx
+															? message.content
+															: message?.raContent ?? message.content
+												},
+												...message.files
+													.filter((file) => file.type === 'image')
+													.map((file) => ({
+														type: 'image_url',
+														image_url: {
+															url: file.url
+														}
+													}))
+											]
+									  }
+									: {
+											content:
+												arr.length - 1 !== idx
+													? message.content
+													: message?.raContent ?? message.content
+									  })
+							})),
+						// 讓 admin panel/interface/search query generation prompt 能夠傳進去
+						// Arvin Yang - 2024/07/11
+						{
+							role: 'user',
+							content: [
+								{
+									type: 'text',
+									text: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
+								}
+							]
+						}
+					],
 					seed: params?.seed ?? $settings?.params?.seed ?? undefined,
 					stop:
 						params?.stop ?? $settings?.params?.stop ?? undefined
@@ -1538,30 +1583,30 @@
 	const generateChatTitle = async (userPrompt) => {
 		if ($settings?.title?.auto ?? true) {
 			let title = '';
-			if (selectedModels[0].includes("umcgpt")) {
+			if (selectedModels[0].includes('umcgpt')) {
 				title = await generateUMCTitle(
 					localStorage.token,
 					selectedModels[0],
 					$settings?.title?.prompt ??
-					$i18n.t(
-						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-					) + ' {{prompt}}',
-					userPrompt,
+						$i18n.t(
+							"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+						) + ' {{prompt}}',
+					userPrompt
 				).catch((error) => {
 					console.error(error);
 					return 'New Chat';
 				});
 			} else {
-			title = await generateTitle(
-				localStorage.token,
-				selectedModels[0],
-				userPrompt,
-				$chatId
-			).catch((error) => {
-				console.error(error);
-				return 'New Chat';
-			});
-		}
+				title = await generateTitle(
+					localStorage.token,
+					selectedModels[0],
+					userPrompt,
+					$chatId
+				).catch((error) => {
+					console.error(error);
+					return 'New Chat';
+				});
+			}
 
 			return title;
 		} else {

@@ -673,5 +673,8 @@
 	"Your account status is currently pending activation.": "",
 	"Youtube": "",
 	"UMC Base URL": "",
-	"Youtube Loader Settings": ""
+	"Youtube Loader Settings": "",
+	"EmpId": "Employee ID",
+	"Enter Your EmpId": "Enter Your Employee ID"
+
 }

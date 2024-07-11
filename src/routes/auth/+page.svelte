@@ -220,7 +220,7 @@
 							{/if}
 
 							<div class="mb-2">
-								<div class=" text-sm font-medium text-left mb-1">{$i18n.t('Email')}</div>
+								<div class=" text-sm font-medium text-left mb-1">{$i18n.t('EmpId')}</div>
 								<input
 									bind:value={empid}
 									type="text"

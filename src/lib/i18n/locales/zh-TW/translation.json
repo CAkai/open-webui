@@ -672,5 +672,7 @@
 	"Your account status is currently pending activation.": "您的帳號狀態目前待啟用。",
 	"Youtube": "Youtube",
 	"UMC Base URL": "中繼機 URL",
-	"Youtube Loader Settings": "Youtube 載入器設定"
+	"Youtube Loader Settings": "Youtube 載入器設定",
+	"EmpId": "工號",
+	"Enter Your EmpId": "請輸入你的工號"
 }
