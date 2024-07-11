@@ -163,14 +163,6 @@ export const generateUMCChatCompletion = async (
 		},
 		body: JSON.stringify(body)
 	})
-	.then(async (res) => {
-		if (res) {
-			res.clone().text().then(async (s) => {
-				console.log("umc stream data", s);
-			});
-		}
-		return res;
-	})
 	.catch((err) => {
 		console.log("umc /api/chat error", err);
 		error = err;

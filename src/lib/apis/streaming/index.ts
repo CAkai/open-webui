@@ -57,7 +57,7 @@ async function* openAIStreamToIterator(
 
 		try {
 			const parsedData = JSON.parse(data.replace(/^data:\s/, ''));
-			console.log("openAIStreamToIterator", data, parsedData);
+			// console.log("openAIStreamToIterator", data, parsedData);
 
 			if (parsedData.error) {
 				yield { done: true, value: '', error: parsedData.error };

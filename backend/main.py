@@ -612,7 +612,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         if request.method == "POST" and any(
             endpoint in request.url.path
-            for endpoint in ["/ollama/api/chat", "/chat/completions"]
+            for endpoint in ["/ollama/api/chat", "/chat/completions", "/umc/api/v1/api/chat"]
         ):
             log.debug(f"request.url.path: {request.url.path}")
 
@@ -698,12 +698,27 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             if len(contexts) > 0:
                 context_string = "/n".join(contexts).strip()
                 prompt = get_last_user_message(body["messages"])
-                body["messages"] = add_or_update_system_message(
-                    rag_template(
-                        rag_app.state.config.RAG_TEMPLATE, context_string, prompt
-                    ),
-                    body["messages"],
+                
+                # 解決 rag 無法把檔案傳給 UMC GPT 的問題。 Arvin Yang - 2024/07/11
+                rag_str = rag_template(
+                    rag_app.state.config.RAG_TEMPLATE, context_string, prompt
                 )
+                if any(
+                    endpoint in request.url.path
+                    for endpoint in ["/umc/api/v1/api/chat"]
+                ):
+                # 因為 UMC GPT 只接受 {type, text} 這樣的結構，所以這邊要特別處理
+                    if body["messages"] and body["messages"][0].get("role") == "system":
+                        body["messages"][0]["content"][0]["text"] = f"{rag_str}\n{body['messages'][0]['content'][0]['text']}"
+                    else:
+                        # Insert at the beginning
+                        body["messages"].insert(0, {"role": "system", "content": [{"type": "text", "text": rag_str}]})
+
+                else:
+                    body["messages"] = add_or_update_system_message(
+                        rag_str,
+                        body["messages"],
+                    )
 
             # If there are citations, add them to the data_items
             if len(citations) > 0:

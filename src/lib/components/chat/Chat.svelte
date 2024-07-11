@@ -176,7 +176,7 @@
 		const onMessageHandler = async (event) => {
 			if (event.origin === window.origin) {
 				// Replace with your iframe's origin
-				console.log('Message received from iframe:', event.data);
+				// console.log('Message received from iframe:', event.data);
 				if (event.data.type === 'input:prompt') {
 					console.log(event.data.text);
 
@@ -620,14 +620,28 @@
 	const sendPromptUMC = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
 		console.log('umc model', model);
-		const docs = messages
-			.filter((message) => message?.files ?? null)
-			.map((message) =>
-				message.files.filter((item) => item.type === 'doc' || item.type === 'collection')
-			)
-			.flat(1);
+		// 因應 0.3.8 使用 files 把檔案傳給 backend/main.py:700，這裡調整了匯入檔案的方式
+		// Arvin Yang - 2024/07/11
+		let files = [];
+		if (model?.info?.meta?.knowledge ?? false) {
+			files = model.info.meta.knowledge;
+		}
+		const lastUserMessage = messages.filter((message) => message.role === 'user').at(-1);
+		files = [
+			...files,
+			...(lastUserMessage?.files?.filter((item) =>
+				['doc', 'file', 'collection', 'web_search_results'].includes(item.type)
+			) ?? []),
+			...(responseMessage?.files?.filter((item) =>
+				['doc', 'file', 'collection', 'web_search_results'].includes(item.type)
+			) ?? [])
+		].filter(
+			// Remove duplicates
+			(item, index, array) =>
+				array.findIndex((i) => JSON.stringify(i) === JSON.stringify(item)) === index
+		);
 
-		console.log('asdufwer', docs);
+		console.log('sendPromptUMC files', files);
 
 		scrollToBottom();
 
@@ -637,7 +651,7 @@
 				model: model.id,
 				stream: true,
 				messages: messages
-					.filter((message) => message)
+					.filter((message) => message?.content?.trim())
 					.map((message, idx, arr) => ({
 						role: message.role,
 						...((message.files?.filter((file) => file.type === 'image').length > 0 ?? false) &&
@@ -662,14 +676,14 @@
 									]
 							  }
 							: {
-									content:[
+									content: [
 										{
 											type: 'text',
 											text:
 												arr.length - 1 !== idx
 													? message.content
 													: message?.raContent ?? message.content
-										},
+										}
 									]
 							  })
 					})),
@@ -680,8 +694,8 @@
 						  )
 						: undefined,
 				// backend/main.py 有 middleware 會把 docs 轉成 rag
-				docs: docs.length > 0 ? docs : undefined,
-				citations: docs.length > 0
+				tool_ids: selectedToolIds.length > 0 ? selectedToolIds : undefined,
+				files: files.length > 0 ? files : undefined,
 			},
 			`${UMC_API_BASE_URL}`
 		);
@@ -691,20 +705,36 @@
 
 		scrollToBottom();
 
+		let _response = null;
 		if (res && res.ok && res.body) {
+			let lastUsage = null;
 			const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
 
 			for await (const update of textStream) {
-				const { value, done, citations } = update;
+				const { value, done, citations, error, usage } = update;
+				if (error) {
+					await handleOpenAIError(error, null, model, responseMessage);
+					break;
+				}
 				if (done || stopResponseFlag || _chatId !== $chatId) {
 					responseMessage.done = true;
 					messages = messages;
 
 					if (stopResponseFlag) {
 						controller.abort('User: Stop Response');
+					} else {
+						const messages = createMessagesList(responseMessageId);
+
+						await chatCompletedHandler(model.id, responseMessageId, messages);
 					}
 
+					_response = responseMessage.content;
+
 					break;
+				}
+
+				if (usage) {
+					lastUsage = usage;
 				}
 
 				if (citations) {
@@ -716,28 +746,49 @@
 					continue;
 				} else {
 					responseMessage.content += value;
+
+					const sentences = extractSentencesForAudio(responseMessage.content);
+					sentences.pop();
+
+					// dispatch only last sentence and make sure it hasn't been dispatched before
+					if (
+						sentences.length > 0 &&
+						sentences[sentences.length - 1] !== responseMessage.lastSentence
+					) {
+						responseMessage.lastSentence = sentences[sentences.length - 1];
+						eventTarget.dispatchEvent(
+							new CustomEvent('chat', {
+								detail: { id: responseMessageId, content: sentences[sentences.length - 1] }
+							})
+						);
+					}
+
 					messages = messages;
-				}
-
-				if ($settings.notificationEnabled && !document.hasFocus()) {
-					const notification = new Notification(`UMC ${model}`, {
-						body: responseMessage.content,
-						icon: `${WEBUI_BASE_URL}/static/favicon.png`
-					});
-				}
-
-				if ($settings.responseAutoCopy) {
-					copyToClipboard(responseMessage.content);
-				}
-
-				if ($settings.responseAutoPlayback) {
-					await tick();
-					document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 				}
 
 				if (autoScroll) {
 					scrollToBottom();
 				}
+			}
+
+			if ($settings.notificationEnabled && !document.hasFocus()) {
+				const notification = new Notification(`UMC ${model}`, {
+					body: responseMessage.content,
+					icon: `${WEBUI_BASE_URL}/static/favicon.png`
+				});
+			}
+
+			if ($settings.responseAutoCopy) {
+				copyToClipboard(responseMessage.content);
+			}
+
+			if ($settings.responseAutoPlayback) {
+				await tick();
+				document.getElementById(`speak-button-${responseMessage.id}`)?.click();
+			}
+
+			if (lastUsage) {
+				responseMessage.info = { ...lastUsage, openai: true };
 			}
 
 			if ($chatId == _chatId) {
@@ -787,6 +838,24 @@
 		stopResponseFlag = false;
 		await tick();
 
+		let lastSentence = extractSentencesForAudio(responseMessage.content)?.at(-1) ?? '';
+		if (lastSentence) {
+			eventTarget.dispatchEvent(
+				new CustomEvent('chat', {
+					detail: { id: responseMessageId, content: lastSentence }
+				})
+			);
+		}
+
+		eventTarget.dispatchEvent(
+			new CustomEvent('chat:finish', {
+				detail: {
+					id: responseMessageId,
+					content: responseMessage.content
+				}
+			})
+		);
+
 		if (autoScroll) {
 			scrollToBottom();
 		}
@@ -797,6 +866,8 @@
 			const _title = await generateChatTitle(userPrompt);
 			await setChatTitle(_chatId, _title);
 		}
+
+		return _response;
 	};
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
@@ -950,7 +1021,6 @@
 
 					for (const line of lines) {
 						if (line !== '') {
-							console.log(line);
 							let data = JSON.parse(line);
 
 							if ('citations' in data) {
@@ -1467,7 +1537,22 @@
 
 	const generateChatTitle = async (userPrompt) => {
 		if ($settings?.title?.auto ?? true) {
-			const title = await generateTitle(
+			let title = '';
+			if (selectedModels[0].includes("umcgpt")) {
+				title = await generateUMCTitle(
+					localStorage.token,
+					selectedModels[0],
+					$settings?.title?.prompt ??
+					$i18n.t(
+						"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+					) + ' {{prompt}}',
+					userPrompt,
+				).catch((error) => {
+					console.error(error);
+					return 'New Chat';
+				});
+			} else {
+			title = await generateTitle(
 				localStorage.token,
 				selectedModels[0],
 				userPrompt,
@@ -1476,6 +1561,7 @@
 				console.error(error);
 				return 'New Chat';
 			});
+		}
 
 			return title;
 		} else {
