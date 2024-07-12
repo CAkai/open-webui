@@ -1518,9 +1518,7 @@ async def generate_chat_completions(form_data: dict, user=Depends(get_verified_u
     print(model)
 
     if model["owned_by"] == "ollama":
-        return await generate_ollama_chat_completion(
-            OpenAIChatCompletionForm(**form_data), user=user
-        )
+        return await generate_ollama_chat_completion(form_data, user=user)
     elif model["owned_by"] == "umc":
         return await generate_umc_chat_completion(form_data, user=user)
     else:
