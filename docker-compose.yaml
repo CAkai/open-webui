@@ -66,6 +66,7 @@ services:
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME= U-Ai'
       - 'UMC_BASE_URL=http://172.16.128.9:3003'
+      - 'HF_ENDPOINT=https://hf-mirror.com'
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
