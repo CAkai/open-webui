@@ -21,15 +21,15 @@ services:
 
   #   environment:
   #     - OLLAMA_KEEP_ALIVE=24h
-  #     - OLLAMA_NUM_PARALLEL=10
-  #     - OLLAMA_MAX_LOADED_MODELS=10
-
-  #   healthcheck:
-  #     test: ollama --version || exit 1
-  #     interval: 600s
-  #   networks:
-  #     ollama_net:
-  #       ipv4_address: 172.29.0.10
+  #     - OLLAMA_NUM_PARALLEL=2
+  #     - OLLAMA_MAX_LOADED_MODELS=2
+  #     - OLLAMA_HOST=0.0.0.0
+  # healthcheck:
+  #   test: ollama --version || exit 1
+  #   interval: 600s
+  # networks:
+  #   ollama_net:
+  #     ipv4_address: 172.29.0.10
 
   open-webui:
     build:
@@ -37,7 +37,7 @@ services:
       args:
         OLLAMA_BASE_URL: 'http://10.13.186.242:11434'
         USE_CUDA: true
-        USE_OLLAMA: false
+        USE_OLLAMA: true
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
@@ -54,15 +54,13 @@ services:
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME= U-Ai'
       - 'UMC_BASE_URL=http://172.16.128.9:3003'
-      - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
-      - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
-      - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
-      - 'RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=true'
-    # Allow access to host network
+      # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
+      # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
+      # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
+      # - 'RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=true'
     # extra_hosts:
     #   - host.docker.internal:host-gateway
     restart: unless-stopped
-    # GPU support
     deploy:
       resources:
         reservations:
@@ -71,11 +69,25 @@ services:
               count: all
               capabilities:
                 - gpu
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.10
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    init: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.99
 
 volumes:
   # ollama: {}
   open-webui: {}
-  ollama_data:
 
 networks:
   ollama_net:
