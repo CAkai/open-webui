@@ -1,5 +1,5 @@
 import { UMC_API_BASE_URL } from '$lib/constants';
-import { promptTemplate } from '$lib/utils';
+import { titleGenerationTemplate } from '$lib/utils';
 
 export const getUMCUrls = async (token: string = '') => {
 	let error = null;
@@ -185,7 +185,7 @@ export const generateTitle = async (
 ) => {
 	let error = null;
 
-	template = promptTemplate(template, prompt);
+	template = titleGenerationTemplate(template, prompt);
 
 	console.log(template);
 

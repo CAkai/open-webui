@@ -33,6 +33,7 @@
 		extractSentencesForAudio,
 		getUserPosition,
 		promptTemplate,
+		titleGenerationTemplate,
 		splitStream
 	} from '$lib/utils';
 
@@ -657,13 +658,29 @@
 
 		scrollToBottom();
 
+		// 讓 settings/general 的 System Prompt 能夠傳進去
+		// Arvin Yang - 2024/07/11
+		if (params?.system || $settings.system || (responseMessage?.userContext ?? null)) {
+			messages.unshift({
+				role: 'system',
+				content: `${promptTemplate(
+					params?.system ?? $settings?.system ?? '',
+					$user.name,
+					$settings?.userLocation ? await getAndUpdateUserLocation(localStorage.token) : undefined
+				)}${
+					responseMessage?.userContext ?? null
+						? `\n\nUser Context:\n${responseMessage?.userContext ?? ''}`
+						: ''
+				}`
+			});
+		}
+
 		const [res, controller] = await generateUMCChatCompletion(
 			localStorage.token,
 			{
 				model: model.id,
 				stream: true,
-				messages: [
-					...messages
+				messages: messages
 						.filter((message) => message?.content?.trim())
 						.map((message, idx, arr) => ({
 							role: message.role,
@@ -700,18 +717,6 @@
 										]
 								  })
 						})),
-					// 讓 admin panel/interface/search query generation prompt 能夠傳進去
-					// Arvin Yang - 2024/07/11
-					{
-						role: 'user',
-						content: [
-							{
-								type: 'text',
-								text: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
-							}
-						]
-					}
-				],
 				stop:
 					$settings?.options?.stop ?? undefined
 						? $settings?.options?.stop.map((str) =>
@@ -944,13 +949,6 @@
 				}
 				return baseMessage;
 			});
-
-		// 讓 admin panel/interface/search query generation prompt 能夠傳進去
-		// Arvin Yang - 2024/07/11
-		messagesBody.push({
-			role: 'user',
-			content: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
-		});
 
 		let lastImageIndex = -1;
 
@@ -1307,18 +1305,7 @@
 													? message.content
 													: message?.raContent ?? message.content
 									  })
-							})),
-						// 讓 admin panel/interface/search query generation prompt 能夠傳進去
-						// Arvin Yang - 2024/07/11
-						{
-							role: 'user',
-							content: [
-								{
-									type: 'text',
-									text: taskConfig.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
-								}
-							]
-						}
+							}))
 					],
 					seed: params?.seed ?? $settings?.params?.seed ?? undefined,
 					stop:
@@ -1581,16 +1568,22 @@
 	};
 
 	const generateChatTitle = async (userPrompt) => {
+		const titleTemplate =
+			$settings?.title?.prompt ??
+			taskConfig.TITLE_GENERATION_PROMPT_TEMPLATE ??
+			$i18n.t(
+				"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
+			) + ' {{prompt}}';
+
+		console.log('generateChatTitle', titleTemplate, userPrompt);
+
 		if ($settings?.title?.auto ?? true) {
 			let title = '';
 			if (selectedModels[0].includes('umcgpt')) {
 				title = await generateUMCTitle(
 					localStorage.token,
 					selectedModels[0],
-					$settings?.title?.prompt ??
-						$i18n.t(
-							"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
-						) + ' {{prompt}}',
+					titleTemplate,
 					userPrompt
 				).catch((error) => {
 					console.error(error);
@@ -1600,7 +1593,7 @@
 				title = await generateTitle(
 					localStorage.token,
 					selectedModels[0],
-					userPrompt,
+					titleGenerationTemplate(titleTemplate, userPrompt),
 					$chatId
 				).catch((error) => {
 					console.error(error);

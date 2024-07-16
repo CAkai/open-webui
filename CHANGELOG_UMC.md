@@ -1,10 +1,12 @@
 # 更新日誌
 
-## 0.3.8 - 2024-07-12
+## 0.3.8 - 2024-07-16
 - migration 讀取 alembic.ini，但是使用 logger_alembic 會阻塞，導致 uvicorn 無法繼續，因此這裡先暫停使用。
 - 生產環境打開 RAG_EMBEDDING_AUTO_UPDATE 和 RAG_RERANKING_AUTO_UPDATE 的設定，讓它可以自動下載 RAG Model。
 - 修正 Ollama 在生成對話時，無法將 OpenAIChatCompletionForm 轉成 dict 的問題。
 - Nvidia V100 因為 [CUDA Error for V100] 而無法使用 ollama，已經在 [ollama#5588] 解決，但是還沒上版。
+- 現在標題會使用 Admin Panel Settings/Interface/Title Generation Prompt 的內容。
+- 系統提示詞改成讀取官方預設的User Settings/General/System Prompt的內容。
 
 [CUDA Error for V100]: https://github.com/ollama/ollama/issues/5571
 [ollama#5588]: https://github.com/ollama/ollama/pull/5588
