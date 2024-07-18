@@ -54,6 +54,7 @@ services:
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME= U-Ai'
       - 'UMC_BASE_URL=http://172.16.128.9:3003'
+      - 'USE_CUDA_DOCKER= true'
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
       # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
