@@ -8,6 +8,7 @@
 - 現在標題會使用 Admin Panel Settings/Interface/Title Generation Prompt 的內容。
 - 系統提示詞改成讀取官方預設的 `User Settings/General/System Prompt` 的內容。
 - 修正 logo 不會正確顯示的問題。
+- 修正 UMC GPT 不會產生標題的問題。
 
 [CUDA Error for V100]: https://github.com/ollama/ollama/issues/5571
 [ollama#5588]: https://github.com/ollama/ollama/pull/5588

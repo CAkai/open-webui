@@ -1648,11 +1648,11 @@
 				"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
 			) + ' {{prompt}}';
 
-		console.log('generateChatTitle', titleTemplate, userPrompt);
+		console.log('generate Chat Title Model', selectedModels);
 
 		if ($settings?.title?.auto ?? true) {
 			let title = '';
-			if (selectedModels[0].includes('umcgpt')) {
+			if (selectedModels[0].toLowerCase().includes('umc')) {
 				title = await generateUMCTitle(
 					localStorage.token,
 					selectedModels[0],

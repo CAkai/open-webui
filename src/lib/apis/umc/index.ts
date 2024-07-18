@@ -178,8 +178,8 @@ export const generateUMCChatCompletion = async (
 
 export const generateTitle = async (
 	token: string = '',
-	template: string,
 	model: string,
+	template: string,
 	prompt: string,
 	url: string = UMC_API_BASE_URL
 ) => {
@@ -187,7 +187,7 @@ export const generateTitle = async (
 
 	template = titleGenerationTemplate(template, prompt);
 
-	console.log(template);
+	console.log("generate UMC Title", template);
 
 	const res = await fetch(`${url}/api/chat`, {
 		method: 'POST',
