@@ -99,6 +99,7 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     apt-get update && \
     # Install pandoc and netcat
     apt-get install -y --no-install-recommends pandoc netcat-openbsd curl && \
+    apt-get install -y --no-install-recommends gcc python3-dev && \
     # for RAG OCR
     apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
     # install helper tools
@@ -109,8 +110,9 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     rm -rf /var/lib/apt/lists/*; \
     else \
     apt-get update && \
-    # Install pandoc and netcat
-    apt-get install -y --no-install-recommends pandoc netcat-openbsd curl jq && \
+    # Install pandoc, netcat and gcc
+    apt-get install -y --no-install-recommends pandoc gcc netcat-openbsd curl jq && \
+    apt-get install -y --no-install-recommends gcc python3-dev && \
     # for RAG OCR
     apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
     # cleanup
