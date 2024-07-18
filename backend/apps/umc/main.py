@@ -98,6 +98,8 @@ async def generate_chat_completion(
     user=Depends(get_verified_user),
 ):
     payload = {**form_data}
+    if "metadata" in payload:
+        del payload["metadata"]
 
 
     if "pipeline" in model and model.get("pipeline"):
@@ -106,11 +108,7 @@ async def generate_chat_completion(
     # Convert the modified body back to JSON
     payload = json.dumps(payload)
 
-    print(payload)
-
     url = app.state.config.UMC_API_BASE_URLS[0]
-
-    print(payload)
 
     headers = {}
     headers["Content-Type"] = "application/json"

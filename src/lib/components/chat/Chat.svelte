@@ -718,29 +718,24 @@
 		return _responses;
 	};
 
+	//region UMC
 	const sendPromptUMC = async (model, userPrompt, responseMessageId, _chatId) => {
 		const responseMessage = history.messages[responseMessageId];
 		console.log('umc model', model);
-		// 因應 0.3.8 使用 files 把檔案傳給 backend/main.py:700，這裡調整了匯入檔案的方式
-		// Arvin Yang - 2024/07/11
-		let files = [];
+		// 0.3.10 允許檔案在輸入框裡，這裡把檔案加進來。Arvin Yang - 2024/07/18
+		let files = JSON.parse(JSON.stringify(chatFiles));
+		// 因應 0.3.8 使用 files 把檔案傳給 backend/main.py:700，這裡調整了匯入檔案的方式。Arvin Yang - 2024/07/11
 		if (model?.info?.meta?.knowledge ?? false) {
-			files = model.info.meta.knowledge;
+			files.push(...model.info.meta.knowledge);
 		}
-		const lastUserMessage = messages.filter((message) => message.role === 'user').at(-1);
-		files = [
-			...files,
-			...(lastUserMessage?.files?.filter((item) =>
-				['doc', 'file', 'collection', 'web_search_results'].includes(item.type)
-			) ?? []),
-			...(responseMessage?.files?.filter((item) =>
-				['doc', 'file', 'collection', 'web_search_results'].includes(item.type)
-			) ?? [])
-		].filter(
-			// Remove duplicates
-			(item, index, array) =>
-				array.findIndex((i) => JSON.stringify(i) === JSON.stringify(item)) === index
-		);
+		// 0.3.10 會把網頁搜尋結果加進來，這裡把檔案加進來。Arvin Yang - 2024/07/18
+		if (responseMessage?.files) {
+			files.push(
+				...responseMessage?.files.filter((item) => ['web_search_results'].includes(item.type))
+			);
+		}
+
+		// lasUserMessage 已經在 sendPrompt 裡面了，這裡不用再找一次。Arvin Yang - 2024/07/18
 
 		console.log('sendPromptUMC files', files);
 
@@ -806,13 +801,14 @@
 								  })
 						})),
 				stop:
-					$settings?.options?.stop ?? undefined
-						? $settings?.options?.stop.map((str) =>
+					params?.stop ?? $settings?.params?.stop ?? undefined
+						? (params?.stop ?? $settings.params.stop).map((str) =>
 								decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
 						  )
 						: undefined,
 				// backend/main.py 有 middleware 會把 docs 轉成 rag
 				tool_ids: selectedToolIds.length > 0 ? selectedToolIds : undefined,
+				...(Object.keys(valves).length ? { valves } : {}),
 				files: files.length > 0 ? files : undefined
 			},
 			`${UMC_API_BASE_URL}`
@@ -843,7 +839,7 @@
 					} else {
 						const messages = createMessagesList(responseMessageId);
 
-						await chatCompletedHandler(model.id, responseMessageId, messages);
+						await chatCompletedHandler(_chatId, model.id, responseMessageId, messages);
 					}
 
 					_response = responseMessage.content;
@@ -912,8 +908,11 @@
 			if ($chatId == _chatId) {
 				if ($settings.saveChatHistory ?? true) {
 					chat = await updateChatById(localStorage.token, _chatId, {
+						models: selectedModels,
 						messages: messages,
-						history: history
+						history: history,
+						params: params,
+						files: chatFiles
 					});
 					await chats.set(await getChatList(localStorage.token));
 				}
@@ -978,7 +977,7 @@
 			scrollToBottom();
 		}
 
-		if (messages.length == 2) {
+		if (messages.length == 2 && selectedModels[0] === model.id) {
 			window.history.replaceState(history.state, '', `/c/${_chatId}`);
 
 			const _title = await generateChatTitle(userPrompt);
@@ -987,6 +986,7 @@
 
 		return _response;
 	};
+	//endregion UMC
 
 	const sendPromptOllama = async (model, userPrompt, responseMessageId, _chatId) => {
 		let _response = null;
