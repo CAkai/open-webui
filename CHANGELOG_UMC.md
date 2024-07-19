@@ -1,5 +1,9 @@
 # 更新日誌
 
+## 0.3.10 - 2024-07-19
+### 新增：
+- **:whale2:Docker**：加入 Open WebUI Pipelines 服務。
+
 ## 0.3.8 - 2024-07-16
 - migration 讀取 alembic.ini，但是使用 logger_alembic 會阻塞，導致 uvicorn 無法繼續，因此這裡先暫停使用。
 - 生產環境打開 RAG_EMBEDDING_AUTO_UPDATE 和 RAG_RERANKING_AUTO_UPDATE 的設定，讓它可以自動下載 RAG Model。

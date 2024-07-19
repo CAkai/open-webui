@@ -24,6 +24,8 @@ services:
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME=U-AI'
       - 'UMC_BASE_URL=http://host.docker.internal:3003'
+      - OPENAI_API_BASE_URL='http://host.docker.internal:9099'
+      - OPENAI_API_KEY="0p3n-w3bu!"
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
@@ -37,6 +39,18 @@ services:
               count: all
               capabilities:
                 - gpu
+  
+  pipelines:
+    image: ghcr.io/open-webui/pipelines:main
+    restart: always
+    ports:
+      - 9099:9099
+    volumes:
+      - pipelines:/app/pipelines
+    environment:
+      - PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
 
 volumes:
   open-webui: {}
+  pipelines:
+
