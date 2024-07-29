@@ -230,16 +230,43 @@ T = TypeVar("T")
 
 
 class PersistentConfig(Generic[T]):
-    def __init__(self, env_name: str, config_path: str, env_value: T):
+    def __init__(self, env_name: str, config_path: str, env_value: T, is_merge=False):
         self.env_name = env_name
         self.config_path = config_path
         self.env_value = env_value
         self.config_value = get_config_value(config_path)
-        if self.config_value is not None:
-            log.info(f"'{env_name}' loaded from config.json")
-            self.value = self.config_value
+        
+        if is_merge:
+            self.merge()
         else:
-            self.value = env_value
+            if self.config_value is not None:
+                log.info(f"'{env_name}' loaded from config.json")
+                self.value = self.config_value
+            else:
+                self.value = env_value
+                
+    def merge(self):
+        """
+        提供一個方法合併 env 和 config.json 的值，解決 docker-compose 設定環境變數卻無效的問題。
+        
+        Arvin Yang - 2024/07/29
+        """
+        
+        if self.config_value is None:
+            self.value = self.env_value
+            return
+        
+        if self.env_value == self.config_value:
+            self.value = self.config_value
+            return
+        
+        if isinstance(self.env_value, list):
+            # 利用了字典的鍵的唯一性來去除列表中的重複值
+            self.value = list(dict.fromkeys(self.env_value + self.config_value))
+        elif isinstance(self.env_value, dict):
+            self.value = {**self.config_value, **self.env_value}
+        else:
+            self.value = self.env_value
 
     def __str__(self):
         return str(self.value)
@@ -641,8 +668,9 @@ OLLAMA_BASE_URLS = os.environ.get("OLLAMA_BASE_URLS", "")
 OLLAMA_BASE_URLS = OLLAMA_BASE_URLS if OLLAMA_BASE_URLS != "" else OLLAMA_BASE_URL
 
 OLLAMA_BASE_URLS = [url.strip() for url in OLLAMA_BASE_URLS.split(";")]
+# 允許 env OLLAMA_BASE_URLS 和 config.json OLLAMA_BASE_URLS 合併。 Arvin Yang - 2024/07/29
 OLLAMA_BASE_URLS = PersistentConfig(
-    "OLLAMA_BASE_URLS", "ollama.base_urls", OLLAMA_BASE_URLS
+    "OLLAMA_BASE_URLS", "ollama.base_urls", OLLAMA_BASE_URLS, True
 )
 
 ####################################
