@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     init: true
-    container_name: open-webui
+    container_name: webui
     volumes:
       - open-webui:/app/backend/data
       - ./src:/app/src
@@ -41,6 +41,7 @@ services:
                 - gpu
   
   pipelines:
+    container_name: pipelines
     image: ghcr.io/open-webui/pipelines:main
     restart: always
     ports:
@@ -49,6 +50,23 @@ services:
       - pipelines:/app/pipelines
     environment:
       - PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
+
+  whisper:
+    container_name: whisper
+    image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+    # GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: ${OLLAMA_GPU_DRIVER-nvidia}
+              count: all
+              capabilities:
+                - gpu
+    environment:
+      - ASR_MOEDLE=base
+    ports: 
+      - 9000:9000
 
 volumes:
   open-webui: {}

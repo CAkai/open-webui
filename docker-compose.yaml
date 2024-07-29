@@ -101,6 +101,23 @@ services:
     environment:
       - PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
 
+  whisper:
+    container_name: whisper
+    image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+    # GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: ${OLLAMA_GPU_DRIVER-nvidia}
+              count: all
+              capabilities:
+                - gpu
+    environment:
+      - ASR_MOEDLE=base
+    ports: 
+      - 9000:9000
+
 volumes:
   open-webui: {}
   pipelines:
