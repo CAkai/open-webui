@@ -83,7 +83,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ./whisper-model:/tmp/whisper:ro
+      - ./whisper-model:/tmp/whisper
 
 volumes:
   open-webui: {}
