@@ -677,7 +677,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
 
                 # Workaround for Ollama 2.0+ system prompt issue
                 # TODO: replace with add_or_update_system_message
-                if model["owned_by"] == "ollama":
+                if "owned_by" in model and model["owned_by"] == "ollama":
                     body["messages"] = prepend_to_first_user_message_content(
                         rag_template(
                             rag_app.state.config.RAG_TEMPLATE, context_string, prompt

@@ -220,17 +220,17 @@
 									<hr class=" my-3 dark:border-gray-900" />
 								{/if}
 
-							<div class="mb-2">
-								<div class=" text-sm font-medium text-left mb-1">{$i18n.t('EmpId')}</div>
-								<input
-									bind:value={empid}
-									type="text"
-									class=" border px-4 py-2.5 rounded-2xl w-full text-sm outline-none border dark:border-none dark:bg-gray-900"
-									autocomplete="empid"
-									placeholder={$i18n.t('Enter Your EmpId')}
-									required
-								/>
-							</div>
+								<div class="mb-2">
+									<div class=" text-sm font-medium text-left mb-1">{$i18n.t('EmpId')}</div>
+									<input
+										bind:value={empid}
+										type="text"
+										class=" border px-4 py-2.5 rounded-2xl w-full text-sm outline-none border dark:border-none dark:bg-gray-900"
+										autocomplete="empid"
+										placeholder={$i18n.t('Enter Your EmpId')}
+										required
+									/>
+								</div>
 
 								<div>
 									<div class=" text-sm font-medium text-left mb-1">{$i18n.t('Password')}</div>
@@ -275,7 +275,8 @@
 									{mode === 'signin' ? $i18n.t('Sign up') : $i18n.t('Sign in')}
 								</button>
 							</div> -->
-						</div>
+							</div>
+						{/if}
 					</form>
 
 					{#if Object.keys($config?.oauth?.providers ?? {}).length > 0}
