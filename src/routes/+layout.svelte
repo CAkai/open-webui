@@ -192,7 +192,7 @@
 			console.log("token", localStorage.token, localStorage.getItem(COOKIE_TOKEN_KEY) ?? '');
 
 			if ($config) {
-				const _socket = io(`${WEBUI_BASE_URL}`, {
+				const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
 					path: '/ws/socket.io',
 					auth: { token: localStorage.token }
 				});

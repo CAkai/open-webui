@@ -83,6 +83,7 @@
 	let eventConfirmationMessage = '';
 	let eventConfirmationInput = false;
 	let eventConfirmationInputPlaceholder = '';
+	let eventConfirmationInputValue = '';
 	let eventCallback = null;
 
 	let showModelSelector = true;
@@ -193,6 +194,7 @@
 				eventConfirmationTitle = data.title;
 				eventConfirmationMessage = data.message;
 				eventConfirmationInputPlaceholder = data.placeholder;
+				eventConfirmationInputValue = data?.value ?? '';
 			} else {
 				console.log('Unknown message type', data);
 			}
@@ -295,6 +297,10 @@
 
 		if ($page.url.searchParams.get('q')) {
 			prompt = $page.url.searchParams.get('q') ?? '';
+			selectedToolIds = ($page.url.searchParams.get('tool_ids') ?? '')
+				.split(',')
+				.map((id) => id.trim())
+				.filter((id) => id);
 
 			if (prompt) {
 				await tick();
@@ -992,6 +998,7 @@
 		let _response = null;
 
 		const responseMessage = history.messages[responseMessageId];
+		const userMessage = history.messages[responseMessage.parentId];
 
 		// Wait until history/message have been updated
 		await tick();
@@ -1058,11 +1065,12 @@
 		if (model?.info?.meta?.knowledge ?? false) {
 			files.push(...model.info.meta.knowledge);
 		}
-		if (responseMessage?.files) {
-			files.push(
-				...responseMessage?.files.filter((item) => ['web_search_results'].includes(item.type))
-			);
-		}
+		files.push(
+			...(userMessage?.files ?? []).filter((item) =>
+				['doc', 'file', 'collection'].includes(item.type)
+			),
+			...(responseMessage?.files ?? []).filter((item) => ['web_search_results'].includes(item.type))
+		);
 
 		eventTarget.dispatchEvent(
 			new CustomEvent('chat:start', {
@@ -1094,7 +1102,6 @@
 			keep_alive: $settings.keepAlive ?? undefined,
 			tool_ids: selectedToolIds.length > 0 ? selectedToolIds : undefined,
 			files: files.length > 0 ? files : undefined,
-			...(Object.keys(valves).length ? { valves } : {}),
 			session_id: $socket?.id,
 			chat_id: $chatId,
 			id: responseMessageId
@@ -1291,17 +1298,20 @@
 
 	const sendPromptOpenAI = async (model, userPrompt, responseMessageId, _chatId) => {
 		let _response = null;
+
 		const responseMessage = history.messages[responseMessageId];
+		const userMessage = history.messages[responseMessage.parentId];
 
 		let files = JSON.parse(JSON.stringify(chatFiles));
 		if (model?.info?.meta?.knowledge ?? false) {
 			files.push(...model.info.meta.knowledge);
 		}
-		if (responseMessage?.files) {
-			files.push(
-				...responseMessage?.files.filter((item) => ['web_search_results'].includes(item.type))
-			);
-		}
+		files.push(
+			...(userMessage?.files ?? []).filter((item) =>
+				['doc', 'file', 'collection'].includes(item.type)
+			),
+			...(responseMessage?.files ?? []).filter((item) => ['web_search_results'].includes(item.type))
+		);
 
 		scrollToBottom();
 
@@ -1392,7 +1402,6 @@
 					max_tokens: params?.max_tokens ?? $settings?.params?.max_tokens ?? undefined,
 					tool_ids: selectedToolIds.length > 0 ? selectedToolIds : undefined,
 					files: files.length > 0 ? files : undefined,
-					...(Object.keys(valves).length ? { valves } : {}),
 					session_id: $socket?.id,
 					chat_id: $chatId,
 					id: responseMessageId
@@ -1793,6 +1802,7 @@
 	message={eventConfirmationMessage}
 	input={eventConfirmationInput}
 	inputPlaceholder={eventConfirmationInputPlaceholder}
+	inputValue={eventConfirmationInputValue}
 	on:confirm={(e) => {
 		if (e.detail) {
 			eventCallback(e.detail);
@@ -1940,7 +1950,6 @@
 			bind:show={showControls}
 			bind:chatFiles
 			bind:params
-			bind:valves
 		/>
 	</div>
 {/if}
