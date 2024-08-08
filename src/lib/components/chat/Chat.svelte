@@ -25,7 +25,8 @@
 		user,
 		socket,
 		showCallOverlay,
-		tools
+		tools,
+		currentChatPage
 	} from '$lib/stores';
 	import {
 		convertMessagesToHistory,
@@ -436,7 +437,9 @@
 					params: params,
 					files: chatFiles
 				});
-				await chats.set(await getChatList(localStorage.token));
+
+				currentChatPage.set(1);
+				await chats.set(await getChatList(localStorage.token, $currentChatPage));
 			}
 		}
 	};
@@ -482,7 +485,9 @@
 					params: params,
 					files: chatFiles
 				});
-				await chats.set(await getChatList(localStorage.token));
+
+				currentChatPage.set(1);
+				await chats.set(await getChatList(localStorage.token, $currentChatPage));
 			}
 		}
 	};
@@ -642,7 +647,9 @@
 					tags: [],
 					timestamp: Date.now()
 				});
-				await chats.set(await getChatList(localStorage.token));
+
+				currentChatPage.set(1);
+				await chats.set(await getChatList(localStorage.token, $currentChatPage));
 				await chatId.set(chat.id);
 			} else {
 				await chatId.set('local');
@@ -720,7 +727,9 @@
 			})
 		);
 
-		await chats.set(await getChatList(localStorage.token));
+		currentChatPage.set(1);
+		await chats.set(await getChatList(localStorage.token, $currentChatPage));
+
 		return _responses;
 	};
 
@@ -1090,8 +1099,8 @@
 				...(params ?? $settings.params ?? {}),
 				stop:
 					params?.stop ?? $settings?.params?.stop ?? undefined
-						? (params?.stop ?? $settings.params.stop).map((str) =>
-								decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
+						? (params?.stop.split(',').map((token) => token.trim()) ?? $settings.params.stop).map(
+								(str) => decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
 						  )
 						: undefined,
 				num_predict: params?.max_tokens ?? $settings?.params?.max_tokens ?? undefined,
@@ -1235,7 +1244,9 @@
 						params: params,
 						files: chatFiles
 					});
-					await chats.set(await getChatList(localStorage.token));
+
+					currentChatPage.set(1);
+					await chats.set(await getChatList(localStorage.token, $currentChatPage));
 				}
 			}
 		} else {
@@ -1391,8 +1402,8 @@
 					seed: params?.seed ?? $settings?.params?.seed ?? undefined,
 					stop:
 						params?.stop ?? $settings?.params?.stop ?? undefined
-							? (params?.stop ?? $settings.params.stop).map((str) =>
-									decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
+							? (params?.stop.split(',').map((token) => token.trim()) ?? $settings.params.stop).map(
+									(str) => decodeURIComponent(JSON.parse('"' + str.replace(/\"/g, '\\"') + '"'))
 							  )
 							: undefined,
 					temperature: params?.temperature ?? $settings?.params?.temperature ?? undefined,
@@ -1416,7 +1427,6 @@
 
 			if (res && res.ok && res.body) {
 				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
-				let lastUsage = null;
 
 				for await (const update of textStream) {
 					const { value, done, citations, error, usage } = update;
@@ -1442,7 +1452,7 @@
 					}
 
 					if (usage) {
-						lastUsage = usage;
+						responseMessage.info = { ...usage, openai: true };
 					}
 
 					if (citations) {
@@ -1496,10 +1506,6 @@
 					document.getElementById(`speak-button-${responseMessage.id}`)?.click();
 				}
 
-				if (lastUsage) {
-					responseMessage.info = { ...lastUsage, openai: true };
-				}
-
 				if ($chatId == _chatId) {
 					if ($settings.saveChatHistory ?? true) {
 						chat = await updateChatById(localStorage.token, _chatId, {
@@ -1509,7 +1515,9 @@
 							params: params,
 							files: chatFiles
 						});
-						await chats.set(await getChatList(localStorage.token));
+
+						currentChatPage.set(1);
+						await chats.set(await getChatList(localStorage.token, $currentChatPage));
 					}
 				}
 			} else {
@@ -1696,7 +1704,9 @@
 
 		if ($settings.saveChatHistory ?? true) {
 			chat = await updateChatById(localStorage.token, _chatId, { title: _title });
-			await chats.set(await getChatList(localStorage.token));
+
+			currentChatPage.set(1);
+			await chats.set(await getChatList(localStorage.token, $currentChatPage));
 		}
 	};
 
