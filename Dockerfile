@@ -104,6 +104,8 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
     # install helper tools
     apt-get install -y --no-install-recommends curl jq && \
+    # install nginx
+    # apt-get install -y --no-install-recommends nginx && \
     # install ollama
     curl -fsSL https://ollama.com/install.sh | sh && \
     # cleanup
@@ -150,6 +152,9 @@ COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
+
+# copy ssl
+COPY --chown=$UID:$GID ./ssl/iphotos.umc.com.crt ./ssl/iphotos.umc.com.key ./
 
 EXPOSE 8080
 

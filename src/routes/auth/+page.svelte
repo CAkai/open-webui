@@ -115,8 +115,9 @@
 
 		if ($user !== undefined) {
 			await goto('/');
+		} else {
+			await signInHandler();
 		}
-		await checkOauthCallback();
 		loaded = true;
 		
 		// if ($config?.trusted_header_auth ?? false) {
