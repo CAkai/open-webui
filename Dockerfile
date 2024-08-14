@@ -65,7 +65,7 @@ ENV OPENAI_API_KEY="" \
 
 #### Other models #########################################################
 ## whisper TTS model settings ##
-ENV WHISPER_MODEL="base" \
+ENV WHISPER_MODEL="large-v3" \
     WHISPER_MODEL_DIR="/app/backend/data/cache/whisper/models"
 
 ## RAG Embedding model settings ##
