@@ -105,7 +105,7 @@ ENV = os.environ.get("ENV", "dev")
 
 try:
     PACKAGE_DATA = json.loads((BASE_DIR / "package.json").read_text())
-except:
+except Exception:
     try:
         PACKAGE_DATA = {"version": importlib.metadata.version("open-webui")}
     except importlib.metadata.PackageNotFoundError:
@@ -138,7 +138,7 @@ try:
     with open(str(changelog_path.absolute()), "r", encoding="utf8") as file:
         changelog_content = file.read()
 
-except:
+except Exception:
     changelog_content = (pkgutil.get_data("open_webui", "CHANGELOG.md") or b"").decode()
 
 
@@ -203,12 +203,12 @@ if RESET_CONFIG_ON_START:
         os.remove(f"{DATA_DIR}/config.json")
         with open(f"{DATA_DIR}/config.json", "w") as f:
             f.write("{}")
-    except:
+    except Exception:
         pass
 
 try:
     CONFIG_DATA = json.loads((DATA_DIR / "config.json").read_text())
-except:
+except Exception:
     CONFIG_DATA = {}
 
 
@@ -461,6 +461,12 @@ OAUTH_PICTURE_CLAIM = PersistentConfig(
     os.environ.get("OAUTH_PICTURE_CLAIM", "picture"),
 )
 
+OAUTH_EMAIL_CLAIM = PersistentConfig(
+    "OAUTH_EMAIL_CLAIM",
+    "oauth.oidc.email_claim",
+    os.environ.get("OAUTH_EMAIL_CLAIM", "email"),
+)
+
 
 def load_oauth_providers():
     OAUTH_PROVIDERS.clear()
@@ -669,7 +675,7 @@ if AIOHTTP_CLIENT_TIMEOUT == "":
 else:
     try:
         AIOHTTP_CLIENT_TIMEOUT = int(AIOHTTP_CLIENT_TIMEOUT)
-    except:
+    except Exception:
         AIOHTTP_CLIENT_TIMEOUT = 300
 
 
@@ -750,7 +756,7 @@ try:
     OPENAI_API_KEY = OPENAI_API_KEYS.value[
         OPENAI_API_BASE_URLS.value.index("https://api.openai.com/v1")
     ]
-except:
+except Exception:
     pass
 
 OPENAI_API_BASE_URL = "https://api.openai.com/v1"
@@ -1066,7 +1072,7 @@ RAG_EMBEDDING_MODEL = PersistentConfig(
     "rag.embedding_model",
     os.environ.get("RAG_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"),
 )
-log.info(f"Embedding model set: {RAG_EMBEDDING_MODEL.value}"),
+log.info(f"Embedding model set: {RAG_EMBEDDING_MODEL.value}")
 
 RAG_EMBEDDING_MODEL_AUTO_UPDATE = (
     os.environ.get("RAG_EMBEDDING_MODEL_AUTO_UPDATE", "").lower() == "true"
@@ -1088,7 +1094,7 @@ RAG_RERANKING_MODEL = PersistentConfig(
     os.environ.get("RAG_RERANKING_MODEL", ""),
 )
 if RAG_RERANKING_MODEL.value != "":
-    log.info(f"Reranking model set: {RAG_RERANKING_MODEL.value}"),
+    log.info(f"Reranking model set: {RAG_RERANKING_MODEL.value}")
 
 RAG_RERANKING_MODEL_AUTO_UPDATE = (
     os.environ.get("RAG_RERANKING_MODEL_AUTO_UPDATE", "").lower() == "true"
