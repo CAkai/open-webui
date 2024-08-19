@@ -282,7 +282,6 @@
 	onMount(async () => {
 		await tick();
 		console.log("response message", message);
-		renderStyling();
 
 		await mermaid.run({
 			querySelector: '.mermaid'

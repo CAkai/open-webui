@@ -1683,11 +1683,13 @@ async def generate_chat_completions(form_data: dict, user=Depends(get_verified_u
         )
 
     model = app.state.MODELS[model_id]
-    print(model)
 
     if model["owned_by"] == "ollama":
         return await generate_ollama_chat_completion(form_data, user=user)
-    elif model["owned_by"] == "umc":
+        # 因為發現 Workspace 建立的模型它的 id 跟 umc 無關，沒辦法判斷是不是 umc 衍生的模型，
+        # 所以這邊多判斷 info.base_model_id。
+        # Arvin Yang - 2024/08/19
+    elif model["owned_by"] == "umc" or "umc" in model['id'] or ("info" in model and "base_model_id" in model["info"] and "umc" in model["base_model_id"]["info"]):
         return await generate_umc_chat_completion(form_data, user=user)
     else:
         return await generate_openai_chat_completion(form_data, user=user)

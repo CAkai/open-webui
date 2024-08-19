@@ -711,7 +711,7 @@
 					}
 
 					let _response = null;
-					if (model?.id?.toLowerCase().includes('umc')) {
+					if (model?.id?.toLowerCase().includes('umc') || model?.owned_by === 'umc') {
 						_response = await sendPromptUMC(model, prompt, responseMessageId, _chatId);
 					} else if (model?.owned_by === 'openai') {
 						_response = await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);

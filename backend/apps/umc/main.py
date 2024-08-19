@@ -46,7 +46,7 @@ app.add_middleware(
 app.state.UMC_API_BASE_URLS = [UMC_BASE_URL]
 
 app.state.MODELS = [
-    {"id": "umcgpt-4o", "name": "UMCGPT-4o", "external": False, "source": "umc", "own_by": "umc"},
+    {"id": "umcgpt-4o:latest", "name": "umcgpt-4o:latest", "external": False, "source": "umc", "owned_by": "umc"},
 ]
 
 
