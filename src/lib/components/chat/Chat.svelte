@@ -711,11 +711,13 @@
 					}
 
 					let _response = null;
+					console.log("sendprompt model", model);
 					if (model?.id?.toLowerCase().includes('umc') || model?.owned_by?.toLowerCase().includes('umc')) {
 						_response = await sendPromptUMC(model, prompt, responseMessageId, _chatId);
 					} else if (model?.owned_by === 'openai') {
 						_response = await sendPromptOpenAI(model, prompt, responseMessageId, _chatId);
 					} else if (model) {
+						console.log("Because of the model is not UMC or OpenAI, it will be sent to Ollama.");
 						_response = await sendPromptOllama(model, prompt, responseMessageId, _chatId);
 					}
 					_responses.push(_response);
