@@ -1516,7 +1516,7 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
     except Exception as e:
         return JSONResponse(
             status_code=e.args[0],
-            content={"detail": e.args[1]},
+            content={"detail": e.args[min(1,len(e.args) - 1)]},
         )
 
     if "chat_id" in payload:

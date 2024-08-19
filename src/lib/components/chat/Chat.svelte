@@ -1678,8 +1678,9 @@
 		console.log('generate Chat Title Model', selectedModels);
 
 		if ($settings?.title?.auto ?? true) {
+			const model = $models.filter((m) => m.id === selectedModels[0]).at(0);
 			let title = '';
-			if (selectedModels[0].toLowerCase().includes('umc')) {
+			if (selectedModels[0].toLowerCase().includes('umc') || model?.info?.base_model_id?.toLowerCase().includes('umc')) {
 				title = await generateUMCTitle(
 					localStorage.token,
 					selectedModels[0],
