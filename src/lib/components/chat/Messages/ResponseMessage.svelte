@@ -281,11 +281,11 @@
 
 	onMount(async () => {
 		await tick();
-		console.log("response message", message);
+		// console.log("response message", message);
 
-		await mermaid.run({
-			querySelector: '.mermaid'
-		});
+		// await mermaid.run({
+		// 	querySelector: '.mermaid'
+		// });
 	});
 </script>
 
