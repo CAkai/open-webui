@@ -189,7 +189,7 @@
 			await config.set(backendConfig);
 			await WEBUI_NAME.set(backendConfig.name);
 			console.log(backendConfig);
-			console.log("token", localStorage.token, localStorage.getItem(COOKIE_TOKEN_KEY) ?? '');
+			console.log("load token from iCloud", localStorage.token, localStorage.getItem(COOKIE_TOKEN_KEY) ?? '');
 
 			if ($config) {
 				const _socket = io(`${WEBUI_BASE_URL}` || undefined, {

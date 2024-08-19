@@ -101,14 +101,10 @@ async def generate_chat_completion(
     if "metadata" in payload:
         del payload["metadata"]
 
-
-    if "pipeline" in model and model.get("pipeline"):
-        payload["user"] = {"name": user.name, "id": user.id}
-
     # Convert the modified body back to JSON
     payload = json.dumps(payload)
 
-    url = app.state.config.UMC_API_BASE_URLS[0]
+    url = app.state.UMC_API_BASE_URLS[0]
 
     headers = {}
     headers["Content-Type"] = "application/json"

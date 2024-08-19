@@ -54,7 +54,7 @@
 	};
 
 	onMount(async () => {
-		console.log('token', localStorage.token);
+		console.log('your open-webui token is', localStorage.token);
 		if ($user === undefined) {
 			await goto('/auth');
 		} else if (['user', 'admin'].includes($user.role)) {
