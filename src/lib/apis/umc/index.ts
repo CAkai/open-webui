@@ -213,6 +213,9 @@ export const generateTitle = async (
 			let s = await res.text();
 			console.log("umc title data", s);
 			s = s.replace(/data:\s/g, '');
+			// 把 citation 的部分刪掉，不然 JSON 無法解析。
+			// Arvin Yang - 2024/08/20
+			s = s.replace(/\{\"citations\":.+\]\}\s+/g, '');
 			return JSON.parse(s);
 		})
 		.catch((err) => {

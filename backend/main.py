@@ -606,17 +606,29 @@ async def chat_completion_files_handler(body):
         **({"contexts": contexts} if contexts is not None else {}),
         **({"citations": citations} if citations is not None else {}),
     }
+    
+def refactor_messages(messages:list[dict]) -> list[dict]:
+    '''
+    重新整理 messages 的格式，如果其中一個 message.content 是 list，就轉成 content:[{"type":xx, "text": "xxx"}] 的格式。
+    
+    Arvin Yang - 2024/08/20
+    '''
+    if any(isinstance(message["content"], list) for message in messages):
+        for message in messages:
+            if isinstance(message["content"], str):
+                message["content"] = [{"type": "text", "text": message["content"]}]
+
+    return messages
+    
 
 
 class ChatCompletionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        print("interrupt with ChatCompletions Middleware")
         if request.method == "POST" and any(
             endpoint in request.url.path
             for endpoint in ["/ollama/api/chat", "/chat/completions", "/umc/api/v1/api/chat"]
         ):
             log.debug(f"request.url.path: {request.url.path}")
-            print(f"1 request.url.path: {request.url.path}")
             try:
                 body, model, user = await get_body_and_model_and_user(request)
             except Exception as e:
@@ -631,7 +643,6 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 "session_id": body.pop("session_id", None),
                 "valves": body.pop("valves", None),
             }
-            print("2 metadata: ", metadata)
 
             __event_emitter__ = get_event_emitter(metadata)
             __event_call__ = get_event_call(metadata)
@@ -652,8 +663,15 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                     status_code=status.HTTP_400_BAD_REQUEST,
                     content={"detail": str(e)},
                 )
-            print("3 function", body)
+
             try:
+                # 如果 model.info.meta 有 toolIds，要加進 body。Arvin Yang - 2024/08/20
+                if "info" in model and "meta" in model["info"] and "toolIds" in model["info"]["meta"]:
+                    if "tool_ids" not in body:
+                        body["tool_ids"] = model["info"]["meta"]["toolIds"]
+                    else:
+                        body["tool_ids"].extend(model["info"]["meta"]["toolIds"])
+
                 body, flags = await chat_completion_tools_handler(
                     body, user, __event_emitter__, __event_call__
                 )
@@ -663,8 +681,15 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             except Exception as e:
                 print(e)
                 pass
-            print("4 tools", body)
+
             try:
+                # 如果 model.info.meta 有 knowledge，要加進 body。Arvin Yang - 2024/08/20
+                if "info" in model and "meta" in model["info"] and "knowledge" in model["info"]["meta"]:
+                    if "files" not in body:
+                        body["files"] = model["info"]["meta"]["knowledge"]
+                    else:
+                        body["files"].extend(model["info"]["meta"]["knowledge"])
+                
                 body, flags = await chat_completion_files_handler(body)
 
                 contexts.extend(flags.get("contexts", []))
@@ -672,7 +697,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             except Exception as e:
                 print(e)
                 pass
-            print("5 files", body)
+
             # If context is not empty, insert it into the messages
             if len(contexts) > 0:
                 context_string = "/n".join(contexts).strip()
@@ -681,7 +706,6 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 # Workaround for Ollama 2.0+ system prompt issue
                 # TODO: replace with add_or_update_system_message
                 if "owned_by" in model and model["owned_by"] == "ollama":
-                    print("6 rag Ollama")
                     body["messages"] = prepend_to_first_user_message_content(
                         rag_template(
                             rag_app.state.config.RAG_TEMPLATE, context_string, prompt
@@ -697,25 +721,30 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                         endpoint in request.url.path
                         for endpoint in ["/umc/api/v1/api/chat"]
                     ) or "owned_by" in model and model["owned_by"] == "umc":
-                        print("6 rag UMC GPT")
                     # 因為 UMC GPT 只接受 {type, text} 這樣的結構，所以這邊要特別處理
                         if body["messages"] and body["messages"][0].get("role") == "system":
                             body["messages"][0]["content"][0]["text"] = f"{rag_str}\n{body['messages'][0]['content'][0]['text']}"
                         else:
                             # Insert at the beginning
                             body["messages"].insert(0, {"role": "system", "content": [{"type": "text", "text": rag_str}]})
-
                     else:
-                        print("6 rag openai")
                         body["messages"] = add_or_update_system_message(
                             rag_str,
                                 body["messages"],
                             )
 
+
+            # 如果是 workspace 模型而且有設定 system_message，就把 system_message 加到 messages 裡面。 Arvin Yang - 2024/08/20
+            if "info" in model and "params" in model["info"] and "system" in model["info"]["params"]:
+                body["messages"].insert(0, {"role": "system", "content": model["info"]["params"]["system"]})
+
             # If there are citations, add them to the data_items
             if len(citations) > 0:
-                print("7 citation", body)
                 data_items.append({"citations": citations})
+                
+            # 重新整理 messages 的格式，讓 UMC GPT 可以正確解析。 Arvin Yang - 2024/08/20
+            body["messages"] = refactor_messages(body["messages"])
+            
             body["metadata"] = metadata
             modified_body_bytes = json.dumps(body).encode("utf-8")
             # Replace the request body with the modified one
@@ -729,27 +758,23 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                     if k.lower() != b"content-length"
                 ],
             ]
-            print("8 modified_body_bytes", body)
             response = await call_next(request)
             if isinstance(response, StreamingResponse):
                 # log.warn("content-type: %s", response.headers.get("Content-Type"))
                 # If it's a streaming response, inject it as SSE event or NDJSON line
                 content_type = response.headers.get("Content-Type")
                 if "text/event-stream" in content_type or "application/json" in content_type:
-                    print("9 response openai", data_items)
                     
                     return StreamingResponse(
                         self.openai_stream_wrapper(response.body_iterator, data_items),
                     )
                 if "application/x-ndjson" in content_type:
-                    print("9 response ollama", data_items)
                     return StreamingResponse(
                         self.ollama_stream_wrapper(response.body_iterator, data_items),
                     )
-                print("9 response", data_items)
+
                 return response
             else:
-                print("9 response nonstream", data_items)
                 return response
 
         # If it's not a chat completion request, just pass it through
@@ -847,7 +872,6 @@ def filter_pipeline(payload, user):
 
 class PipelineMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        print("interrupt with Pipeline Middleware")
         if request.method == "POST" and (
             "/ollama/api/chat" in request.url.path
             or "/chat/completions" in request.url.path
@@ -1121,7 +1145,6 @@ async def get_models(user=Depends(get_verified_user)):
 
 @app.post("/api/chat/completions")
 async def generate_chat_completions(form_data: dict, user=Depends(get_verified_user)):
-    print("generate_chat_completions 1118")
     model_id = form_data["model"]
     if model_id not in app.state.MODELS:
         raise HTTPException(
@@ -1145,13 +1168,10 @@ async def generate_chat_completions(form_data: dict, user=Depends(get_verified_u
     if model.get("pipe"):
         return await generate_function_chat_completion(form_data, user=user)
     if "owned_by" in model and model["owned_by"] == "ollama":
-        print("generate_ollama_chat_completion")
         return await generate_ollama_chat_completion(form_data, user=user)
     elif "owned_by" in model and model["owned_by"] == "umc":
-        print("generate_umc_chat_completion")
         return await generate_umc_chat_completion(form_data, user=user)
     else:
-        print("generate_openai_chat_completion")
         return await generate_openai_chat_completion(form_data, user=user)
 
 
