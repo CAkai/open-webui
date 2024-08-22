@@ -144,7 +144,7 @@ async def generate_chat_completion(
         if r is not None:
             try:
                 res = await r.json()
-                print(res)
+
                 if "error" in res:
                     error_detail = f"External: {res['error']['message'] if 'message' in res['error'] else res['error']}"
             except:
@@ -220,7 +220,6 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
         if r is not None:
             try:
                 res = await r.json()
-                print(res)
                 if "error" in res:
                     error_detail = f"External: {res['error']['message'] if 'message' in res['error'] else res['error']}"
             except:
