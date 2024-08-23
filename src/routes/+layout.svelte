@@ -253,6 +253,7 @@
 							sessionUser.role = userinfo.role;
 							// Save Session User to Store
 							await user.set(sessionUser);
+							await config.set(await getBackendConfig());
 						} else {
 							await goto('/auth');
 						}

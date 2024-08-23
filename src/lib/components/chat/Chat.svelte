@@ -26,7 +26,8 @@
 		socket,
 		showCallOverlay,
 		tools,
-		currentChatPage
+		currentChatPage,
+		temporaryChatEnabled
 	} from '$lib/stores';
 	import {
 		convertMessagesToHistory,
@@ -54,7 +55,13 @@
 	import { createOpenAITextStream } from '$lib/apis/streaming';
 	import { queryMemory } from '$lib/apis/memories';
 	import { getAndUpdateUserLocation, getUserSettings } from '$lib/apis/users';
-	import { chatCompleted, generateTitle, generateSearchQuery, chatAction, getTaskConfig } from '$lib/apis';
+	import {
+		chatCompleted,
+		generateTitle,
+		generateSearchQuery,
+		chatAction, getTaskConfig,
+		generateMoACompletion
+	} from '$lib/apis';
 	import { generateUMCChatCompletion, generateTitle as generateUMCTitle } from '$lib/apis/umc';
 
 	import Banner from '../common/Banner.svelte';
@@ -178,6 +185,14 @@
 				message.content += data.content;
 			} else if (type === 'replace') {
 				message.content = data.content;
+			} else if (type === 'action') {
+				if (data.action === 'continue') {
+					const continueButton = document.getElementById('continue-response-button');
+
+					if (continueButton) {
+						continueButton.click();
+					}
+				}
 			} else if (type === 'confirmation') {
 				eventCallback = cb;
 
@@ -253,7 +268,7 @@
 				}
 			});
 		} else {
-			if (!($settings.saveChatHistory ?? true)) {
+			if ($temporaryChatEnabled) {
 				await goto('/');
 			}
 		}
@@ -270,9 +285,11 @@
 	//////////////////////////
 
 	const initNewChat = async () => {
-		window.history.replaceState(history.state, '', `/`);
-		await chatId.set('');
+		if ($page.url.pathname.includes('/c/')) {
+			window.history.replaceState(history.state, '', `/`);
+		}
 
+		await chatId.set('');
 		autoScroll = true;
 
 		title = '';
@@ -429,7 +446,7 @@
 		}
 
 		if ($chatId == chatId) {
-			if ($settings.saveChatHistory ?? true) {
+			if (!$temporaryChatEnabled) {
 				chat = await updateChatById(localStorage.token, chatId, {
 					models: selectedModels,
 					messages: messages,
@@ -444,7 +461,7 @@
 		}
 	};
 
-	const chatActionHandler = async (chatId, actionId, modelId, responseMessageId) => {
+	const chatActionHandler = async (chatId, actionId, modelId, responseMessageId, event = null) => {
 		const res = await chatAction(localStorage.token, actionId, {
 			model: modelId,
 			messages: messages.map((m) => ({
@@ -454,6 +471,7 @@
 				info: m.info ? m.info : undefined,
 				timestamp: m.timestamp
 			})),
+			...(event ? { event: event } : {}),
 			chat_id: chatId,
 			session_id: $socket?.id,
 			id: responseMessageId
@@ -477,7 +495,7 @@
 		}
 
 		if ($chatId == chatId) {
-			if ($settings.saveChatHistory ?? true) {
+			if (!$temporaryChatEnabled) {
 				chat = await updateChatById(localStorage.token, chatId, {
 					models: selectedModels,
 					messages: messages,
@@ -567,7 +585,7 @@
 				content: userPrompt,
 				files: _files.length > 0 ? _files : undefined,
 				timestamp: Math.floor(Date.now() / 1000), // Unix epoch
-				models: selectedModels.filter((m, mIdx) => selectedModels.indexOf(m) === mIdx)
+				models: selectedModels
 			};
 
 			// Add message to history and Set currentId to messageId
@@ -587,7 +605,11 @@
 		return _responses;
 	};
 
-	const sendPrompt = async (prompt, parentId, { modelId = null, newChat = false } = {}) => {
+	const sendPrompt = async (
+		prompt,
+		parentId,
+		{ modelId = null, modelIdx = null, newChat = false } = {}
+	) => {
 		let _responses = [];
 
 		// If modelId is provided, use it, else use selected model
@@ -599,7 +621,7 @@
 
 		// Create response messages for each selected model
 		const responseMessageIds = {};
-		for (const modelId of selectedModelIds) {
+		for (const [_modelIdx, modelId] of selectedModelIds.entries()) {
 			const model = $models.filter((m) => m.id === modelId).at(0);
 
 			if (model) {
@@ -612,6 +634,7 @@
 					content: '',
 					model: model.id,
 					modelName: model.name ?? model.id,
+					modelIdx: modelIdx ? modelIdx : _modelIdx,
 					userContext: null,
 					timestamp: Math.floor(Date.now() / 1000) // Unix epoch
 				};
@@ -628,14 +651,14 @@
 					];
 				}
 
-				responseMessageIds[modelId] = responseMessageId;
+				responseMessageIds[`${modelId}-${modelIdx ? modelIdx : _modelIdx}`] = responseMessageId;
 			}
 		}
 		await tick();
 
 		// Create new chat if only one message in messages
 		if (newChat && messages.length == 2) {
-			if ($settings.saveChatHistory ?? true) {
+			if (!$temporaryChatEnabled) {
 				chat = await createNewChat(localStorage.token, {
 					id: $chatId,
 					title: $i18n.t('New Chat'),
@@ -660,7 +683,7 @@
 		const _chatId = JSON.parse(JSON.stringify($chatId));
 
 		await Promise.all(
-			selectedModelIds.map(async (modelId) => {
+			selectedModelIds.map(async (modelId, _modelIdx) => {
 				console.log('modelId', modelId);
 				const model = $models.filter((m) => m.id === modelId).at(0);
 
@@ -678,7 +701,8 @@
 						);
 					}
 
-					let responseMessageId = responseMessageIds[modelId];
+					let responseMessageId =
+						responseMessageIds[`${modelId}-${modelIdx ? modelIdx : _modelIdx}`];
 					let responseMessage = history.messages[responseMessageId];
 
 					let userContext = null;
@@ -1241,20 +1265,7 @@
 				}
 			}
 
-			if ($chatId == _chatId) {
-				if ($settings.saveChatHistory ?? true) {
-					chat = await updateChatById(localStorage.token, _chatId, {
-						messages: messages,
-						history: history,
-						models: selectedModels,
-						params: params,
-						files: chatFiles
-					});
-
-					currentChatPage.set(1);
-					await chats.set(await getChatList(localStorage.token, $currentChatPage));
-				}
-			}
+			await saveChatHandler(_chatId);
 		} else {
 			if (res !== null) {
 				const error = await res.json();
@@ -1517,7 +1528,7 @@
 				}
 
 				if ($chatId == _chatId) {
-					if ($settings.saveChatHistory ?? true) {
+					if (!$temporaryChatEnabled) {
 						chat = await updateChatById(localStorage.token, _chatId, {
 							models: selectedModels,
 							messages: messages,
@@ -1630,7 +1641,10 @@
 			} else {
 				// If there are multiple models selected, use the model of the response message for regeneration
 				// e.g. many model chat
-				await sendPrompt(userPrompt, userMessage.id, { modelId: message.model });
+				await sendPrompt(userPrompt, userMessage.id, {
+					modelId: message.model,
+					modelIdx: message.modelIdx
+				});
 			}
 		}
 	};
@@ -1713,7 +1727,7 @@
 			title = _title;
 		}
 
-		if ($settings.saveChatHistory ?? true) {
+		if (!$temporaryChatEnabled) {
 			chat = await updateChatById(localStorage.token, _chatId, { title: _title });
 
 			currentChatPage.set(1);
@@ -1804,6 +1818,69 @@
 		return await getTagsById(localStorage.token, $chatId).catch(async (error) => {
 			return [];
 		});
+	};
+
+	const saveChatHandler = async (_chatId) => {
+		if ($chatId == _chatId) {
+			if (!$temporaryChatEnabled) {
+				chat = await updateChatById(localStorage.token, _chatId, {
+					messages: messages,
+					history: history,
+					models: selectedModels,
+					params: params,
+					files: chatFiles
+				});
+
+				currentChatPage.set(1);
+				await chats.set(await getChatList(localStorage.token, $currentChatPage));
+			}
+		}
+	};
+	const mergeResponses = async (messageId, responses, _chatId) => {
+		console.log('mergeResponses', messageId, responses);
+		const message = history.messages[messageId];
+		const mergedResponse = {
+			status: true,
+			content: ''
+		};
+		message.merged = mergedResponse;
+		messages = messages;
+
+		try {
+			const [res, controller] = await generateMoACompletion(
+				localStorage.token,
+				message.model,
+				history.messages[message.parentId].content,
+				responses
+			);
+
+			if (res && res.ok && res.body) {
+				const textStream = await createOpenAITextStream(res.body, $settings.splitLargeChunks);
+				for await (const update of textStream) {
+					const { value, done, citations, error, usage } = update;
+					if (error || done) {
+						break;
+					}
+
+					if (mergedResponse.content == '' && value == '\n') {
+						continue;
+					} else {
+						mergedResponse.content += value;
+						messages = messages;
+					}
+
+					if (autoScroll) {
+						scrollToBottom();
+					}
+				}
+
+				await saveChatHandler(_chatId);
+			} else {
+				console.error(res);
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	};
 </script>
 
@@ -1931,6 +2008,7 @@
 						{sendPrompt}
 						{continueGeneration}
 						{regenerateResponse}
+						{mergeResponses}
 						{chatActionHandler}
 					/>
 				</div>

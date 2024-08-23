@@ -187,7 +187,7 @@ export const generateTitle = async (
 
 	template = titleGenerationTemplate(template, prompt);
 
-	console.log("generate UMC Title", template);
+	console.log("generate UMC Title\n\n"+template);
 
 	const res = await fetch(`${url}/api/chat`, {
 		method: 'POST',
@@ -211,15 +211,15 @@ export const generateTitle = async (
 			if (!res.ok) throw await res.json();
 			// 如果返回的文本有 data: ，需要刪除後再轉成 json
 			let s = await res.text();
-			console.log("umc title data", s);
+			console.log("umc title data\n", s);
+
 			s = s.replace(/data:\s/g, '');
 			// 把 citation 的部分刪掉，不然 JSON 無法解析。
 			// Arvin Yang - 2024/08/20
-			s = s.replace(/\{\"citations\":.+\]\}\s+/g, '');
-			return JSON.parse(s);
+			s = s.replace(/\{['"]citations['"]:.+\]\}\s+/g, '');
+			return JSON.parse(s.trim());
 		})
 		.catch((err) => {
-			console.error("umc /api/chat error", err);
 			if ('detail' in err) {
 				error = err.detail;
 			}
@@ -227,8 +227,8 @@ export const generateTitle = async (
 		});
 
 	if (error) {
-		throw error;
+		console.error("umc /api/chat title error", error);
 	}
-
+	console.log("umc /api/chat title response", res);
 	return res?.choices[0]?.message?.content ?? 'New Chat';
 };
