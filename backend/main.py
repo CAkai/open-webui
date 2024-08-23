@@ -1217,7 +1217,8 @@ async def generate_completions(form_data: dict, user=Depends(get_verified_user))
     # 雖然 prompt 已經在 ChatCompletionMiddleware 裡面轉成 messages 了，但是這邊還是要處理一下。
     if "prompt" in form_data:
         form_data["messages"] = [{"role": "user", "content": form_data["prompt"]}]
-        del form_data["prompt"]
+        # 不要刪 prompt，不然 1611 行會出錯。
+        # del form_data["prompt"]
 
     return await generate_chat_completions(form_data, user=user)
 
