@@ -572,7 +572,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # 處理 /chat/completions 的 request
         if is_chat_completion_request(request):
-            response, data_items = await self._dispatch(request, call_next)
+            response = await self._dispatch(request, call_next)
             if isinstance(response, StreamingResponse):
                 # log.warn("content-type: %s", response.headers.get("Content-Type"))
                 # If it's a streaming response, inject it as SSE event or NDJSON line
@@ -582,7 +582,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 is_ollama = "application/x-ndjson" in content_type
                 if is_openai or is_ollama:
                     return StreamingResponse(
-                        self.chat_completions_stream_wrapper(response.body_iterator, data_items, is_openai),
+                        self.chat_completions_stream_wrapper(response.body_iterator),
                     )
                 return response
             else:
@@ -611,8 +611,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 return response
 
         # If it's not a chat completion request, just pass it through
-        response = await call_next(request)
-        return response
+        return await call_next(request)
     
     async def _dispatch(self, request: Request, call_next):
         log.debug(f"request.url.path: {request.url.path}")
@@ -755,7 +754,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             ],
         ]
         
-        return await call_next(request), data_items
+        return await call_next(request)
         
 
     async def completion_stream_wrapper(self, original_generator):
@@ -783,7 +782,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             except Exception as e:
                 print(f"data: {data}, its error: {e}")
 
-    async def chat_completions_stream_wrapper(self, original_generator, data_items, is_openai):
+    async def chat_completions_stream_wrapper(self, original_generator):
         # 不要送 data_items，因為 continue 會掛掉。 Arvin Yang - 2024/08/23
         # for item in data_items:
         #     yield f"data: {item}\n\n" if is_openai else f"{item}\n"
@@ -1181,7 +1180,7 @@ async def generate_completions(form_data: dict, user=Depends(get_verified_user))
     
 @app.post("/api/chat/completions")
 async def generate_chat_completions(form_data: dict, user=Depends(get_verified_user)):
-    print("generate_chat_completions 1175")
+    print("generate_chat_completions 1175" ,form_data)
     model_id = form_data["model"]
     if model_id not in app.state.MODELS:
         raise HTTPException(
@@ -1539,7 +1538,7 @@ async def update_task_config(form_data: TaskConfigForm, user=Depends(get_admin_u
 
 @app.post("/api/task/title/completions")
 async def generate_title(form_data: dict, user=Depends(get_verified_user)):
-    print("generate_title")
+    print("generate_title", form_data)
 
     model_id = form_data["model"]
     if model_id not in app.state.MODELS:
@@ -1556,9 +1555,16 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
 
     template = app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE
 
+    # 有時候 prompt 會不見，所以這邊要檢查一遍。 Arvin Yang - 2024/08/26
+    prompt = "unknown"
+    if "prompt" in form_data:
+        prompt = form_data["prompt"]
+    elif "messages" in form_data:
+        prompt = get_last_user_message(form_data["messages"])
+
     content = title_generation_template(
         template,
-        form_data["prompt"],
+        prompt if prompt else "unknown",
         {
             "name": user.name,
             "location": user.info.get("location") if user.info else None,
@@ -1587,7 +1593,7 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
     if "chat_id" in payload:
         del payload["chat_id"]
     
-    if model_id == "umc":
+    if model_id == "umcgpt-4o:latest":
         return await generate_umc_chat_completion(payload, user=user)
     else:
         return await generate_chat_completions(form_data=payload, user=user)

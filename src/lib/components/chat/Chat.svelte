@@ -1689,8 +1689,6 @@
 				"Create a concise, 3-5 word phrase as a header for the following query, strictly adhering to the 3-5 word limit and avoiding the use of the word 'title':"
 			) + ' {{prompt}}';
 
-		console.log('generate Chat Title Model', selectedModels);
-
 		if ($settings?.title?.auto ?? true) {
 			const model = $models.filter((m) => m.id === selectedModels[0]).at(0);
 			let title = '';

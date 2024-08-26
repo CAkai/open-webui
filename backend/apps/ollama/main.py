@@ -814,7 +814,7 @@ async def generate_openai_chat_completion(
 
     url = get_ollama_url(url_idx, payload["model"])
     log.info(f"url: {url}")
-
+    
     return await post_streaming_url(
         f"{url}/v1/chat/completions",
         json.dumps(payload),

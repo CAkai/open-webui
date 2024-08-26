@@ -213,6 +213,7 @@ export const generateTitle = async (
 ) => {
 	let error = null;
 
+	console.log('generateTitle', model, prompt);
 	const res = await fetch(`${WEBUI_BASE_URL}/api/task/title/completions`, {
 		method: 'POST',
 		headers: {
@@ -228,7 +229,15 @@ export const generateTitle = async (
 	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
-			return res.json();
+			// 如果返回的文本有 data: ，需要刪除後再轉成 json
+			let s = await res.text();
+			console.log("ollama/openai title data\n", s);
+
+			s = s.replace(/data:\s/g, '');
+			// 把 citation 的部分刪掉，不然 JSON 無法解析。
+			// Arvin Yang - 2024/08/20
+			s = s.replace(/\{['"]citations['"]:.+\]\}\s+/g, '');
+			return JSON.parse(s.trim());
 		})
 		.catch((err) => {
 			console.log(err);
@@ -242,7 +251,8 @@ export const generateTitle = async (
 		throw error;
 	}
 
-	return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? 'New Chat';
+	// ollama 回傳的 data 會放在 text 裡，所以這邊要追加判斷。Arvin Yang - 2024/08/26
+	return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? res?.choices[0]?.text.replace(/["']/g, '') ?? 'New Chat';
 };
 
 export const generateEmoji = async (
