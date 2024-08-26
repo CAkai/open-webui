@@ -535,6 +535,7 @@ def refactor_messages(messages:list[dict]) -> list[dict]:
     '''
     if any(isinstance(message["content"], list) for message in messages):
         for message in messages:
+            print(message)
             if isinstance(message["content"], str):
                 message["content"] = [{"type": "text", "text": message["content"]}]
 
@@ -621,7 +622,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"detail": str(e)},
             ), []
-
+        print(1)
         metadata = {
             "chat_id": body.pop("chat_id", None),
             "message_id": body.pop("id", None),
@@ -630,7 +631,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             "files": body.get("files", None),
         }
         body["metadata"] = metadata
-
+        print(2)
         __user__ = {
             "id": user.id,
             "email": user.email,
@@ -659,7 +660,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"detail": str(e)},
             ), []
-
+        print(3)
         metadata = {
             **metadata,
             "tool_ids": body.pop("tool_ids", None),
@@ -679,7 +680,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 metadata["files"] = model["info"]["meta"]["knowledge"]
             else:
                 metadata["files"].extend(model["info"]["meta"]["knowledge"])
-
+        print(4)
         body["metadata"] = metadata
 
         try:
@@ -688,14 +689,14 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-
+        print(5)
         try:
             body, flags = await chat_completion_files_handler(body)
             contexts.extend(flags.get("contexts", []))
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-
+        print(6)
         # If context is not empty, insert it into the messages
         if len(contexts) > 0:
             context_string = "/n".join(contexts).strip()
@@ -728,7 +729,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                             body["messages"],
                         )
 
-
+        print(7)
         # 如果是 workspace 模型而且有設定 system_message，就把 system_message 加到 messages 裡面。 Arvin Yang - 2024/08/20
         if "info" in model and "params" in model["info"] and "system" in model["info"]["params"]:
             body["messages"].insert(0, {"role": "system", "content": model["info"]["params"]["system"]})
@@ -2088,7 +2089,21 @@ async def update_pipeline_valves(
 
 
 @app.get("/api/config")
-async def get_app_config(request: Request, user=Depends(get_verified_user),):
+async def get_app_config(request: Request):
+    user = None
+    token = None
+
+    if (auth_token := request.headers.get("Authorization")) is not None:
+        token = auth_token[7:]
+
+    if token is None and "token" in request.cookies:
+        token = request.cookies.get("token")
+
+    if token is not None:
+        data = decode_token(token)
+        if data is not None and "id" in data:
+            user = Users.get_user_by_id(data["id"])
+
     return {
         "status": True,
         "name": WEBUI_NAME,
