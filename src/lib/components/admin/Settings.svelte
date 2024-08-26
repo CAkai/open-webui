@@ -340,7 +340,7 @@
 					toast.success($i18n.t('Settings saved successfully!'));
 
 					await tick();
-					await config.set(await getBackendConfig());
+					await config.set(await getBackendConfig(localStorage.token));
 				}}
 			/>
 		{:else if selectedTab === 'users'}
@@ -369,7 +369,7 @@
 					toast.success($i18n.t('Settings saved successfully!'));
 
 					await tick();
-					await config.set(await getBackendConfig());
+					await config.set(await getBackendConfig(localStorage.token));
 				}}
 			/>
 		{:else if selectedTab === 'interface'}

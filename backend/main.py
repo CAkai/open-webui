@@ -2088,14 +2088,7 @@ async def update_pipeline_valves(
 
 
 @app.get("/api/config")
-async def get_app_config(request: Request):
-    user = None
-    if "token" in request.cookies:
-        token = request.cookies.get("token")
-        data = decode_token(token)
-        if data is not None and "id" in data:
-            user = Users.get_user_by_id(data["id"])
-
+async def get_app_config(request: Request, user=Depends(get_verified_user),):
     return {
         "status": True,
         "name": WEBUI_NAME,

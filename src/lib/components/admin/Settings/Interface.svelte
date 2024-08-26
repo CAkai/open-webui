@@ -35,12 +35,15 @@
 
 		promptSuggestions = await setDefaultPromptSuggestions(localStorage.token, promptSuggestions);
 		await updateBanners();
-
-		await config.set(await getBackendConfig());
 	};
 
 	onMount(async () => {
+		// 先載入 config，這樣 promptSuggestions 才能正確載入。Arvin Yang - 2024/08/26
+		await config.set(await getBackendConfig(localStorage.token));
+
 		taskConfig = await getTaskConfig(localStorage.token);
+
+		console.log('$config:', $config);
 
 		promptSuggestions = $config?.default_prompt_suggestions ?? [];
 

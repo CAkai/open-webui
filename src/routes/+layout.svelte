@@ -164,7 +164,7 @@
 
 		let backendConfig = null;
 		try {
-			backendConfig = await getBackendConfig();
+			backendConfig = await getBackendConfig(localStorage.token);
 			console.log('Backend config:', backendConfig);
 		} catch (error) {
 			console.error('Error loading backend config:', error);
@@ -253,7 +253,7 @@
 							sessionUser.role = userinfo.role;
 							// Save Session User to Store
 							await user.set(sessionUser);
-							await config.set(await getBackendConfig());
+							await config.set(await getBackendConfig(localStorage.token));
 						} else {
 							await goto('/auth');
 						}

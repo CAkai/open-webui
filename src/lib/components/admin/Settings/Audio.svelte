@@ -94,7 +94,7 @@
 		if (res) {
 			toast.success($i18n.t('Audio settings updated successfully'));
 
-			config.set(await getBackendConfig());
+			config.set(await getBackendConfig(localStorage.token));
 		}
 	};
 

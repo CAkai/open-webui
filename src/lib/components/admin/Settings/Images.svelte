@@ -78,7 +78,7 @@
 		}
 
 		if (config.enabled) {
-			backendConfig.set(await getBackendConfig());
+			backendConfig.set(await getBackendConfig(localStorage.token));
 			getModels();
 		}
 	};

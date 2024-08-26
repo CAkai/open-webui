@@ -47,7 +47,7 @@
 		await updateModelFilterConfig(localStorage.token, whitelistEnabled, whitelistModels);
 		saveHandler();
 
-		await config.set(await getBackendConfig());
+		await config.set(await getBackendConfig(localStorage.token));
 	}}
 >
 	<div class=" space-y-3 overflow-y-scroll max-h-full">

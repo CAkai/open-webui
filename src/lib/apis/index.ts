@@ -660,14 +660,15 @@ export const updatePipelineValves = async (
 	return res;
 };
 
-export const getBackendConfig = async () => {
+export const getBackendConfig = async (token: string) => {
 	let error = null;
 
 	const res = await fetch(`${WEBUI_BASE_URL}/api/config`, {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		}
 	})
 		.then(async (res) => {
