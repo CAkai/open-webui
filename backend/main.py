@@ -544,13 +544,14 @@ def refactor_messages(messages:list[dict]) -> list[dict]:
 def inverse_refactor_messages(messages:list[dict]) -> list[dict]:
     '''
     重新整理 messages 的格式，如果其中一個 message.content 是 [{"type":xx, "text": "xxx"}] 的格式，就轉成 list 的格式。
+    如果是 image_url 就跳過。
 
     Arvin Yang - 2024/08/23
     '''
     if any(isinstance(message["content"], list) for message in messages):
         for message in messages:
             if isinstance(message["content"], list):
-                message["content"] = "".join(map(lambda x: x["text"], message["content"]))
+                message["content"] = "".join(map(lambda x: x["text"] if "text" in x else "", message["content"]))
 
     return messages
     
@@ -622,7 +623,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"detail": str(e)},
             ), []
-        print(1)
+        
         metadata = {
             "chat_id": body.pop("chat_id", None),
             "message_id": body.pop("id", None),
@@ -631,7 +632,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             "files": body.get("files", None),
         }
         body["metadata"] = metadata
-        print(2)
+
         __user__ = {
             "id": user.id,
             "email": user.email,
@@ -660,7 +661,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"detail": str(e)},
             ), []
-        print(3)
+
         metadata = {
             **metadata,
             "tool_ids": body.pop("tool_ids", None),
@@ -680,7 +681,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 metadata["files"] = model["info"]["meta"]["knowledge"]
             else:
                 metadata["files"].extend(model["info"]["meta"]["knowledge"])
-        print(4)
+
         body["metadata"] = metadata
 
         try:
@@ -689,14 +690,14 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-        print(5)
+
         try:
             body, flags = await chat_completion_files_handler(body)
             contexts.extend(flags.get("contexts", []))
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-        print(6)
+
         # If context is not empty, insert it into the messages
         if len(contexts) > 0:
             context_string = "/n".join(contexts).strip()
@@ -729,7 +730,6 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                             body["messages"],
                         )
 
-        print(7)
         # 如果是 workspace 模型而且有設定 system_message，就把 system_message 加到 messages 裡面。 Arvin Yang - 2024/08/20
         if "info" in model and "params" in model["info"] and "system" in model["info"]["params"]:
             body["messages"].insert(0, {"role": "system", "content": model["info"]["params"]["system"]})
@@ -878,6 +878,7 @@ def filter_pipeline(payload, user):
 
 class PipelineMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+
         if not is_chat_completion_request(request):
             return await call_next(request)
 
