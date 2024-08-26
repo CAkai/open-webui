@@ -42,9 +42,9 @@
 	onMount(async () => {
 		taskConfig = await getTaskConfig(localStorage.token);
 
-		promptSuggestions = $config?.default_prompt_suggestions;
+		promptSuggestions = $config?.default_prompt_suggestions ?? [];
 
-		banners = await getBanners(localStorage.token);
+		banners = await getBanners(localStorage.token) ?? [];
 	});
 
 	const updateBanners = async () => {
@@ -243,7 +243,7 @@
 			</div>
 		</div>
 
-		{#if $user.role === 'admin'}
+		{#if $user?.role === 'admin'}
 			<div class=" space-y-3">
 				<div class="flex w-full justify-between mb-2">
 					<div class=" self-center text-sm font-semibold">
