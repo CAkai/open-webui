@@ -1,69 +1,35 @@
+version: '3.8'
+
 services:
-  # ollama:
-  #   image: ollama/ollama:0.1.48
-  #   ports:
-  #     - "11434:11434"
-  #   restart: always
-  #   volumes:
-  #     - .:/code
-  #     - ollama_data:/root/.ollama
-  #   container_name: ollama
-  #   pull_policy: always
-  #   tty: true
-
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: all
-  #             capabilities: [ gpu ]
-
-  #   environment:
-  #     - OLLAMA_KEEP_ALIVE=24h
-  #     - OLLAMA_NUM_PARALLEL=2
-  #     - OLLAMA_MAX_LOADED_MODELS=2
-  #     - OLLAMA_HOST=0.0.0.0
-  # healthcheck:
-  #   test: ollama --version || exit 1
-  #   interval: 600s
-  # networks:
-  #   ollama_net:
-  #     ipv4_address: 172.29.0.10
-
   open-webui:
     build:
       context: .
       args:
-        OLLAMA_BASE_URL: 'http://10.13.186.242:11434'
+        OLLAMA_BASE_URL: '/ollama'
         USE_CUDA: true
         USE_OLLAMA: false
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
-    command: bash start.sh
+    init: true
+    container_name: webui
     volumes:
       - open-webui:/app/backend/data
-    # depends_on:
-    #   - ollama
+      - ./src:/app/src
+      - ./backend:/app/backend
+      - ./static:/app/static
     ports:
-      - 8080:8080
+      - 9988:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://10.13.186.242:11434 ; http://172.16.41.100:11434 ; http://172.16.40.240:11434'
-      - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
+      - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
-      - 'WEBUI_NAME= U-Ai'
-      - 'UMC_BASE_URL=http://172.16.128.9:3003'
-      - 'OPENAI_API_BASE_URL=http://10.13.186.242:9099'
-      - OPENAI_API_KEY="0p3n-w3bu!"
-      - 'USE_CUDA_DOCKER= true'
-      # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
-      # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
-      # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
-      # - 'RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=true'
+      - 'WEBUI_NAME=U-AI'
+      - OPENAI_API_BASE_URL='http://host.docker.internal:10016'
+      - OPENAI_API_KEY=""
+    # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
     restart: unless-stopped
+    # GPU support
     deploy:
       resources:
         reservations:
@@ -72,28 +38,11 @@ services:
               count: all
               capabilities:
                 - gpu
-    networks:
-      ollama_net:
-        ipv4_address: 172.29.0.10
-
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
-    init: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 9999:8080
-    networks:
-      ollama_net:
-        ipv4_address: 172.29.0.99
 
   pipelines:
+    container_name: pipelines
     image: ghcr.io/open-webui/pipelines:main
     restart: always
-    networks:
-      ollama_net:
-        ipv4_address: 172.29.0.35
     ports:
       - 9099:9099
     volumes:
@@ -129,22 +78,13 @@ services:
       # "large-v2": "https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt",
       # "large-v3": "https://openaipublic.azureedge.net/main/whisper/models/e5b1a55b89c1367dacf97e3e19bfd829a01529dbfdeefa8caeb59b3f1b81dadb/large-v3.pt",
       # "large": "https://openaipublic.azureedge.net/main/whisper/models/e5b1a55b89c1367dacf97e3e19bfd829a01529dbfdeefa8caeb59b3f1b81dadb/large-v3.pt",
-      - ASR_MODEL=large-v3
+      - ASR_MODEL=base
     ports:
       - 9000:9000
     volumes:
       - ./whisper-model:/tmp/whisper
-    networks:
-      ollama_net:
-        ipv4_address: 172.29.0.135
+
 volumes:
   open-webui: {}
   pipelines:
 
-networks:
-  ollama_net:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.29.0.0/16

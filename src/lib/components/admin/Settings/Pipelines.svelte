@@ -99,7 +99,7 @@
 		valves_spec = null;
 
 		if (PIPELINES_LIST.length > 0) {
-			console.log(selectedPipelinesUrlIdx);
+			console.log("selectedPipelinesUrlIdx", selectedPipelinesUrlIdx);
 			pipelines = await getPipelines(localStorage.token, selectedPipelinesUrlIdx);
 
 			if (pipelines.length > 0) {
