@@ -298,7 +298,7 @@ export const generateChatCompletion = async (token: string = '', body: object) =
 	let controller = new AbortController();
 	let error = null;
 
-	console.log(JSON.parse(JSON.stringify(body)));
+	console.log("generateChatCompletion", JSON.parse(JSON.stringify(body)));
 	
 	const res = await fetch(`${OLLAMA_API_BASE_URL}/api/chat`, {
 		signal: controller.signal,

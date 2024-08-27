@@ -252,7 +252,7 @@ export const generateTitle = async (
 	}
 
 	// ollama 回傳的 data 會放在 text 裡，所以這邊要追加判斷。Arvin Yang - 2024/08/26
-	return res?.choices[0]?.message?.content.replace(/["']/g, '') ?? res?.choices[0]?.text.replace(/["']/g, '') ?? 'New Chat';
+	return res?.choices?.[0]?.message?.content.replace(/["']/g, '') ?? res?.choices?.[0]?.text.replace(/["']/g, '') ?? 'New Chat';
 };
 
 export const generateEmoji = async (

@@ -1,4 +1,5 @@
 import base64
+import copy
 import uuid
 from contextlib import asynccontextmanager
 
@@ -509,6 +510,12 @@ async def chat_completion_tools_handler(
 
 
 async def chat_completion_files_handler(body) -> tuple[dict, dict[str, list]]:
+    '''
+    這個函數只處理 files 的部分，不處理 messages.images<list> 的部分。
+    目前 Ollama 支援在 messages 裡面放 圖片的 base64 碼，詳見 https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion
+    但辨識圖片的功能只支援部分模型，例如 llava。
+    '''
+    
     contexts = []
     citations = []
 
@@ -570,6 +577,7 @@ def is_completion_request(request):
 
 class ChatCompletionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        print("ChatCompletionMiddleware")
         # 處理 /chat/completions 的 request
         if is_chat_completion_request(request):
             response = await self._dispatch(request, call_next)
@@ -615,6 +623,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
     
     async def _dispatch(self, request: Request, call_next):
         log.debug(f"request.url.path: {request.url.path}")
+        # 讀取原始 request body、model 和 user
         try:
             body, model, user = await get_body_and_model_and_user(request)
         except Exception as e:
@@ -622,7 +631,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"detail": str(e)},
             ), []
-        
+        # 把 body 裡面的 chat_id, id, session_id, tool_ids, files 欄位取出來，放到 metadata 裡面。
         metadata = {
             "chat_id": body.pop("chat_id", None),
             "message_id": body.pop("id", None),
@@ -631,7 +640,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             "files": body.get("files", None),
         }
         body["metadata"] = metadata
-
+        print("1 body", json.dumps(body)[:400])
         __user__ = {
             "id": user.id,
             "email": user.email,
@@ -666,7 +675,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             "tool_ids": body.pop("tool_ids", None),
             "files": body.pop("files", None),
         }
-        
+        print("2 body", json.dumps(body)[:400])
         # 如果 model.info.meta 有 toolIds，要加進 body。Arvin Yang - 2024/08/20
         if "info" in model and "meta" in model["info"] and "toolIds" in model["info"]["meta"]:
             if "tool_ids" not in metadata or metadata["tool_ids"] is None:
@@ -682,21 +691,21 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
                 metadata["files"].extend(model["info"]["meta"]["knowledge"])
 
         body["metadata"] = metadata
-
+        print("3 body", json.dumps(body)[:400])
         try:
             body, flags = await chat_completion_tools_handler(body, user, extra_params)
             contexts.extend(flags.get("contexts", []))
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-
+        print("4 body", json.dumps(body)[:400])
         try:
             body, flags = await chat_completion_files_handler(body)
             contexts.extend(flags.get("contexts", []))
             citations.extend(flags.get("citations", []))
         except Exception as e:
             log.exception(e)
-
+        print("5 body", json.dumps(body)[:400])
         # If context is not empty, insert it into the messages
         if len(contexts) > 0:
             context_string = "/n".join(contexts).strip()
@@ -704,7 +713,7 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             
             # Workaround for Ollama 2.0+ system prompt issue
             # TODO: replace with add_or_update_system_message
-            if "owned_by" in model and model["owned_by"] == "ollama":
+            if model.get("owned_by", None) == "ollama":
                 body["messages"] = prepend_to_first_user_message_content(
                     rag_template(
                         rag_app.state.config.RAG_TEMPLATE, context_string, prompt
@@ -738,9 +747,11 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             data_items.append({"citations": citations})
             
         # 重新整理 messages 的格式，讓 UMC GPT 可以正確解析。 Arvin Yang - 2024/08/20
-        body["messages"] = refactor_messages(body["messages"])
+        if model.get("owned_by", None) == "umc":
+            body["messages"] = refactor_messages(body["messages"])
+        
         body["metadata"] = metadata
-
+        print("6 body", json.dumps(body)[:400])
         modified_body_bytes = json.dumps(body).encode("utf-8")
         # Replace the request body with the modified one
         request._body = modified_body_bytes
@@ -829,7 +840,8 @@ def filter_pipeline(payload, user):
 
     model = app.state.MODELS[model_id]
 
-    new_payload = {**payload}
+    # 防止 payload 被修改。 Arvin Yang - 2024/08/26
+    new_payload = copy.deepcopy(payload)
 
     # 如果 payload 有 messages，而且格式不是 [{role:xx, content:xx}]，就轉成這樣的格式。 Arvin Yang - 2024/08/23
     # 不然 pipeline 會無法正確解析。 Arvin Yang - 2024/08/23
@@ -860,9 +872,8 @@ def filter_pipeline(payload, user):
                     "body": new_payload,
                 },
             )
-
             r.raise_for_status()
-            payload = r.json()
+            new_payload = r.json()
         except Exception as e:
             # Handle connection error here
             print(f"Connection error: {e}")
@@ -871,13 +882,15 @@ def filter_pipeline(payload, user):
                 res = r.json()
                 if "detail" in res:
                     raise Exception(r.status_code, res["detail"])
-
-    return payload
+                
+    
+    new_payload["messages"] = payload["messages"]
+    return new_payload
 
 
 class PipelineMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-
+        print("PipelineMiddleware")
         if not is_chat_completion_request(request):
             return await call_next(request)
 

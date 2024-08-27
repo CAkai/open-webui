@@ -230,5 +230,5 @@ export const generateTitle = async (
 		console.error("umc /api/chat title error", error);
 	}
 	console.log("umc /api/chat title response", res);
-	return res?.choices[0]?.message?.content ?? 'New Chat';
+	return res?.choices?.[0]?.message?.content ?? 'New Chat';
 };

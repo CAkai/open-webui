@@ -1107,6 +1107,8 @@
 			...(responseMessage?.files ?? []).filter((item) => ['web_search_results'].includes(item.type))
 		);
 
+		console.log('sendPromptOllama files', files);
+
 		eventTarget.dispatchEvent(
 			new CustomEvent('chat:start', {
 				detail: {
@@ -1340,6 +1342,8 @@
 			),
 			...(responseMessage?.files ?? []).filter((item) => ['web_search_results'].includes(item.type))
 		);
+
+		console.log('sendPromptOpenAI files', files);
 
 		scrollToBottom();
 
