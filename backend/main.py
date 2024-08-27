@@ -876,12 +876,12 @@ def filter_pipeline(payload, user):
             new_payload = r.json()
         except Exception as e:
             # Handle connection error here
-            print(f"Connection error: {e}")
-
-            if r is not None:
-                res = r.json()
-                if "detail" in res:
-                    raise Exception(r.status_code, res["detail"])
+            print(f"Filter Pipeline Connection error: {e}")
+            # Pipeline 不要影響主要功能，所以這邊不要 raise。 Arvin Yang - 2024/08/27
+            # if r is not None:
+            #     res = r.json()
+            #     if "detail" in res:
+            #         raise Exception(r.status_code, res["detail"])
                 
     
     new_payload["messages"] = payload["messages"]
