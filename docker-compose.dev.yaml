@@ -15,6 +15,7 @@ services:
     volumes:
       - open-webui:/app/backend/data
       - ./src:/app/src
+      - ./umc:/app/umc
       - ./backend:/app/backend
       - ./static:/app/static
     ports:
@@ -25,6 +26,7 @@ services:
       - 'WEBUI_NAME=U-AI'
       - OPENAI_API_BASE_URL='http://host.docker.internal:10016'
       - OPENAI_API_KEY=""
+      - ICLOUD_API_BASE_URL='http://192.168.50.165:3003'
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway

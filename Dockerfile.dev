@@ -68,6 +68,8 @@ COPY . .
 RUN set -xe ; \
     if [ "$USE_OLLAMA" = "true" ]; then \
         apt-get update && \
+        # Install Envsubst with Arvin Yang - 2024/08/28
+        apt-get install -y --no-install-recommends gettext && \
         # Install pandoc and netcat
         apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
         # for RAG OCR
@@ -80,6 +82,8 @@ RUN set -xe ; \
         rm -rf /var/lib/apt/lists/*; \
     else \
         apt-get update && \
+        # Install Envsubst with Arvin Yang - 2024/08/28
+        apt-get install -y --no-install-recommends gettext && \
         # Install pandoc and netcat
         apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
         # for RAG OCR
@@ -98,7 +102,7 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/node /usr/local/bin/node && \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/npm /usr/local/bin/npm
 
-RUN npm ci && npm run build
+RUN npm ci && source build.sh
 
 WORKDIR /app/backend
 

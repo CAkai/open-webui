@@ -95,6 +95,8 @@ RUN chown -R $UID:$GID /app $HOME
 
 RUN if [ "$USE_OLLAMA" = "true" ]; then \
     apt-get update && \
+    # Install Envsubst with Arvin Yang - 2024/08/28
+    apt-get install -y --no-install-recommends gettext && \
     # Install pandoc and netcat
     apt-get install -y --no-install-recommends pandoc netcat-openbsd curl && \
     apt-get install -y --no-install-recommends gcc python3-dev && \
@@ -108,6 +110,8 @@ RUN if [ "$USE_OLLAMA" = "true" ]; then \
     rm -rf /var/lib/apt/lists/*; \
     else \
     apt-get update && \
+    # Install Envsubst with Arvin Yang - 2024/08/28
+    apt-get install -y --no-install-recommends gettext && \
     # Install pandoc, netcat and gcc
     apt-get install -y --no-install-recommends pandoc gcc netcat-openbsd curl jq && \
     apt-get install -y --no-install-recommends gcc python3-dev && \
