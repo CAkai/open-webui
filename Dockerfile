@@ -27,6 +27,23 @@ RUN npm ci
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
+
+# region UMC
+ARG ICLOUD_API_BASE_URL
+ENV ICLOUD_API_BASE_URL=${ICLOUD_API_BASE_URL}
+RUN set -xe && apk add --no-cache gettext
+# 複製檔案到前端
+RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants_umc.ts && \
+    cp umc/routes/+layout.svelte src/routes/+layout.svelte && \
+    cp umc/routes/auth-page.svelte src/routes/auth/+page.svelte && \
+    mkdir -p src/lib/apis/umc && \
+    cp umc/lib/umc-api.ts src/lib/apis/umc/index.ts && \
+    cp umc/lib/apis.ts src/lib/apis/index.ts && \
+# 複製檔案到後端
+    mkdir -p backend/umc && \
+    cp umc/backend/umc_util.py backend/umc/util.py && \
+    cp umc/backend/main.py backend/main.py && \
+    cp umc/backend/openai.py backend/apps/openai/main.py
 RUN npm run build
 
 ######## WebUI backend ########
@@ -95,8 +112,6 @@ RUN chown -R $UID:$GID /app $HOME
 
 RUN if [ "$USE_OLLAMA" = "true" ]; then \
     apt-get update && \
-    # Install Envsubst with Arvin Yang - 2024/08/28
-    apt-get install -y --no-install-recommends gettext && \
     # Install pandoc and netcat
     apt-get install -y --no-install-recommends pandoc netcat-openbsd curl && \
     apt-get install -y --no-install-recommends gcc python3-dev && \
@@ -110,8 +125,6 @@ RUN if [ "$USE_OLLAMA" = "true" ]; then \
     rm -rf /var/lib/apt/lists/*; \
     else \
     apt-get update && \
-    # Install Envsubst with Arvin Yang - 2024/08/28
-    apt-get install -y --no-install-recommends gettext && \
     # Install pandoc, netcat and gcc
     apt-get install -y --no-install-recommends pandoc gcc netcat-openbsd curl jq && \
     apt-get install -y --no-install-recommends gcc python3-dev && \

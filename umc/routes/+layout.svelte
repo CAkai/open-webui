@@ -36,8 +36,28 @@
 	setContext('i18n', i18n);
 
 	//region UMC 自動登入&註冊機制
+	const login = async () => {
+		// Get Session User Info
+		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+			toast.error(error);
+			return null;
+		});
+		console.log('sessionUser:', sessionUser);
+		if (sessionUser) {
+			// Save Session User to Store
+			await user.set(sessionUser);
+			await config.set(await getBackendConfig());
+			await goto('/');
+		} else {
+			// Redirect Invalid Session User to /auth Page
+			localStorage.removeItem('token');
+			await goto('/auth');
+		}
+	};
+
 	import { UMC_TOKEN_COOKIE_KEY } from '$lib/constants_umc';
 	// 讓系統監控 iframe 傳來的訊息，並自動登入
+	// 這個會跑得比較慢，所以裡面必須再登入一遍
 	const autoLoginFromICloud = async (event) => {
 		const isIgnoredEvent =
 			event.source !== window.parent ||
@@ -45,13 +65,14 @@
 			event.data?.source === 'react-devtools-content-script' ||
 			event.data?.isAngularDevTools ||
 			// 有時候傳進來的 event.data 是 object，這時候就不處理
-			typeof event.data !== "string";
+			typeof event.data !== 'string';
 
 		if (isIgnoredEvent) {
 			return;
 		}
 		// 讓網站記錄 token。這麼做的原因是，iframe 無法直接存取 iCloud 的 cookie。
 		localStorage.setItem(UMC_TOKEN_COOKIE_KEY, String(event.data));
+		await login();
 	};
 	//endregion
 
@@ -141,21 +162,7 @@
 				});
 
 				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						toast.error(error);
-						return null;
-					});
-
-					if (sessionUser) {
-						// Save Session User to Store
-						await user.set(sessionUser);
-						await config.set(await getBackendConfig());
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						localStorage.removeItem('token');
-						await goto('/auth');
-					}
+					await login();
 				} else {
 					// Don't redirect if we're already on the auth page
 					// Needed because we pass in tokens from OAuth logins via URL fragments

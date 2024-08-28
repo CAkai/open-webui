@@ -21,6 +21,10 @@ ARG USE_OLLAMA
 ARG USE_CUDA_VER
 ARG USE_EMBEDDING_MODEL
 ARG USE_RERANKING_MODEL
+# region UMC
+ARG ICLOUD_API_BASE_URL
+ENV ICLOUD_API_BASE_URL=${ICLOUD_API_BASE_URL}
+# endregion
 
 ## Basis ##
 ENV ENV=prod \
@@ -101,6 +105,21 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     tar xf /tmp/node-v21.7.3-linux-x64.tar.xz -C /tmp && \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/node /usr/local/bin/node && \
     ln -s /tmp/node-v21.7.3-linux-x64/bin/npm /usr/local/bin/npm
+
+# region UMC
+# 複製檔案到前端
+RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants_umc.ts && \
+    cp umc/routes/+layout.svelte src/routes/+layout.svelte && \
+    cp umc/routes/auth-page.svelte src/routes/auth/+page.svelte && \
+    mkdir -p src/lib/apis/umc && \
+    cp umc/lib/umc-api.ts src/lib/apis/umc/index.ts && \
+    cp umc/lib/apis.ts src/lib/apis/index.ts && \
+# 複製檔案到後端
+    mkdir -p backend/umc && \
+    cp umc/backend/umc_util.py backend/umc/util.py && \
+    cp umc/backend/main.py backend/main.py && \
+    cp umc/backend/openai.py backend/apps/openai/main.py
+# endregion
 
 RUN npm ci && npm run build
 

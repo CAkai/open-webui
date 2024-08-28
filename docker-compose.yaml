@@ -38,6 +38,7 @@ services:
         OLLAMA_BASE_URL: 'http://10.13.186.242:11434'
         USE_CUDA: true
         USE_OLLAMA: false
+        ICLOUD_API_BASE_URL: 'http://172.16.32.95/backend'
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui

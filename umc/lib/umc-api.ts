@@ -1,7 +1,7 @@
 // 這個檔案會被寫入 src/lib/apis/umc/index.ts
 import { UMC_TOKEN_COOKIE_KEY, ICLOUD_API_BASE_URL } from "$lib/constants_umc";
 import { generateInitialsImage } from "$lib/utils";
-import { getSessionUser as getUser, userSignUp, userSignIn } from "../auths";
+import { getSessionUser as getUser, userSignUp as signup, userSignIn as login } from "../auths";
 
 type UserInfo = {
     id: string;
@@ -9,6 +9,13 @@ type UserInfo = {
     department: string;
     email: string;
     role: string;
+};
+
+type User = {
+    id: string;
+    name: string;
+    department: string;
+    access_token: string;
 };
 
 async function getICloudUserInfo(token: string): Promise<UserInfo | null> {
@@ -66,12 +73,12 @@ export async function getSessionUser(token: string) {
 
     // 先登入，判斷是否有這個使用者
     const email = iCloudUser.id + '@umc.com';
-    let newUser = await userSignIn(email, umcToken).catch((error) => null);
+    let newUser = await login(email, umcToken).catch((error) => null);
 
     // 如果沒有這個使用者，就註冊一個新的使用者
     if (newUser === null) {
         console.log('user not found, sign up');
-        newUser = await userSignUp(
+        newUser = await signup(
             iCloudUser.name,
             email,
             umcToken,
@@ -88,3 +95,82 @@ export async function getSessionUser(token: string) {
 
     throw new Error("login failed");
 }
+
+export async function userSignIn(empid: string, password: string) {
+    console.log('userSignIn', empid, password);
+    // 先登入 iCloud，拿到 token
+    const iCloudUser = await iCloudSignIn(empid, password);
+
+    if (!iCloudUser) {
+        throw new Error("login failed");
+    }
+    // 把 token 存到 localStorage
+    localStorage.setItem(UMC_TOKEN_COOKIE_KEY, iCloudUser.access_token);
+    // 取得使用者資訊
+    const userinfo = await getICloudUserInfo(iCloudUser.access_token);
+    // 用 token 登入本地
+	return await login(iCloudUser.id + "@umc.com", iCloudUser.access_token).
+        then(user => {
+            // 更新使用者角色
+            if (userinfo) user.role = userinfo.role;
+            else user.role = 'user';
+            console.log('userSignIn user', user);
+            return user;
+        });
+};
+
+async function iCloudSignIn(empid: string, password: string): Promise<User | null> {
+    let error = null;
+
+	// 設定 FormData
+	const body = new FormData();
+	body.append('username', empid);
+	body.append('password', password);
+
+	// 原本以為客戶端也要設定 CORS，但是後來發現只要 iCloud 補上就行了。 Arvin Yang - 2024/04/30
+	const res = await fetch(`${ICLOUD_API_BASE_URL}/api/v1/login`, {
+		method: 'POST',
+		body: body
+	})
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.catch((err: {message: string; error: string}) => {
+			console.log(err);
+
+			error = "EmpId or password is incorrect.";
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+}
+
+export async function userSignUp(
+	name: string,
+	empid: string,
+	password: string,
+	profile_image_url: string
+) {
+    // 先登入 iCloud，拿到 token
+    const iCloudUser = await iCloudSignIn(empid, password);
+
+    if (!iCloudUser) {
+        throw new Error("signup failed");
+    }
+    // 把 token 存到 localStorage
+    localStorage.setItem(UMC_TOKEN_COOKIE_KEY, iCloudUser.access_token);
+    // 取得使用者資訊
+    const userinfo = await getICloudUserInfo(iCloudUser.access_token);
+    return await signup(iCloudUser.name, iCloudUser.id + "@umc.com", iCloudUser.access_token, profile_image_url)
+    .then(user => {
+        // 更新使用者角色
+        if (userinfo) user.role = userinfo.role;
+        else user.role = 'user';
+        return user;
+    });
+};
