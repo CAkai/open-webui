@@ -1,5 +1,3 @@
-#! /bin/bash
-
 envsubst < umc/lib/constants.ts > src/lib/constants_umc.ts
 cp umc/routes/+layout.svelte src/routes/+layout.svelte
 mkdir -p src/lib/apis/umc

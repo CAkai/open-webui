@@ -35,11 +35,6 @@
 
 	setContext('i18n', i18n);
 
-	let loaded = false;
-	const BREAKPOINT = 768;
-
-	let wakeLock = null;
-
 	//region UMC 自動登入&註冊機制
 	import { UMC_TOKEN_COOKIE_KEY } from '$lib/constants_umc';
 	// 讓系統監控 iframe 傳來的訊息，並自動登入
@@ -60,6 +55,9 @@
 	};
 	//endregion
 
+	let loaded = false;
+	const BREAKPOINT = 768;
+
 	onMount(async () => {
 		theme.set(localStorage.theme);
 
@@ -73,34 +71,6 @@
 		};
 
 		window.addEventListener('resize', onResize);
-
-		const setWakeLock = async () => {
-			try {
-				wakeLock = await navigator.wakeLock.request('screen');
-			} catch (err) {
-				// The Wake Lock request has failed - usually system related, such as battery.
-				console.log(err);
-			}
-
-			if (wakeLock) {
-				// Add a listener to release the wake lock when the page is unloaded
-				wakeLock.addEventListener('release', () => {
-					// the wake lock has been released
-					console.log('Wake Lock released');
-				});
-			}
-		};
-
-		if ('wakeLock' in navigator) {
-			await setWakeLock();
-
-			document.addEventListener('visibilitychange', async () => {
-				// Re-request the wake lock if the document becomes visible
-				if (wakeLock !== null && document.visibilityState === 'visible') {
-					await setWakeLock();
-				}
-			});
-		}
 
 		let backendConfig = null;
 		try {

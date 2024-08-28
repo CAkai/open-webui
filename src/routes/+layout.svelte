@@ -22,7 +22,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/umc';
+	import { getSessionUser } from '$lib/apis/auths';
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -187,8 +187,6 @@
 	});
 </script>
 
-<!-- iCloud 是透過 iframe 跳轉進來，因此網站必須要監控，然後自動登入 -->
-<svelte:window on:message={autoLoginFromICloud} />
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
