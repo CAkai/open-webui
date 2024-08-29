@@ -41,10 +41,10 @@
 
 	onMount(async () => {
 		taskConfig = await getTaskConfig(localStorage.token);
-
-		promptSuggestions = $config?.default_prompt_suggestions;
-
-		banners = await getBanners(localStorage.token);
+		// 加入預設值，讓 Interface 不會打不開。 Arvin Yang - 2024/08/29
+		promptSuggestions = $config?.default_prompt_suggestions ?? [];
+		// 加入預設值，讓 Interface 不會打不開。 Arvin Yang - 2024/08/29
+		banners = await getBanners(localStorage.token) ?? [];
 	});
 
 	const updateBanners = async () => {
