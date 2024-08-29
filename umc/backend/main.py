@@ -1564,10 +1564,17 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
     print(model_id)
 
     template = app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE
+    
+    # 有時候 prompt 會不見，所以這邊要檢查一遍。 Arvin Yang - 2024/08/26
+    prompt = "unknown"
+    if "prompt" in form_data:
+        prompt = form_data["prompt"]
+    elif "messages" in form_data:
+        prompt = get_last_user_message(form_data["messages"])
 
     content = title_generation_template(
         template,
-        form_data["prompt"],
+        prompt if prompt else "unknown",
         {
             "name": user.name,
             "location": user.info.get("location") if user.info else None,
