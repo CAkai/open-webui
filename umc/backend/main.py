@@ -1950,7 +1950,7 @@ async def get_pipelines(urlIdx: Optional[int] = None, user=Depends(get_admin_use
     r = None
     try:
         url = openai_app.state.config.OPENAI_API_BASE_URLS[urlIdx]
-        key = openai_app.state.config.OPENAI_API_KEYS[urlIdx]
+        key = [url.strip() for url in os.environ.get("OPENAI_API_KEYS", "").split(";")][urlIdx]
 
         headers = {"Authorization": f"Bearer {key}"}
         r = requests.get(f"{url}/pipelines", headers=headers)
