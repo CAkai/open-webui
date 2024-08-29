@@ -676,13 +676,14 @@ async def generate_completions(form_data: dict, user=Depends(get_verified_user))
 
     return await generate_chat_completions(form_data, user=user)
 
-class CompletionMiddleware(BaseHTTPMiddleware):
-    def is_completion_request(self, request: Request) -> bool:
+def is_completion_request(request: Request) -> bool:
         return request.method == "POST" and any(
             endpoint in request.url.path
-            for endpoint in ["/ollama/api/generate", "/completions"]
+            # 只寫 /completions 會連同 /chat/completions 都包含，這樣會導致 prompt 無效。 Arvin Yang - 2024/08/29
+            for endpoint in ["/ollama/api/generate", "/api/completions"]
         )
-    
+
+class CompletionMiddleware(BaseHTTPMiddleware):
     async def reset_body(self, request: Request) -> Request:
         '''將 request.body 解包，並將 prompt 改成 messages'''
         # 先解包 request.body
@@ -700,7 +701,7 @@ class CompletionMiddleware(BaseHTTPMiddleware):
     
     async def dispatch(self, request: Request, call_next):
         '''除了前兩行和最底下的 stream_wrapper 之外，底下都是複製 ChatCompletionMiddleware.dispatch'''
-        if not self.is_completion_request(request):
+        if not is_completion_request(request):
             return await call_next(request)
         
         request = await self.reset_body(request)

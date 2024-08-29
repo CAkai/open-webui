@@ -54,9 +54,8 @@ services:
       - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME= U-Ai'
-      - 'UMC_BASE_URL=http://172.16.128.9:3003'
-      - 'OPENAI_API_BASE_URL=http://10.13.186.242:9099'
-      - OPENAI_API_KEY="0p3n-w3bu!"
+      - 'OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://10.13.186.242:9099'
+      - 'OPENAI_API_KEYS= ; 0p3n-w3bu!'
       - 'USE_CUDA_DOCKER= true'
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'

@@ -1,4 +1,5 @@
 # 複製檔案到前端
+envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants_umc.ts
 cp umc/routes/+layout.svelte src/routes/+layout.svelte
 cp umc/routes/auth-page.svelte src/routes/auth/+page.svelte
 mkdir -p src/lib/apis/umc

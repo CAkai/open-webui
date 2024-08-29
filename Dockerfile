@@ -38,12 +38,8 @@ RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants
     cp umc/routes/auth-page.svelte src/routes/auth/+page.svelte && \
     mkdir -p src/lib/apis/umc && \
     cp umc/lib/umc-api.ts src/lib/apis/umc/index.ts && \
-    cp umc/lib/apis.ts src/lib/apis/index.ts && \
-# 複製檔案到後端
-    mkdir -p backend/umc && \
-    cp umc/backend/umc_util.py backend/umc/util.py && \
-    cp umc/backend/main.py backend/main.py && \
-    cp umc/backend/openai.py backend/apps/openai/main.py
+    cp umc/lib/apis.ts src/lib/apis/index.ts
+# endregion
 RUN npm run build
 
 ######## WebUI backend ########
@@ -165,6 +161,14 @@ COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
+
+# region UMC
+# 複製檔案到後端
+RUN mkdir -p umc
+COPY --chown=$UID:$GID ./umc/backend/umc_util.py ./umc/util.py
+COPY --chown=$UID:$GID ./umc/backend/main.py ./main.py
+COPY --chown=$UID:$GID ./umc/backend/openai.py ./apps/openai/main.py
+# endregion
 
 EXPOSE 8080
 

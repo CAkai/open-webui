@@ -19,14 +19,17 @@ services:
       - ./umc:/app/umc
       - ./backend:/app/backend
       - ./static:/app/static
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.10
     ports:
       - 9988:8080
     environment:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME=U-AI'
-      - OPENAI_API_BASE_URL='http://host.docker.internal:10016'
-      - OPENAI_API_KEY=""
+      - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
+      - 'OPENAI_API_KEYS= ; 0p3n-w3bu!'
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
@@ -45,6 +48,9 @@ services:
     container_name: pipelines
     image: ghcr.io/open-webui/pipelines:main
     restart: always
+    networks:
+      ollama_net:
+        ipv4_address: 172.29.0.35
     ports:
       - 9099:9099
     volumes:
@@ -89,4 +95,12 @@ services:
 volumes:
   open-webui: {}
   pipelines:
+
+networks:
+  ollama_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.29.0.0/16
 
