@@ -2120,6 +2120,7 @@ async def get_app_config(request: Request):
         data = decode_token(token)
         if data is not None and "id" in data:
             user = Users.get_user_by_id(data["id"])
+    print("get_app_config", token, user)
     # endregion
 
     return {
