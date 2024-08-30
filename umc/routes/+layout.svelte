@@ -37,6 +37,7 @@
 
 	//region UMC 自動登入&註冊機制
 	const login = async () => {
+		console.log("Current URL", window.location.href);
 		// Get Session User Info
 		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 			toast.error(error);
@@ -47,7 +48,7 @@
 			// Save Session User to Store
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
-			await goto('/');
+			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
 		} else {
 			// Redirect Invalid Session User to /auth Page
 			localStorage.removeItem('token');

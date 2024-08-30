@@ -65,7 +65,6 @@ export async function getSessionUser(token: string) {
     if (user) {
         // 如果有抓到本地使用者，就把 iCloud 使用者角色覆寫到本地使用者
         user.role = iCloudUser.role;
-        localStorage.token = user.token;
         console.log('user found', user);
         return user;
     }
