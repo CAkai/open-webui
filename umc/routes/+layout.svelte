@@ -36,8 +36,9 @@
 	setContext('i18n', i18n);
 
 	//region UMC 自動登入&註冊機制
+	let targetURL = '';
 	const login = async () => {
-		console.log("Current URL", window.location.href);
+		console.log("Current URL", targetURL);
 		// Get Session User Info
 		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 			toast.error(error);
@@ -49,6 +50,11 @@
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
 			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
+			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
+			// 因為網址是 http(s)://xxxx/...，所以 split = ["http:", "", "xxxx", ...]，因此要 slice(3)
+			const targetRoute = "/"+targetURL.split("/").slice(3).join("/");
+			console.log('Redirecting to', targetRoute);
+			await goto(targetRoute);
 		} else {
 			// Redirect Invalid Session User to /auth Page
 			localStorage.removeItem('token');
@@ -81,6 +87,7 @@
 	const BREAKPOINT = 768;
 
 	onMount(async () => {
+		targetURL = window.location.href;
 		theme.set(localStorage.theme);
 
 		mobile.set(window.innerWidth < BREAKPOINT);

@@ -37,7 +37,7 @@ async function getICloudUserInfo(token: string): Promise<UserInfo | null> {
 		});
 };
 // 先檢驗有沒有 umc_token，沒有的話直接回傳 null，不用考慮到底有沒有 token。
-// 抓到 iCloud 使用者資訊後，再用 token 抓本地使用者。
+// 抓到 iCloud 使用者資訊後，再用 token 抓本地使用者。這裡還要檢查兩者的 id 是否一樣。
 // 有抓到就把 iCloud 使用者角色覆寫到本地使用者，然後回傳。
 // 沒抓到就自動註冊一個新的本地使用者，然後回傳。
 export async function getSessionUser(token: string) {
@@ -62,10 +62,13 @@ export async function getSessionUser(token: string) {
     // 先檢查這個 token 是不是 Open Web UI 的 token
 	const user = await getUser(token).catch((error) => null);
 
-    if (user) {
-        // 如果有抓到本地使用者，就把 iCloud 使用者角色覆寫到本地使用者
-        user.role = iCloudUser.role;
+    // 核對是否有抓到本地使用者以及必須和 iCloud 使用者的 id 一樣
+    // 因為 localStorage.token 有可能是系統記錄的 token，不一定是 iCloud 使用者的 token
+    if (user && user.email === iCloudUser.id + "@umc.com") {
+        // 把 iCloud 使用者角色覆寫到本地使用者
         console.log('user found', user);
+        user.role = iCloudUser.role;
+        console.log(`user role updated from ${user.role} to ${iCloudUser.role}`);
         return user;
     }
 
