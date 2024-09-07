@@ -671,12 +671,13 @@ export const updatePipelineValves = async (
 
 export const getBackendConfig = async () => {
 	let error = null;
-
+	console.log("getBackendConfig", localStorage.token);
 	const res = await fetch(`${WEBUI_BASE_URL}/api/config`, {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			...(localStorage.token && { authorization: `Bearer ${localStorage.token}` })
 		}
 	})
 		.then(async (res) => {

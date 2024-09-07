@@ -164,10 +164,10 @@ COPY --chown=$UID:$GID ./backend .
 
 # region UMC
 # 複製檔案到後端
-RUN mkdir -p umc
-COPY --chown=$UID:$GID ./umc/backend/umc_util.py ./umc/util.py
-COPY --chown=$UID:$GID ./umc/backend/main.py ./main.py
-COPY --chown=$UID:$GID ./umc/backend/openai.py ./apps/openai/main.py
+RUN mkdir -p open_webui/umc
+COPY --chown=$UID:$GID ./umc/backend/umc_util.py ./open_webui/umc/util.py
+COPY --chown=$UID:$GID ./umc/backend/main.py ./open_webui/main.py
+COPY --chown=$UID:$GID ./umc/backend/openai.py ./open_webui/apps/openai/main.py
 # endregion
 
 EXPOSE 8080

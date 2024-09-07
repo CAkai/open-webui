@@ -79,7 +79,6 @@
             "description": "選擇 docker-compose 檔案",
             "options": [
                 "docker-compose.dev.yaml",
-                "docker-compose.umc.yaml",
                 "docker-compose.a1111-test.yaml",
                 "docker-compose.amdgpu.yaml",
                 "docker-compose.data.yaml",

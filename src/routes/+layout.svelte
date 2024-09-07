@@ -22,7 +22,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	import { getSessionUser } from '$lib/apis/umc';  // region UMC
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -35,8 +35,109 @@
 
 	setContext('i18n', i18n);
 
+	//region UMC 自動登入&註冊機制
+	let targetURL = '';
+	const login = async () => {
+		console.log("Current URL", targetURL);
+		// Get Session User Info
+		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+			toast.error(error);
+			return null;
+		});
+		console.log('sessionUser:', sessionUser);
+		if (sessionUser) {
+			// Save Session User to Store
+			await user.set(sessionUser);
+			await config.set(await getBackendConfig());
+			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
+			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
+			// 因為網址是 http(s)://xxxx/...，所以 split = ["http:", "", "xxxx", ...]，因此要 slice(3)
+			const targetRoute = "/"+targetURL.split("/").slice(3).join("/");
+			console.log('Redirecting to', targetRoute);
+			await goto(targetRoute);
+		} else {
+			// Redirect Invalid Session User to /auth Page
+			localStorage.removeItem('token');
+			await goto('/auth');
+		}
+	};
+
+	import { UMC_TOKEN_COOKIE_KEY } from '$lib/constants_umc';
+	// 讓系統監控 iframe 傳來的訊息，並自動登入
+	// 這個會跑得比較慢，所以裡面必須再登入一遍
+	const autoLoginFromICloud = async (event) => {
+		const isIgnoredEvent =
+			event.source !== window.parent ||
+			['handshake', 'detectAngular'].includes(event.data?.topic) ||
+			event.data?.source === 'react-devtools-content-script' ||
+			event.data?.isAngularDevTools ||
+			// 有時候傳進來的 event.data 是 object，這時候就不處理
+			typeof event.data !== 'string';
+
+		if (isIgnoredEvent) {
+			return;
+		}
+		// 讓網站記錄 token。這麼做的原因是，iframe 無法直接存取 iCloud 的 cookie。
+		localStorage.setItem(UMC_TOKEN_COOKIE_KEY, String(event.data));
+		await login();
+	};
+	//endregion
+
 	let loaded = false;
 	const BREAKPOINT = 768;
+
+	const setupSocket = (websocket = true) => {
+		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
+			reconnection: true,
+			reconnectionDelay: 1000,
+			reconnectionDelayMax: 5000,
+			randomizationFactor: 0.5,
+			path: '/ws/socket.io',
+			auth: { token: localStorage.token },
+			transports: websocket ? ['websocket'] : ['polling']
+		});
+
+		socket.set(_socket);
+
+		_socket.on('connect_error', (err) => {
+			if (err.message.includes('websocket')) {
+				console.log('WebSocket connection failed, falling back to polling');
+				_socket.close();
+				setupSocket(false);
+			} else {
+				console.log('connect_error', err);
+			}
+		});
+
+		_socket.on('connect', () => {
+			console.log('connected', _socket.id);
+		});
+
+		_socket.on('reconnect_attempt', (attempt) => {
+			console.log('reconnect_attempt', attempt);
+		});
+
+		_socket.on('reconnect_failed', () => {
+			console.log('reconnect_failed');
+		});
+
+		_socket.on('disconnect', (reason, details) => {
+			console.log(`Socket ${_socket.id} disconnected due to ${reason}`);
+			if (details) {
+				console.log('Additional details:', details);
+			}
+		});
+
+		_socket.on('user-count', (data) => {
+			console.log('user-count', data);
+			activeUserCount.set(data.count);
+		});
+
+		_socket.on('usage', (data) => {
+			console.log('usage', data);
+			USAGE_POOL.set(data['models']);
+		});
+	};
 
 	onMount(async () => {
 		theme.set(localStorage.theme);
@@ -80,62 +181,12 @@
 			await WEBUI_NAME.set(backendConfig.name);
 
 			if ($config) {
-				const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
-					reconnection: true,
-					reconnectionDelay: 1000,
-					reconnectionDelayMax: 5000,
-					randomizationFactor: 0.5,
-					path: '/ws/socket.io',
-					auth: { token: localStorage.token }
-				});
-
-				_socket.on('connect', () => {
-					console.log('connected');
-				});
-
-				_socket.on('reconnect_attempt', (attempt) => {
-					console.log('reconnect_attempt', attempt);
-				});
-
-				_socket.on('reconnect_failed', () => {
-					console.log('reconnect_failed');
-				});
-
-				_socket.on('disconnect', (reason, details) => {
-					console.log(`Socket ${socket.id} disconnected due to ${reason}`);
-					if (details) {
-						console.log('Additional details:', details);
-					}
-				});
-
-				await socket.set(_socket);
-
-				_socket.on('user-count', (data) => {
-					console.log('user-count', data);
-					activeUserCount.set(data.count);
-				});
-
-				_socket.on('usage', (data) => {
-					console.log('usage', data);
-					USAGE_POOL.set(data['models']);
-				});
+				setupSocket();
 
 				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						toast.error(error);
-						return null;
-					});
-
-					if (sessionUser) {
-						// Save Session User to Store
-						await user.set(sessionUser);
-						await config.set(await getBackendConfig());
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						localStorage.removeItem('token');
-						await goto('/auth');
-					}
+					// region UMC
+					await login();
+					// endregion
 				} else {
 					// Don't redirect if we're already on the auth page
 					// Needed because we pass in tokens from OAuth logins via URL fragments
@@ -187,6 +238,8 @@
 	});
 </script>
 
+<!-- iCloud 是透過 iframe 跳轉進來，因此網站必須要監控，然後自動登入 -->
+<svelte:window on:message={autoLoginFromICloud} />
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />

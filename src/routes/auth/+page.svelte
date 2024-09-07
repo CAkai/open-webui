@@ -1,6 +1,7 @@
+<!-- 複製到 src/routes/auth/+pageXOffset.svelte -->
 <script>
 	import { goto } from '$app/navigation';
-	import { getSessionUser, userSignIn, userSignUp } from '$lib/apis/auths';
+	import { getSessionUser, userSignIn, userSignUp } from '$lib/apis/umc';
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 	import { WEBUI_NAME, config, user, socket } from '$lib/stores';
@@ -16,12 +17,11 @@
 	let mode = 'signin';
 
 	let name = '';
-	let email = '';
+	let empid = '';
 	let password = '';
 
 	const setSessionUser = async (sessionUser) => {
 		if (sessionUser) {
-			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
 			if (sessionUser.token) {
 				localStorage.token = sessionUser.token;
@@ -30,12 +30,12 @@
 			$socket.emit('user-join', { auth: { token: sessionUser.token } });
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
-			goto('/');
+			await goto('/');
 		}
 	};
 
 	const signInHandler = async () => {
-		const sessionUser = await userSignIn(email, password).catch((error) => {
+		const sessionUser = await userSignIn(empid, password).catch((error) => {
 			toast.error(error);
 			return null;
 		});
@@ -44,7 +44,7 @@
 	};
 
 	const signUpHandler = async () => {
-		const sessionUser = await userSignUp(name, email, password, generateInitialsImage(name)).catch(
+		const sessionUser = await userSignUp(name, empid, password, generateInitialsImage(name)).catch(
 			(error) => {
 				toast.error(error);
 				return null;
@@ -194,13 +194,13 @@
 								{/if}
 
 								<div class="mb-2">
-									<div class=" text-sm font-medium text-left mb-1">{$i18n.t('Email')}</div>
+									<div class=" text-sm font-medium text-left mb-1">{$i18n.t('EmpId')}</div>
 									<input
-										bind:value={email}
-										type="email"
+										bind:value={empid}
+										type="empid"
 										class=" px-5 py-3 rounded-2xl w-full text-sm outline-none border dark:border-none dark:bg-gray-900"
-										autocomplete="email"
-										placeholder={$i18n.t('Enter Your Email')}
+										autocomplete="empid"
+										placeholder={$i18n.t('Enter Your EmpId')}
 										required
 									/>
 								</div>

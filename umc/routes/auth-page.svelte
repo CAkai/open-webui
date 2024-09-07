@@ -1,3 +1,4 @@
+<!-- 複製到 src/routes/auth/+pageXOffset.svelte -->
 <script>
 	import { goto } from '$app/navigation';
 	import { getSessionUser, userSignIn, userSignUp } from '$lib/apis/umc';
