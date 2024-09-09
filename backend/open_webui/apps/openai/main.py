@@ -384,7 +384,7 @@ async def generate_chat_completion(
     # region UMC
     # 目前使用 openai 來接收 UMC 的訊息，但 UMC 的訊息格式與 openai 不同，所以需要轉換。
     # 重新整理 messages 的格式，讓 UMC GPT 可以正確解析。 Arvin Yang - 2024/08/28
-    from umc.util import refactor_messages
+    from open_webui.umc.util import refactor_messages
     payload["messages"] = refactor_messages(payload["messages"])
     # endregion
 
