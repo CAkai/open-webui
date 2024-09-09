@@ -1,44 +1,39 @@
-from fastapi import FastAPI, Request, HTTPException, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, FileResponse
-
-import requests
-import aiohttp
 import asyncio
+import hashlib
 import json
 import logging
+from pathlib import Path
+from typing import Literal, Optional, overload
 
+import aiohttp
+import requests
+from open_webui.apps.webui.models.models import Models
+from open_webui.config import (
+    AIOHTTP_CLIENT_TIMEOUT,
+    CACHE_DIR,
+    CORS_ALLOW_ORIGIN,
+    ENABLE_MODEL_FILTER,
+    ENABLE_OPENAI_API,
+    MODEL_FILTER_LIST,
+    OPENAI_API_BASE_URLS,
+    OPENAI_API_KEYS,
+    AppConfig,
+)
+from open_webui.constants import ERROR_MESSAGES
+from open_webui.env import SRC_LOG_LEVELS
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from starlette.background import BackgroundTask
 
-from apps.webui.models.models import Models
-from constants import ERROR_MESSAGES
-from utils.utils import (
-    get_verified_user,
-    get_admin_user,
-)
-from utils.misc import (
+
+from open_webui.utils.payload import (
     apply_model_params_to_body_openai,
     apply_model_system_prompt_to_body,
 )
 
-from config import (
-    SRC_LOG_LEVELS,
-    ENABLE_OPENAI_API,
-    AIOHTTP_CLIENT_TIMEOUT,
-    OPENAI_API_BASE_URLS,
-    OPENAI_API_KEYS,
-    CACHE_DIR,
-    ENABLE_MODEL_FILTER,
-    MODEL_FILTER_LIST,
-    AppConfig,
-    CORS_ALLOW_ORIGIN,
-)
-from typing import Optional, Literal, overload
-
-
-import hashlib
-from pathlib import Path
+from open_webui.utils.utils import get_admin_user, get_verified_user
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["OPENAI"])

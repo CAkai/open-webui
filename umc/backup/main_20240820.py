@@ -1,131 +1,138 @@
 import base64
+import inspect
+import json
+import logging
+import mimetypes
+import os
+import shutil
+import sys
+import time
 import uuid
 from contextlib import asynccontextmanager
-from authlib.integrations.starlette_client import OAuth
-from authlib.oidc.core import UserInfo
-import json
-import time
-import os
-import sys
-import logging
-import aiohttp
-import requests
-import mimetypes
-import shutil
-import inspect
 from typing import Optional
 
-from fastapi import FastAPI, Request, Depends, status, UploadFile, File, Form
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
-from fastapi import HTTPException
+import aiohttp
+import requests
+
+
+from open_webui.apps.audio.main import app as audio_app
+from open_webui.apps.images.main import app as images_app
+from open_webui.apps.ollama.main import app as ollama_app
+from open_webui.apps.ollama.main import (
+    generate_openai_chat_completion as generate_ollama_chat_completion,
+)
+from open_webui.apps.ollama.main import get_all_models as get_ollama_models
+from open_webui.apps.openai.main import app as openai_app
+from open_webui.apps.openai.main import (
+    generate_chat_completion as generate_openai_chat_completion,
+)
+from open_webui.apps.openai.main import get_all_models as get_openai_models
+from open_webui.apps.rag.main import app as rag_app
+from open_webui.apps.rag.utils import get_rag_context, rag_template
+from open_webui.apps.socket.main import app as socket_app
+from open_webui.apps.socket.main import get_event_call, get_event_emitter
+from open_webui.apps.webui.internal.db import Session
+from open_webui.apps.webui.main import app as webui_app
+from open_webui.apps.webui.main import (
+    generate_function_chat_completion,
+    get_pipe_models,
+)
+from open_webui.apps.webui.models.auths import Auths
+from open_webui.apps.webui.models.functions import Functions
+from open_webui.apps.webui.models.models import Models
+from open_webui.apps.webui.models.users import UserModel, Users
+from open_webui.apps.webui.utils import load_function_module_by_id
+
+
+from authlib.integrations.starlette_client import OAuth
+from authlib.oidc.core import UserInfo
+
+
+from open_webui.config import (
+    CACHE_DIR,
+    CORS_ALLOW_ORIGIN,
+    DEFAULT_LOCALE,
+    ENABLE_ADMIN_CHAT_ACCESS,
+    ENABLE_ADMIN_EXPORT,
+    ENABLE_MODEL_FILTER,
+    ENABLE_OAUTH_SIGNUP,
+    ENABLE_OLLAMA_API,
+    ENABLE_OPENAI_API,
+    ENV,
+    FRONTEND_BUILD_DIR,
+    MODEL_FILTER_LIST,
+    OAUTH_MERGE_ACCOUNTS_BY_EMAIL,
+    OAUTH_PROVIDERS,
+    ENABLE_SEARCH_QUERY,
+    SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE,
+    STATIC_DIR,
+    TASK_MODEL,
+    TASK_MODEL_EXTERNAL,
+    TITLE_GENERATION_PROMPT_TEMPLATE,
+    TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE,
+    WEBHOOK_URL,
+    WEBUI_AUTH,
+    WEBUI_NAME,
+    AppConfig,
+    run_migrations,
+)
+from open_webui.constants import ERROR_MESSAGES, TASKS, WEBHOOK_MESSAGES
+from open_webui.env import (
+    CHANGELOG,
+    GLOBAL_LOG_LEVEL,
+    SAFE_MODE,
+    SRC_LOG_LEVELS,
+    VERSION,
+    WEBUI_BUILD_HASH,
+    WEBUI_SECRET_KEY,
+    WEBUI_SESSION_COOKIE_SAME_SITE,
+    WEBUI_SESSION_COOKIE_SECURE,
+    WEBUI_URL,
+)
+from fastapi import (
+    Depends,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    UploadFile,
+    status,
+)
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 from sqlalchemy import text
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.responses import StreamingResponse, Response, RedirectResponse
+from starlette.responses import RedirectResponse, Response, StreamingResponse
 
 
-from apps.socket.main import app as socket_app, get_event_emitter, get_event_call
-from apps.ollama.main import (
-    app as ollama_app,
-    get_all_models as get_ollama_models,
-    generate_openai_chat_completion as generate_ollama_chat_completion,
+from open_webui.utils.misc import (
+    add_or_update_system_message,
+    get_last_user_message,
+    parse_duration,
+    prepend_to_first_user_message_content,
 )
-from apps.openai.main import (
-    app as openai_app,
-    get_all_models as get_openai_models,
-    generate_chat_completion as generate_openai_chat_completion,
+from open_webui.utils.task import (
+    moa_response_generation_template,
+    search_query_generation_template,
+    title_generation_template,
+    tools_function_calling_generation_template,
 )
-
-from apps.audio.main import app as audio_app
-from apps.images.main import app as images_app
-from apps.rag.main import app as rag_app
-from apps.webui.main import (
-    app as webui_app,
-    get_pipe_models,
-    generate_function_chat_completion,
-)
-from apps.webui.internal.db import Session
-
-
-from pydantic import BaseModel
-
-from apps.webui.models.auths import Auths
-from apps.webui.models.models import Models
-from apps.webui.models.functions import Functions
-from apps.webui.models.users import Users, UserModel
-
-from apps.webui.utils import load_function_module_by_id
-
-from utils.utils import (
+from open_webui.utils.tools import get_tools
+from open_webui.utils.utils import (
+    create_token,
+    decode_token,
     get_admin_user,
-    get_verified_user,
     get_current_user,
     get_http_authorization_cred,
     get_password_hash,
-    create_token,
-    decode_token,
+    get_verified_user,
 )
-from utils.task import (
-    title_generation_template,
-    search_query_generation_template,
-    tools_function_calling_generation_template,
-    moa_response_generation_template,
-)
-
-from utils.tools import get_tools
-from utils.misc import (
-    get_last_user_message,
-    add_or_update_system_message,
-    prepend_to_first_user_message_content,
-    parse_duration,
-)
-
-from apps.rag.utils import get_rag_context, rag_template
-
-from config import (
-    run_migrations,
-    WEBUI_NAME,
-    WEBUI_URL,
-    WEBUI_AUTH,
-    ENV,
-    VERSION,
-    CHANGELOG,
-    FRONTEND_BUILD_DIR,
-    CACHE_DIR,
-    STATIC_DIR,
-    DEFAULT_LOCALE,
-    ENABLE_OPENAI_API,
-    ENABLE_OLLAMA_API,
-    ENABLE_MODEL_FILTER,
-    MODEL_FILTER_LIST,
-    GLOBAL_LOG_LEVEL,
-    SRC_LOG_LEVELS,
-    WEBHOOK_URL,
-    ENABLE_ADMIN_EXPORT,
-    WEBUI_BUILD_HASH,
-    TASK_MODEL,
-    TASK_MODEL_EXTERNAL,
-    TITLE_GENERATION_PROMPT_TEMPLATE,
-    SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE,
-    SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD,
-    TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE,
-    SAFE_MODE,
-    OAUTH_PROVIDERS,
-    ENABLE_OAUTH_SIGNUP,
-    OAUTH_MERGE_ACCOUNTS_BY_EMAIL,
-    WEBUI_SECRET_KEY,
-    WEBUI_SESSION_COOKIE_SAME_SITE,
-    WEBUI_SESSION_COOKIE_SECURE,
-    ENABLE_ADMIN_CHAT_ACCESS,
-    AppConfig,
-    CORS_ALLOW_ORIGIN,
-)
-
-from constants import ERROR_MESSAGES, WEBHOOK_MESSAGES, TASKS
-from utils.webhook import post_webhook
+from open_webui.utils.webhook import post_webhook
 
 if SAFE_MODE:
     print("SAFE MODE ENABLED")
@@ -192,9 +199,7 @@ app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE = TITLE_GENERATION_PROMPT_TEMP
 app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE = (
     SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
 )
-app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD = (
-    SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD
-)
+app.state.config.ENABLE_SEARCH_QUERY = ENABLE_SEARCH_QUERY
 app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE = (
     TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE
 )
@@ -390,8 +395,13 @@ async def chat_completion_tools_handler(
     specs = [tool["spec"] for tool in tools.values()]
     tools_specs = json.dumps(specs)
 
+    if app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE != "":
+        template = app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE
+    else:
+        template = """Available Tools: {{TOOLS}}\nReturn an empty string if no tools match the query. If a function tool matches, construct and return a JSON object in the format {\"name\": \"functionName\", \"parameters\": {\"requiredFunctionParamKey\": \"requiredFunctionParamValue\"}} using the appropriate tool and its parameters. Only return the object and limit the response to the JSON object without additional text."""
+
     tools_function_calling_prompt = tools_function_calling_generation_template(
-        app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE, tools_specs
+        template, tools_specs
     )
     log.info(f"{tools_function_calling_prompt=}")
     payload = get_tools_function_calling_payload(
@@ -636,8 +646,15 @@ class ChatCompletionMiddleware(BaseHTTPMiddleware):
             async for data in original_generator:
                 yield data
 
+<<<<<<<< HEAD:umc/backup/main_20240820.py
         # data_items 必須設定為空白，continue 才能正確使用，否則會卡住。 Arvin Yang - 2024/08/29
         return StreamingResponse(stream_wrapper(response.body_iterator, data_items))
+========
+        return StreamingResponse(
+            stream_wrapper(response.body_iterator, data_items),
+            headers=dict(response.headers),
+        )
+>>>>>>>> main:backend/open_webui/main.py
 
     async def _receive(self, body: bytes):
         return {"type": "http.request", "body": body, "more_body": False}
@@ -938,10 +955,16 @@ class PipelineMiddleware(BaseHTTPMiddleware):
         try:
             data = filter_pipeline(data, user)
         except Exception as e:
-            return JSONResponse(
-                status_code=e.args[0],
-                content={"detail": e.args[1]},
-            )
+            if len(e.args) > 1:
+                return JSONResponse(
+                    status_code=e.args[0],
+                    content={"detail": e.args[1]},
+                )
+            else:
+                return JSONResponse(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    content={"detail": str(e)},
+                )
 
         modified_body_bytes = json.dumps(data).encode("utf-8")
         # Replace the request body with the modified one
@@ -1505,8 +1528,8 @@ async def get_task_config(user=Depends(get_verified_user)):
         "TASK_MODEL": app.state.config.TASK_MODEL,
         "TASK_MODEL_EXTERNAL": app.state.config.TASK_MODEL_EXTERNAL,
         "TITLE_GENERATION_PROMPT_TEMPLATE": app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE,
+        "ENABLE_SEARCH_QUERY": app.state.config.ENABLE_SEARCH_QUERY,
         "SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE": app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE,
-        "SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD": app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD,
         "TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE": app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE,
     }
 
@@ -1516,7 +1539,7 @@ class TaskConfigForm(BaseModel):
     TASK_MODEL_EXTERNAL: Optional[str]
     TITLE_GENERATION_PROMPT_TEMPLATE: str
     SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE: str
-    SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD: int
+    ENABLE_SEARCH_QUERY: bool
     TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE: str
 
 
@@ -1530,9 +1553,7 @@ async def update_task_config(form_data: TaskConfigForm, user=Depends(get_admin_u
     app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE = (
         form_data.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
     )
-    app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD = (
-        form_data.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD
-    )
+    app.state.config.ENABLE_SEARCH_QUERY = form_data.ENABLE_SEARCH_QUERY
     app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE = (
         form_data.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE
     )
@@ -1542,7 +1563,7 @@ async def update_task_config(form_data: TaskConfigForm, user=Depends(get_admin_u
         "TASK_MODEL_EXTERNAL": app.state.config.TASK_MODEL_EXTERNAL,
         "TITLE_GENERATION_PROMPT_TEMPLATE": app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE,
         "SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE": app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE,
-        "SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD": app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD,
+        "ENABLE_SEARCH_QUERY": app.state.config.ENABLE_SEARCH_QUERY,
         "TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE": app.state.config.TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE,
     }
 
@@ -1564,6 +1585,7 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
 
     print(model_id)
 
+<<<<<<<< HEAD:umc/backup/main_20240820.py
     template = app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE
     
     # 有時候 prompt 會不見，所以這邊要檢查一遍。 Arvin Yang - 2024/08/26
@@ -1572,6 +1594,22 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
         prompt = form_data["prompt"]
     elif "messages" in form_data:
         prompt = get_last_user_message(form_data["messages"])
+========
+    if app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE != "":
+        template = app.state.config.TITLE_GENERATION_PROMPT_TEMPLATE
+    else:
+        template = """Create a concise, 3-5 word title with an emoji as a title for the prompt in the given language. Suitable Emojis for the summary can be used to enhance understanding but avoid quotation marks or special formatting. RESPOND ONLY WITH THE TITLE TEXT.
+
+Examples of titles:
+📉 Stock Market Trends
+🍪 Perfect Chocolate Chip Recipe
+Evolution of Music Streaming
+Remote Work Productivity Tips
+Artificial Intelligence in Healthcare
+🎮 Video Game Development Insights
+
+Prompt: {{prompt:middletruncate:8000}}"""
+>>>>>>>> main:backend/open_webui/main.py
 
     content = title_generation_template(
         template,
@@ -1596,10 +1634,16 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
     try:
         payload = filter_pipeline(payload, user)
     except Exception as e:
-        return JSONResponse(
-            status_code=e.args[0],
-            content={"detail": e.args[1]},
-        )
+        if len(e.args) > 1:
+            return JSONResponse(
+                status_code=e.args[0],
+                content={"detail": e.args[1]},
+            )
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"detail": str(e)},
+            )
 
     if "chat_id" in payload:
         del payload["chat_id"]
@@ -1610,11 +1654,10 @@ async def generate_title(form_data: dict, user=Depends(get_verified_user)):
 @app.post("/api/task/query/completions")
 async def generate_search_query(form_data: dict, user=Depends(get_verified_user)):
     print("generate_search_query")
-
-    if len(form_data["prompt"]) < app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD:
+    if not app.state.config.ENABLE_SEARCH_QUERY:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Skip search query generation for short prompts (< {app.state.config.SEARCH_QUERY_PROMPT_LENGTH_THRESHOLD} characters)",
+            detail=f"Search query generation is disabled",
         )
 
     model_id = form_data["model"]
@@ -1630,11 +1673,24 @@ async def generate_search_query(form_data: dict, user=Depends(get_verified_user)
 
     print(model_id)
 
-    template = app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
+    if app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE != "":
+        template = app.state.config.SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE
+    else:
+        template = """Given the user's message and interaction history, decide if a web search is necessary. You must be concise and exclusively provide a search query if one is necessary. Refrain from verbose responses or any additional commentary. Prefer suggesting a search if uncertain to provide comprehensive or updated information. If a search isn't needed at all, respond with an empty string. Default to a search query when in doubt. Today's date is {{CURRENT_DATE}}.
+
+User Message:
+{{prompt:end:4000}}
+
+Interaction History:
+{{MESSAGES:END:6}}
+
+Search Query:"""
 
     content = search_query_generation_template(
-        template, form_data["prompt"], {"name": user.name}
+        template, form_data["messages"], {"name": user.name}
     )
+
+    print("content", content)
 
     payload = {
         "model": model_id,
@@ -1649,10 +1705,16 @@ async def generate_search_query(form_data: dict, user=Depends(get_verified_user)
     try:
         payload = filter_pipeline(payload, user)
     except Exception as e:
-        return JSONResponse(
-            status_code=e.args[0],
-            content={"detail": e.args[1]},
-        )
+        if len(e.args) > 1:
+            return JSONResponse(
+                status_code=e.args[0],
+                content={"detail": e.args[1]},
+            )
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"detail": str(e)},
+            )
 
     if "chat_id" in payload:
         del payload["chat_id"]
@@ -1706,10 +1768,16 @@ Message: """{{prompt}}"""
     try:
         payload = filter_pipeline(payload, user)
     except Exception as e:
-        return JSONResponse(
-            status_code=e.args[0],
-            content={"detail": e.args[1]},
-        )
+        if len(e.args) > 1:
+            return JSONResponse(
+                status_code=e.args[0],
+                content={"detail": e.args[1]},
+            )
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"detail": str(e)},
+            )
 
     if "chat_id" in payload:
         del payload["chat_id"]
@@ -1758,10 +1826,16 @@ Responses from models: {{responses}}"""
     try:
         payload = filter_pipeline(payload, user)
     except Exception as e:
-        return JSONResponse(
-            status_code=e.args[0],
-            content={"detail": e.args[1]},
-        )
+        if len(e.args) > 1:
+            return JSONResponse(
+                status_code=e.args[0],
+                content={"detail": e.args[1]},
+            )
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={"detail": str(e)},
+            )
 
     if "chat_id" in payload:
         del payload["chat_id"]
