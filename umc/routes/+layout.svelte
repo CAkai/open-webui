@@ -51,10 +51,9 @@
 			await config.set(await getBackendConfig());
 			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
 			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
-			// 因為網址是 http(s)://xxxx/...，所以 split = ["http:", "", "xxxx", ...]，因此要 slice(3)
-			const targetRoute = "/"+targetURL.split("/").slice(3).join("/");
-			console.log('Redirecting to', targetRoute);
-			await goto(targetRoute);
+			// 因為 $page.url.pathname 會擷取 http(s)://ip:port 後的路徑，所以直接導向 targetURL 即可
+			console.log('Redirecting to', targetURL);
+			await goto(targetURL);
 		} else {
 			// Redirect Invalid Session User to /auth Page
 			localStorage.removeItem('token');
@@ -134,6 +133,7 @@
 
 	onMount(async () => {
 		theme.set(localStorage.theme);
+		targetURL = $page.url.pathname;
 
 		mobile.set(window.innerWidth < BREAKPOINT);
 		const onResize = () => {

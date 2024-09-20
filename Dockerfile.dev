@@ -75,7 +75,7 @@ RUN set -xe ; \
         # Install Envsubst with Arvin Yang - 2024/08/28
         apt-get install -y --no-install-recommends gettext && \
         # Install pandoc and netcat
-        apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
+        apt-get install -y --no-install-recommends git build-essential pandoc netcat-openbsd && \
         # for RAG OCR
         apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
         # install helper tools(wget, xz-utils for Node.js)
@@ -89,7 +89,7 @@ RUN set -xe ; \
         # Install Envsubst with Arvin Yang - 2024/08/28
         apt-get install -y --no-install-recommends gettext && \
         # Install pandoc and netcat
-        apt-get install -y --no-install-recommends pandoc netcat-openbsd && \
+        apt-get install -y --no-install-recommends git build-essential pandoc netcat-openbsd && \
         # for RAG OCR
         apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 && \
         # for Node.js
