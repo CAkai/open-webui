@@ -1,3 +1,4 @@
+// 這個檔案會被寫入 src/lib/apis/index.ts
 import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 
 export const getModels = async (token: string = '') => {
