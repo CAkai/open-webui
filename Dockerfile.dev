@@ -28,6 +28,7 @@ ENV ICLOUD_API_BASE_URL=${ICLOUD_API_BASE_URL}
 
 ## Basis ##
 ENV ENV=prod \
+    DOCKER=true \
     PORT=8080 \
     # pass build args to the build
     USE_OLLAMA_DOCKER=${USE_OLLAMA} \
