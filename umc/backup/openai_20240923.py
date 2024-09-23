@@ -405,19 +405,6 @@ async def generate_chat_completion(
             "role": user.role,
         }
 
-    url = app.state.config.OPENAI_API_BASE_URLS[idx]
-    key = app.state.config.OPENAI_API_KEYS[idx]
-
-    # Change max_completion_tokens to max_tokens (Backward compatible)
-    if "api.openai.com" not in url and not payload["model"].lower().startswith("o1-"):
-        if "max_completion_tokens" in payload:
-            # Remove "max_completion_tokens" from the payload
-            payload["max_tokens"] = payload["max_completion_tokens"]
-            del payload["max_completion_tokens"]
-    else:
-        if "max_tokens" in payload and "max_completion_tokens" in payload:
-            del payload["max_tokens"]
-
     # region UMC
     # 目前使用 openai 來接收 UMC 的訊息，但 UMC 的訊息格式與 openai 不同，所以需要轉換。
     # 重新整理 messages 的格式，讓 UMC GPT 可以正確解析。 Arvin Yang - 2024/08/28
@@ -429,6 +416,9 @@ async def generate_chat_completion(
     payload = json.dumps(payload)
 
     log.debug(payload)
+
+    url = app.state.config.OPENAI_API_BASE_URLS[idx]
+    key = app.state.config.OPENAI_API_KEYS[idx]
 
     headers = {}
     headers["Authorization"] = f"Bearer {key}"

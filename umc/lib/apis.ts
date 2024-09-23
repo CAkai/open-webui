@@ -153,7 +153,9 @@ export const getTaskConfig = async (token: string = '') => {
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
+			// region UMC
 			...(token && { authorization: `Bearer ${token}` })
+			// endregion
 		}
 	})
 		.then(async (res) => {
@@ -181,7 +183,9 @@ export const updateTaskConfig = async (token: string, config: object) => {
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
+			// region UMC
 			...(token && { authorization: `Bearer ${token}` })
+			// endregion
 		},
 		body: JSON.stringify(config)
 	})
@@ -219,7 +223,9 @@ export const generateTitle = async (
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
+			// region UMC
 			Authorization: `Bearer ${token}`
+			// endregion
 		},
 		body: JSON.stringify({
 			model: model,
