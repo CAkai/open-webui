@@ -100,7 +100,6 @@ export async function getSessionUser(token: string) {
 }
 
 export async function userSignIn(empid: string, password: string) {
-    console.log('userSignIn', empid, password);
     // 先登入 iCloud，拿到 token
     const iCloudUser = await iCloudSignIn(empid, password);
 
