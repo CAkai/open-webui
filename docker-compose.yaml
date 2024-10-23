@@ -114,6 +114,7 @@ services:
               capabilities:
                 - gpu
     environment:
+      - ASR_ENGINE="openai_whisper"
       - ASR_MODEL_PATH=/tmp/whisper
       # 以下是模型下載地址
       # 請存放到 ./whisper-model 目錄下，並修改 ASR_MODEL 為下載的模型名稱
