@@ -39,6 +39,7 @@ RUN set -xe && apk add --no-cache gettext
 # 複製檔案到前端
 RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants_umc.ts && \
     cp umc/routes/+layout.svelte src/routes/+layout.svelte && \
+    cp umc/routes/(app)+layout.svelte src/routes/(app)/+layout.svelte && \
     cp umc/routes/auth-page.svelte src/routes/auth/+page.svelte && \
     mkdir -p src/lib/apis/umc && \
     cp umc/lib/umc-api.ts src/lib/apis/umc/index.ts && \

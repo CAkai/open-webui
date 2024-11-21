@@ -1,3 +1,4 @@
+<!-- 複製到 src/routes/(app)/+layout.svelte -->
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { onMount, tick, getContext } from 'svelte';
