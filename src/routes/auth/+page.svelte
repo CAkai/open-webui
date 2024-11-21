@@ -1,4 +1,4 @@
-<!-- 複製到 src/routes/auth/+pageXOffset.svelte -->
+<!-- 複製到 src/routes/auth/+page.svelte -->
 <script>
 	import { toast } from 'svelte-sonner';
 
