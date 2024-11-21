@@ -18,6 +18,7 @@
 	import { getTools } from '$lib/apis/tools';
 	import { getBanners } from '$lib/apis/configs';
 	import { getUserSettings } from '$lib/apis/users';
+	import { updateUserProfile } from '$lib/apis/auths';
 
 	import { WEBUI_VERSION } from '$lib/constants';
 	import { compareVersion, generateInitialsImage } from '$lib/utils';
@@ -80,6 +81,7 @@
 			});
 
 			if (userSettings) {
+				console.log('userSettings', userSettings);
 				settings.set(userSettings.ui);
 			} else {
 				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
@@ -195,7 +197,16 @@
 		// 如果使用者存在且沒有設定頭像，則使用名字生成頭像
 		// 不然現在畫面會是空白的
 		if (!!$user && !$user.profile_image_url) {
-			$user.profile_image_url = generateInitialsImage($user.name);
+			const updatedUser = await updateUserProfile(localStorage.token, $user.name, generateInitialsImage($user.name)).catch(
+			(error) => {
+				toast.error(error);
+			});
+
+			if (updatedUser) {
+				await user.set(updatedUser);
+			}
+
+			console.log("update_user: ", updatedUser);
 		}
 		// endregion
 

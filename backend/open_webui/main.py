@@ -2613,18 +2613,18 @@ async def get_app_config(request: Request):
 
     if token is None and "token" in request.cookies:
         token = request.cookies.get("token")
-        try:
-            data = decode_token(token)
-        except Exception as e:
-            log.debug(e)
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-            )
-        if data is not None and "id" in data:
-            user = Users.get_user_by_id(data["id"])
 
-    print("get_app_config", token, user)
+    try:
+        data = decode_token(token)
+    except Exception as e:
+        log.debug(e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+        )
+    
+    if data is not None and "id" in data:
+        user = Users.get_user_by_id(data["id"])
     # endregion
 
     onboarding = False
