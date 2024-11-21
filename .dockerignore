@@ -18,3 +18,4 @@ uploads
 **/*.db
 _test
 whisper-model/
+backend/data/*
