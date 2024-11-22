@@ -99,7 +99,6 @@ export async function getSessionUser(token: string) {
     throw new Error("login failed");
 }
 
-// userSignIn 和 userSignUp 這兩個函式的流程是一樣的，只是 userSignIn 會先登入，沒有才註冊，而 userSignUp 是直接註冊。
 export async function userSignIn(empid: string, password: string) {
     // 先登入 iCloud，拿到 token
     const iCloudUser = await iCloudSignIn(empid, password);
@@ -107,41 +106,19 @@ export async function userSignIn(empid: string, password: string) {
     if (!iCloudUser) {
         throw new Error("login failed");
     }
-    console.log('iCloudUser', iCloudUser);
     // 把 token 存到 localStorage
     localStorage.setItem(UMC_TOKEN_COOKIE_KEY, iCloudUser.access_token);
     // 取得使用者資訊
     const userinfo = await getICloudUserInfo(iCloudUser.access_token);
     // 用 token 登入本地
-    const email = iCloudUser.id + '@umc.com';
-	let newUser = await login(email, iCloudUser.access_token).
+	return await login(iCloudUser.id + "@umc.com", iCloudUser.access_token).
         then(user => {
             // 更新使用者角色
             if (userinfo) user.role = userinfo.role;
             else user.role = 'user';
             console.log('userSignIn user', user);
             return user;
-        }).catch((error) => null);
-
-    // 如果沒有這個使用者，就註冊一個新的使用者
-    if (newUser === null) {
-        console.log('user not found, sign up');
-        newUser = await signup(
-            iCloudUser.name,
-            email,
-            iCloudUser.access_token,
-            generateInitialsImage(iCloudUser.name)
-        ).catch((error) => null);
-    }
-
-    // 更新使用者角色、token
-    if (newUser) {
-        newUser.role = userinfo?.role ?? "user";
-        localStorage.token = newUser.token;
-        return newUser;
-    }
-
-    throw new Error("login failed");
+        });
 };
 
 async function iCloudSignIn(empid: string, password: string): Promise<User | null> {
