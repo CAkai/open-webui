@@ -1021,9 +1021,18 @@ def get_sorted_filters(model_id, models):
 def filter_pipeline(payload, user, models):
     user = {"id": user.id, "email": user.email, "name": user.name, "role": user.role}
     model_id = payload["model"]
-
     sorted_filters = get_sorted_filters(model_id, models)
     model = models[model_id]
+
+    # region UMC
+    # 因為 pipeline 不接受 content 是 list 的格式，所以這邊要將 content 轉成 string。
+    # Arvin Yang - 2024/11/26
+    from open_webui.umc.util import simplify_messages
+    import copy
+    # Make a deep copy of the payload to avoid modifying the original
+    old_payload = copy.deepcopy(payload)
+    payload["messages"] = simplify_messages(payload["messages"])
+    # endregion
 
     if "pipeline" in model:
         sorted_filters.append(model)
@@ -1059,6 +1068,29 @@ def filter_pipeline(payload, user, models):
                 res = r.json()
                 if "detail" in res:
                     raise Exception(r.status_code, res["detail"])
+
+    # region UMC
+    # 合併 payload 和 new_payload，因為 payload 有可能會被修改，所以要把原本的 payload 也加回去。
+    # Arvin Yang - 2024/11/26
+    merge = []
+    old_len = len(old_payload["messages"])
+    for i, m in enumerate(payload["messages"]):
+        print("m", i)
+        # 如果原始的 payload 有 content 是 list 的話，就把非文字內容加回去。
+        if i < old_len and isinstance(old_payload["messages"][i]["content"], list):
+            # 先把文字內容加回去
+            el = {"role": m["role"], "content": [{"type": "text", "text": m["content"]}]}
+            # 再把非文字內容加回去
+            for c in old_payload["messages"][i]["content"]:
+                if c["type"] != "text":
+                    el["content"].append(c)
+            # 最後把整個 el 加回去
+            merge.append(el)
+        else:
+            merge.append(m)
+
+    payload["messages"] = merge
+    # endregion
 
     return payload
 

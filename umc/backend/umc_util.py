@@ -11,3 +11,18 @@ def refactor_messages(messages:list[dict]) -> list[dict]:
                 message["content"] = [{"type": "text", "text": message["content"]}]
 
     return messages
+
+def simplify_messages(messages:list[dict]) -> list[dict]:
+    """
+    簡化 messages 的格式，將 content:[{"type":xx, "text": "xxx"}] 的格式轉成 content: "xxx" 的格式。
+    如果有 type 不是 text 的，就直接省略。
+    """
+
+    filter_is_text = lambda c: c["type"] == "text"  # noqa: E731
+    return [
+        {
+            "role": m["role"],
+            "content": m["content"] if isinstance(m["content"], str) else "".join([e["content"] for e in filter(filter_is_text, m["content"])])
+        }
+        for m in messages
+    ]
