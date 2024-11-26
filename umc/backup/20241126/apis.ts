@@ -1,9 +1,10 @@
 // 這個檔案會被寫入 src/lib/apis/index.ts
 import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from '$lib/constants';
 
-export const getModels = async (token: string = '', base: boolean = false) => {
+export const getModels = async (token: string = '') => {
 	let error = null;
-	const res = await fetch(`${WEBUI_BASE_URL}/api/models${base ? '/base' : ''}`, {
+
+	const res = await fetch(`${WEBUI_BASE_URL}/api/models`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
@@ -16,8 +17,8 @@ export const getModels = async (token: string = '', base: boolean = false) => {
 			return res.json();
 		})
 		.catch((err) => {
-			error = err;
 			console.log(err);
+			error = err;
 			return null;
 		});
 
@@ -26,6 +27,42 @@ export const getModels = async (token: string = '', base: boolean = false) => {
 	}
 
 	let models = res?.data ?? [];
+
+	models = models
+		.filter((models) => models)
+		// Sort the models
+		.sort((a, b) => {
+			// Check if models have position property
+			const aHasPosition = a.info?.meta?.position !== undefined;
+			const bHasPosition = b.info?.meta?.position !== undefined;
+
+			// If both a and b have the position property
+			if (aHasPosition && bHasPosition) {
+				return a.info.meta.position - b.info.meta.position;
+			}
+
+			// If only a has the position property, it should come first
+			if (aHasPosition) return -1;
+
+			// If only b has the position property, it should come first
+			if (bHasPosition) return 1;
+
+			// Compare case-insensitively by name for models without position property
+			const lowerA = a.name.toLowerCase();
+			const lowerB = b.name.toLowerCase();
+
+			if (lowerA < lowerB) return -1;
+			if (lowerA > lowerB) return 1;
+
+			// If same case-insensitively, sort by original strings,
+			// lowercase will come before uppercase due to ASCII values
+			if (a.name < b.name) return -1;
+			if (a.name > b.name) return 1;
+
+			return 0; // They are equal
+		});
+
+	console.log(models);
 	return models;
 };
 
@@ -349,7 +386,7 @@ export const generateQueries = async (
 	model: string,
 	messages: object[],
 	prompt: string,
-	type?: string = 'web_search'
+	type = 'web_search'
 ) => {
 	let error = null;
 
@@ -387,13 +424,16 @@ export const generateQueries = async (
 		// Step 1: Safely extract the response string
 		const response = res?.choices[0]?.message?.content ?? '';
 
+		// Step 2: Attempt to fix common JSON format issues like single quotes
+		const sanitizedResponse = response.replace(/['‘’`]/g, '"'); // Convert single quotes to double quotes for valid JSON
+
 		// Step 3: Find the relevant JSON block within the response
-		const jsonStartIndex = response.indexOf('{');
-		const jsonEndIndex = response.lastIndexOf('}');
+		const jsonStartIndex = sanitizedResponse.indexOf('{');
+		const jsonEndIndex = sanitizedResponse.lastIndexOf('}');
 
 		// Step 4: Check if we found a valid JSON block (with both `{` and `}`)
 		if (jsonStartIndex !== -1 && jsonEndIndex !== -1) {
-			const jsonResponse = response.substring(jsonStartIndex, jsonEndIndex + 1);
+			const jsonResponse = sanitizedResponse.substring(jsonStartIndex, jsonEndIndex + 1);
 
 			// Step 5: Parse the JSON block
 			const parsed = JSON.parse(jsonResponse);
@@ -744,6 +784,7 @@ export const updatePipelineValves = async (
 
 export const getBackendConfig = async () => {
 	let error = null;
+	console.log("getBackendConfig", localStorage.token);
 	const res = await fetch(`${WEBUI_BASE_URL}/api/config`, {
 		method: 'GET',
 		credentials: 'include',
