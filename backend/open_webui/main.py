@@ -1083,7 +1083,6 @@ def filter_pipeline(payload, user, models):
     merge = []
     old_len = len(old_payload["messages"])
     for i, m in enumerate(payload["messages"]):
-        print("m", i)
         # 如果原始的 payload 有 content 是 list 的話，就把非文字內容加回去。
         if i < old_len and isinstance(old_payload["messages"][i]["content"], list):
             # 先把文字內容加回去
