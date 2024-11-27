@@ -1,3 +1,4 @@
+# 複製到 backend/open_webui/main.py
 import asyncio
 import inspect
 import json
@@ -531,16 +532,9 @@ async def chat_completion_files_handler(
             queries_response = queries_response["choices"][0]["message"]["content"]
 
             try:
-                bracket_start = queries_response.find("{")
-                bracket_end = queries_response.rfind("}") + 1
-
-                if bracket_start == -1 or bracket_end == -1:
-                    raise Exception("No JSON object found in the response")
-
-                queries_response = queries_response[bracket_start:bracket_end]
                 queries_response = json.loads(queries_response)
             except Exception as e:
-                queries_response = {"queries": [queries_response]}
+                queries_response = {"queries": []}
 
             queries = queries_response.get("queries", [])
         except Exception as e:
@@ -1083,7 +1077,6 @@ def filter_pipeline(payload, user, models):
     merge = []
     old_len = len(old_payload["messages"])
     for i, m in enumerate(payload["messages"]):
-        print("m", i)
         # 如果原始的 payload 有 content 是 list 的話，就把非文字內容加回去。
         if i < old_len and isinstance(old_payload["messages"][i]["content"], list):
             # 先把文字內容加回去
