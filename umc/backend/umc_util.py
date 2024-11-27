@@ -20,6 +20,9 @@ def simplify_messages(messages:list[dict]) -> list[dict]:
     filter_is_text = lambda c: c["type"] == "text"  # noqa: E731
     return [
         {
+            # **m 會將 m 的所有 key-value pair 展開成 key=value 的形式
+            **m,
+            # 替換 role 和 content 的值
             "role": m["role"],
             "content": m["content"] if isinstance(m["content"], str) else "".join([e["text"] for e in filter(filter_is_text, m["content"])])
         }

@@ -1078,23 +1078,24 @@ def filter_pipeline(payload, user, models):
                     raise Exception(r.status_code, res["detail"])
 
     # region UMC
-    # 合併 payload 和 new_payload，因為 payload 有可能會被修改，所以要把原本的 payload 也加回去。
+    # 以 old_payload 為基準，將 content 填回 {type: "text", text: content} 裡面。
     # Arvin Yang - 2024/11/26
     merge = []
-    old_len = len(old_payload["messages"])
-    for i, m in enumerate(payload["messages"]):
-        # 如果原始的 payload 有 content 是 list 的話，就把非文字內容加回去。
-        if i < old_len and isinstance(old_payload["messages"][i]["content"], list):
-            # 先把文字內容加回去
-            el = {"role": m["role"], "content": [{"type": "text", "text": m["content"]}]}
-            # 再把非文字內容加回去
-            for c in old_payload["messages"][i]["content"]:
-                if c["type"] != "text":
-                    el["content"].append(c)
+    msg_len = len(payload["messages"])
+    for i, m in enumerate(old_payload["messages"]):
+        # 如果 old_payload 的 content 是 list 的話，就把文字加到 type:"text" 的 content。
+        if i < msg_len and isinstance(m["content"], list):
+            # 先複製一份 m
+            el = {**m}
+            # 再把文字內容加回去
+            for c in el["content"]:
+                if c["type"] == "text":
+                    c["text"] = payload["messages"][i]["content"]
+                    break
             # 最後把整個 el 加回去
             merge.append(el)
-        else:
-            merge.append(m)
+        else: # 如果原始的 payload 有 content 是 string 的話，就直接加回去。
+            merge.append({**m, "content": m["content"]})
 
     payload["messages"] = merge
     # endregion
