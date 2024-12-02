@@ -1,3 +1,4 @@
+<!-- 複製到 src/routes/+layout.svelte -->
 <script>
 	import { io } from 'socket.io-client';
 	import { spring } from 'svelte/motion';

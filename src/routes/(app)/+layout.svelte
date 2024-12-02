@@ -1,3 +1,4 @@
+<!-- 複製到 src/routes/(app)/+layout.svelte -->
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { onMount, tick, getContext } from 'svelte';
@@ -81,7 +82,6 @@
 			});
 
 			if (userSettings) {
-				console.log('userSettings', userSettings);
 				settings.set(userSettings.ui);
 			} else {
 				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];

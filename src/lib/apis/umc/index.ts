@@ -107,7 +107,6 @@ export async function userSignIn(empid: string, password: string) {
     if (!iCloudUser) {
         throw new Error("login failed");
     }
-    console.log('iCloudUser', iCloudUser);
     // 把 token 存到 localStorage
     localStorage.setItem(UMC_TOKEN_COOKIE_KEY, iCloudUser.access_token);
     // 取得使用者資訊
