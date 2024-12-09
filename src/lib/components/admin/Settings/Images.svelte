@@ -105,11 +105,6 @@
 	};
 
 	const updateConfigHandler = async () => {
-		//# region UMC
-		// 因為 AUTOMATIC1111_CFG_SCALE 在 ConfigForm 的定義是 str，所以這邊要從 float 轉成 str
-		// 不然會導致 FastAPI 的 ConfigForm 不能正確解析，出現 HTTP 422 Unprocessable Entity
-		config.automatic1111.AUTOMATIC1111_CFG_SCALE = String(config.automatic1111.AUTOMATIC1111_CFG_SCALE);
-		//# endregion
 		const res = await updateConfig(localStorage.token, config).catch((error) => {
 			toast.error(error);
 			return null;

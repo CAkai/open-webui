@@ -1,3 +1,4 @@
+// 複製到 src/lib/apis/images/index.ts
 import { IMAGES_API_BASE_URL } from '$lib/constants';
 
 export const getConfig = async (token: string = '') => {
