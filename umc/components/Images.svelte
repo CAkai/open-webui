@@ -1,3 +1,4 @@
+<!-- 複製到 src/lib/components/admin/Settings/Images.svelte -->
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 
