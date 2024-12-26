@@ -183,7 +183,7 @@ COPY --chown=$UID:$GID ./backend .
 RUN mkdir -p open_webui/umc
 COPY --chown=$UID:$GID ./umc/backend/umc_util.py ./open_webui/umc/util.py
 COPY --chown=$UID:$GID ./umc/backend/main.py ./open_webui/main.py
-COPY --chown=$UID:$GID ./umc/backend/openai.py ./open_webui/apps/openai/main.py
+COPY --chown=$UID:$GID ./umc/backend/openai.py ./open_webui/routers/openai.py
 # endregion
 
 EXPOSE 8080
