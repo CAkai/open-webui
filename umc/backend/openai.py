@@ -620,9 +620,9 @@ async def generate_chat_completion(
     from open_webui.umc.util import refactor_messages
     payload["messages"] = refactor_messages(payload["messages"])
     # endregion
-    # TODO: check if below is needed
-    # if "max_tokens" in payload and "max_completion_tokens" in payload:
-    #     del payload["max_tokens"]
+    
+    if "max_tokens" in payload and "max_completion_tokens" in payload:
+        del payload["max_tokens"]
 
     # Convert the modified body back to JSON
     payload = json.dumps(payload)
