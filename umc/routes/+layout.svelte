@@ -249,7 +249,7 @@
 			await WEBUI_NAME.set(backendConfig.name);
 
 			if ($config) {
-				await setupSocket($config.features?.enable_websocket ?? true);
+				// await setupSocket($config.features?.enable_websocket ?? true);
 
 				if (localStorage.token) {
 					// region UMC
