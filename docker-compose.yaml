@@ -57,6 +57,7 @@ services:
       - 'OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://172.16.41.100:9099'
       - 'OPENAI_API_KEYS= ; 0p3n-w3bu!'
       - 'USE_CUDA_DOCKER= true'
+      - 'ENABLE_WEBSOCKET_SUPPORT=false'
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
       # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
