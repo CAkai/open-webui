@@ -121,7 +121,9 @@ RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants
     mkdir -p backend/open_webui/umc && \
     cp umc/backend/umc_util.py backend/open_webui/umc/util.py && \
     cp umc/backend/main.py backend/open_webui/main.py && \
-    cp umc/backend/openai.py backend/open_webui/routers/openai.py
+    cp umc/backend/openai.py backend/open_webui/routers/openai.py && \
+    cp umc/backend/util_auth.py backend/open_webui/utils/auth.py && \
+    cp umc/backend/pipelines.py backend/open_webui/routers/pipelines.py
     # endregion
 # endregion
 

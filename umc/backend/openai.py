@@ -613,16 +613,17 @@ async def generate_chat_completion(
         if "max_completion_tokens" in payload:
             payload["max_tokens"] = payload["max_completion_tokens"]
             del payload["max_completion_tokens"]
+    
+    if "max_tokens" in payload and "max_completion_tokens" in payload:
+        del payload["max_tokens"]
 
     # region UMC
     # 目前使用 openai 來接收 UMC 的訊息，但 UMC 的訊息格式與 openai 不同，所以需要轉換。
     # 重新整理 messages 的格式，讓 UMC GPT 可以正確解析。 Arvin Yang - 2024/08/28
-    from open_webui.umc.util import refactor_messages
-    payload["messages"] = refactor_messages(payload["messages"])
+    if model.get("owned_by", None) == "openai":
+        from open_webui.umc.util import refactor_messages
+        payload["messages"] = refactor_messages(payload["messages"])
     # endregion
-    
-    if "max_tokens" in payload and "max_completion_tokens" in payload:
-        del payload["max_tokens"]
 
     # Convert the modified body back to JSON
     payload = json.dumps(payload)

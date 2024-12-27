@@ -656,21 +656,19 @@ app.state.config.AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = (
 
 app.state.MODELS = {}
 
-
+# 第 5 個觸發的 Middleware
 class RedirectMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Check if the request is a GET request
         if request.method == "GET":
             path = request.url.path
             query_params = dict(parse_qs(urlparse(str(request.url)).query))
-
             # Check for the specific watch path and the presence of 'v' parameter
             if path.endswith("/watch") and "v" in query_params:
                 video_id = query_params["v"][0]  # Extract the first 'v' parameter
                 encoded_video_id = urlencode({"youtube": video_id})
                 redirect_url = f"/?{encoded_video_id}"
                 return RedirectResponse(url=redirect_url)
-
         # Proceed with the normal flow of other requests
         response = await call_next(request)
         return response
@@ -678,9 +676,10 @@ class RedirectMiddleware(BaseHTTPMiddleware):
 
 # Add the middleware to the app
 app.add_middleware(RedirectMiddleware)
+# 第 4 個觸發的 Middleware
 app.add_middleware(SecurityHeadersMiddleware)
 
-
+# 第 2 個觸發的 Middleware
 @app.middleware("http")
 async def commit_session_after_request(request: Request, call_next):
     response = await call_next(request)
@@ -688,7 +687,7 @@ async def commit_session_after_request(request: Request, call_next):
     Session.commit()
     return response
 
-
+# 第 3 個觸發的 Middleware
 @app.middleware("http")
 async def check_url(request: Request, call_next):
     start_time = int(time.time())
@@ -698,7 +697,7 @@ async def check_url(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
-
+# 第 1 個觸發的 Middleware
 @app.middleware("http")
 async def inspect_websocket(request: Request, call_next):
     if (
@@ -862,7 +861,7 @@ async def chat_completion(
             "features": form_data.get("features", None),
         }
         form_data["metadata"] = metadata
-
+        
         form_data, events = await process_chat_payload(
             request, form_data, metadata, user, model
         )
@@ -928,6 +927,37 @@ async def stop_task_endpoint(task_id: str, user=Depends(get_verified_user)):
 async def list_tasks_endpoint(user=Depends(get_verified_user)):
     return {"tasks": list_tasks()}  # Use the function from tasks.py
 
+
+# region UMC
+##################################
+#
+# Completion Middleware
+#
+##################################
+@app.post("/api/completions")
+async def generate_completions(request: Request, form_data: dict, user=Depends(get_verified_user)):
+    '''
+    因為 continue 會用到 Open WebUI 來做 Fix, Explain 等功能，所以這裡要新建一個 API。
+    /completions 其實是舊版的模型無法處理多輪對話才產生的 API，而目前新的模型只支援 /chat/completions，
+    所以這邊要重新導向到 /chat/completions 來處理。
+    
+    Input:
+    {
+        model: string
+        max_tokens: number
+        prompt: string
+        stream: boolean
+    }
+    
+    Arvin Yang - 2024/08/22
+    '''
+    # 雖然 prompt 已經在 ChatCompletionMiddleware 裡面轉成 messages 了，但是這邊還是要處理一下。
+    if "prompt" in form_data:
+        form_data["messages"] = [{"role": "user", "content": form_data["prompt"]}]
+        del form_data["prompt"]
+
+    return await generate_chat_completions(request, form_data, user=user)
+# endregion
 
 ##################################
 #
