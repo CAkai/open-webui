@@ -15,7 +15,7 @@
 		WEBUI_NAME,
 		mobile,
 		socket,
-		activeUserCount,
+		activeUserIds,
 		USAGE_POOL,
 		chatId,
 		chats,
@@ -134,9 +134,9 @@
 			}
 		});
 
-		_socket.on('user-count', (data) => {
-			console.log('user-count', data);
-			activeUserCount.set(data.count);
+		_socket.on('user-list', (data) => {
+			console.log('user-list', data);
+			activeUserIds.set(data.user_ids);
 		});
 
 		_socket.on('usage', (data) => {
