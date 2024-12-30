@@ -59,6 +59,7 @@ services:
       - 'USE_CUDA_DOCKER= true'
       - 'COMFYUI_BASE_URL=http://172.16.41.100:8188/'
       - 'ENABLE_WEBSOCKET_SUPPORT=false'
+      - 'ENV=dev'
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
       # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
