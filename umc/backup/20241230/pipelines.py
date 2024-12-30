@@ -158,14 +158,18 @@ def process_pipeline_outlet_filter(request, payload, user, models):
                     f"{url}/{filter['id']}/filter/outlet",
                     headers={"Authorization": f"Bearer {key}"},
                     json={
-                        "user": user,
-                        "body": payload,
+                        "user": {
+                            "id": user.id,
+                            "name": user.name,
+                            "email": user.email,
+                            "role": user.role,
+                        },
+                        "body": data,
                     },
                 )
 
                 r.raise_for_status()
                 data = r.json()
-                payload = data
         except Exception as e:
             # Handle connection error here
             print(f"Connection error: {e}")

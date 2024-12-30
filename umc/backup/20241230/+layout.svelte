@@ -15,7 +15,7 @@
 		WEBUI_NAME,
 		mobile,
 		socket,
-		activeUserIds,
+		activeUserCount,
 		USAGE_POOL,
 		chatId,
 		chats,
@@ -58,7 +58,7 @@
 			$socket.emit('user-join', { auth: { token: sessionUser.token } });
 			$socket?.on('chat-events', chatEventHandler);
 			$socket?.on('channel-events', channelEventHandler);
-
+			
 			// Save Session User to Store
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
@@ -134,9 +134,9 @@
 			}
 		});
 
-		_socket.on('user-list', (data) => {
-			console.log('user-list', data);
-			activeUserIds.set(data.user_ids);
+		_socket.on('user-count', (data) => {
+			console.log('user-count', data);
+			activeUserCount.set(data.count);
 		});
 
 		_socket.on('usage', (data) => {
@@ -249,7 +249,7 @@
 			await WEBUI_NAME.set(backendConfig.name);
 
 			if ($config) {
-				await setupSocket($config.features?.enable_websocket ?? true);
+				// await setupSocket($config.features?.enable_websocket ?? true);
 
 				if (localStorage.token) {
 					// region UMC

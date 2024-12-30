@@ -200,8 +200,6 @@ from open_webui.config import (
     ENABLE_SIGNUP,
     ENABLE_LOGIN_FORM,
     ENABLE_API_KEY,
-    ENABLE_API_KEY_ENDPOINT_RESTRICTIONS,
-    API_KEY_ALLOWED_ENDPOINTS,
     ENABLE_CHANNELS,
     ENABLE_COMMUNITY_SHARING,
     ENABLE_MESSAGE_RATING,
@@ -395,12 +393,7 @@ app.state.OPENAI_MODELS = {}
 app.state.config.WEBUI_URL = WEBUI_URL
 app.state.config.ENABLE_SIGNUP = ENABLE_SIGNUP
 app.state.config.ENABLE_LOGIN_FORM = ENABLE_LOGIN_FORM
-
 app.state.config.ENABLE_API_KEY = ENABLE_API_KEY
-app.state.config.ENABLE_API_KEY_ENDPOINT_RESTRICTIONS = (
-    ENABLE_API_KEY_ENDPOINT_RESTRICTIONS
-)
-app.state.config.API_KEY_ALLOWED_ENDPOINTS = API_KEY_ALLOWED_ENDPOINTS
 
 app.state.config.JWT_EXPIRES_IN = JWT_EXPIRES_IN
 
@@ -663,19 +656,21 @@ app.state.config.AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = (
 
 app.state.MODELS = {}
 
-# 第 5 個觸發的 Middleware
+
 class RedirectMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Check if the request is a GET request
         if request.method == "GET":
             path = request.url.path
             query_params = dict(parse_qs(urlparse(str(request.url)).query))
+
             # Check for the specific watch path and the presence of 'v' parameter
             if path.endswith("/watch") and "v" in query_params:
                 video_id = query_params["v"][0]  # Extract the first 'v' parameter
                 encoded_video_id = urlencode({"youtube": video_id})
                 redirect_url = f"/?{encoded_video_id}"
                 return RedirectResponse(url=redirect_url)
+
         # Proceed with the normal flow of other requests
         response = await call_next(request)
         return response
@@ -683,10 +678,9 @@ class RedirectMiddleware(BaseHTTPMiddleware):
 
 # Add the middleware to the app
 app.add_middleware(RedirectMiddleware)
-# 第 4 個觸發的 Middleware
 app.add_middleware(SecurityHeadersMiddleware)
 
-# 第 2 個觸發的 Middleware
+
 @app.middleware("http")
 async def commit_session_after_request(request: Request, call_next):
     response = await call_next(request)
@@ -694,7 +688,7 @@ async def commit_session_after_request(request: Request, call_next):
     Session.commit()
     return response
 
-# 第 3 個觸發的 Middleware
+
 @app.middleware("http")
 async def check_url(request: Request, call_next):
     start_time = int(time.time())
@@ -704,7 +698,7 @@ async def check_url(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
-# 第 1 個觸發的 Middleware
+
 # @app.middleware("http")
 # async def inspect_websocket(request: Request, call_next):
 #     if (
@@ -965,6 +959,7 @@ async def generate_completions(request: Request, form_data: dict, user=Depends(g
 
     return await generate_chat_completions(request, form_data, user=user)
 # endregion
+
 
 ##################################
 #
