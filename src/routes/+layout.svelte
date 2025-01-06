@@ -293,7 +293,8 @@
 			await WEBUI_NAME.set(backendConfig.name);
 
 			if ($config) {
-				// await setupSocket($config.features?.enable_websocket ?? true);
+				// 這個不能關，不然 Chat 要不到 $socket.id，導致整個系統停擺
+				await setupSocket($config.features?.enable_websocket ?? true);
 
 				if (localStorage.token) {
 					// region UMC

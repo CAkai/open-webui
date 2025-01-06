@@ -704,6 +704,7 @@ async def check_url(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
+# region UMC
 # 第 1 個觸發的 Middleware
 # @app.middleware("http")
 # async def inspect_websocket(request: Request, call_next):
@@ -721,6 +722,7 @@ async def check_url(request: Request, call_next):
 #                 content={"detail": "Invalid WebSocket upgrade request"},
 #             )
 #     return await call_next(request)
+# endregion
 
 
 app.add_middleware(
