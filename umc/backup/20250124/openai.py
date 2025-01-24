@@ -267,7 +267,7 @@ async def get_all_models_responses(request: Request) -> list:
 
     request_tasks = []
     for idx, url in enumerate(request.app.state.config.OPENAI_API_BASE_URLS):
-        if (str(idx) not in request.app.state.config.OPENAI_API_CONFIGS) and (
+        if (str(idx) not in request.app.state.config.OPENAI_API_CONFIGS) or (
             url not in request.app.state.config.OPENAI_API_CONFIGS  # Legacy support
         ):
             request_tasks.append(
