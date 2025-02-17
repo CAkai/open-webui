@@ -53,6 +53,8 @@ services:
     networks:
       ollama_net:
         ipv4_address: 172.29.0.35
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 9099:9099
     volumes:
