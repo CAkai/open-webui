@@ -45,7 +45,7 @@
 	};
 
 	const signInHandler = async () => {
-		const sessionUser = await userSignIn(email, password).catch((error) => {
+		const sessionUser = await userSignIn(empid, password).catch((error) => {
 			toast.error(`${error}`);
 			return null;
 		});
@@ -214,7 +214,7 @@
 											<input
 												bind:value={name}
 												type="text"
-												class="my-0.5 w-full text-sm outline-hidden bg-transparent"
+												class="my-0.5 w-full text-sm outline-none bg-transparent"
 												autocomplete="name"
 												placeholder={$i18n.t('Enter Your Full Name')}
 												required
@@ -228,7 +228,7 @@
 											<input
 												bind:value={ldapUsername}
 												type="text"
-												class="my-0.5 w-full text-sm outline-hidden bg-transparent"
+												class="my-0.5 w-full text-sm outline-none bg-transparent"
 												autocomplete="username"
 												name="username"
 												placeholder={$i18n.t('Enter Your Username')}
@@ -241,7 +241,7 @@
 											<input
 												bind:value={empid}
 												type="empid"
-												class="my-0.5 w-full text-sm outline-hidden bg-transparent"
+												class="my-0.5 w-full text-sm outline-none bg-transparent"
 												autocomplete="empid"
 												placeholder={$i18n.t('Enter Your EmpId')}
 												required
@@ -255,7 +255,7 @@
 										<input
 											bind:value={password}
 											type="password"
-											class="my-0.5 w-full text-sm outline-hidden bg-transparent"
+											class="my-0.5 w-full text-sm outline-none bg-transparent"
 											placeholder={$i18n.t('Enter Your Password')}
 											autocomplete="current-password"
 											name="current-password"
