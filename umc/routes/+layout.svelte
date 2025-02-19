@@ -109,6 +109,7 @@
 	const BREAKPOINT = 768;
 
 	const setupSocket = async (enableWebsocket) => {
+		console.log('setupSocket', enableWebsocket);
 		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
 			reconnection: true,
 			reconnectionDelay: 1000,
@@ -118,9 +119,9 @@
 			transports: enableWebsocket ? ['websocket'] : ['polling', 'websocket'],
 			auth: { token: localStorage.token }
 		});
-
+		console.log('socket', _socket);
 		await socket.set(_socket);
-
+		console.log("socket setting done");
 		_socket.on('connect_error', (err) => {
 			console.log('connect_error', err);
 		});

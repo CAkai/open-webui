@@ -27,11 +27,13 @@ services:
     environment:
       - PORT=8080
       - ENV=dev
-      - 'OLLAMA_BASE_URL=http://host.docker.internal:11434'
       - 'WEBUI_SECRET_KEY='
       - 'WEBUI_NAME=U-AI'
-      - 'OPENAI_API_BASE_URLS=http://host.docker.internal:3003 ; http://172.29.0.35:9099'
+      - 'OLLAMA_BASE_URL=http://host.docker.internal:11435'
+      - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
       - 'OPENAI_API_KEYS= sadfjlkwer.msdf ; 0p3n-w3bu!'
+    extra_hosts:
+      - "host.docker.internal:192.168.1.105"
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway
