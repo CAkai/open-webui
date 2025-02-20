@@ -19,15 +19,23 @@ ARG BUILD_HASH=dev-build
 # Override at your own risk - non-root configurations are untested
 ARG UID=0
 ARG GID=0
+ARG NODE_VERSION=22.4.1
+ARG NPM_VERSION=10.8.2
 
 ######## WebUI frontend ########
-FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION}-alpine3.20 AS build
 ARG BUILD_HASH
+ARG NPM_VERSION
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+# npm ci 會出現 Exit Handler never called
+RUN --mount=type=cache,target=/root/.npm \
+    set -xe && \
+    npm cache clean --force && \
+    npm install -g npm@${NPM_VERSION} && \
+    npm ci --loglevel verbose
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
@@ -175,6 +183,7 @@ RUN pip3 install uv && \
 COPY --chown=$UID:$GID --from=build /app/build /app/build
 COPY --chown=$UID:$GID --from=build /app/CHANGELOG.md /app/CHANGELOG.md
 COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
+COPY --chown=$UID:$GID --from=build /app/package-lock.json /app/package-lock.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
