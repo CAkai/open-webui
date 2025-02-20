@@ -33,7 +33,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/umc';  // region UMC
+	import { getSessionUser } from '$lib/apis/umc'; // region UMC
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -55,7 +55,7 @@
 	//region UMC 自動登入&註冊機制
 	let targetURL = '';
 	const login = async () => {
-		console.log("Current URL", targetURL);
+		console.log('Current URL', targetURL);
 		// Get Session User Info
 		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 			toast.error(`${error}`);
@@ -79,7 +79,11 @@
 		} else {
 			// Redirect Invalid Session User to /auth Page
 			localStorage.removeItem('token');
-			await goto('/auth');
+			// Don't redirect if we're already on the auth page
+			// Needed because we pass in tokens from OAuth logins via URL fragments
+			if ($page.url.pathname !== '/auth') {
+				await goto('/auth');
+			}
 		}
 	};
 
@@ -98,6 +102,7 @@
 		if (isIgnoredEvent) {
 			return;
 		}
+		console.log('detect iCloud Token', !!event.data);
 		// 讓網站記錄 token。這麼做的原因是，iframe 無法直接存取 iCloud 的 cookie。
 		localStorage.setItem(UMC_TOKEN_COOKIE_KEY, String(event.data));
 		await login();
@@ -109,7 +114,6 @@
 	const BREAKPOINT = 768;
 
 	const setupSocket = async (enableWebsocket) => {
-		console.log('setupSocket', enableWebsocket);
 		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
 			reconnection: true,
 			reconnectionDelay: 1000,
@@ -119,9 +123,9 @@
 			transports: enableWebsocket ? ['websocket'] : ['polling', 'websocket'],
 			auth: { token: localStorage.token }
 		});
-		console.log('socket', _socket);
+
 		await socket.set(_socket);
-		console.log("socket setting done");
+
 		_socket.on('connect_error', (err) => {
 			console.log('connect_error', err);
 		});
@@ -539,17 +543,10 @@
 				// 這個不能關，不然 Chat 要不到 $socket.id，導致整個系統停擺
 				await setupSocket($config.features?.enable_websocket ?? true);
 
-				if (localStorage.token) {
-					// region UMC
-					await login();
-					// endregion
-				} else {
-					// Don't redirect if we're already on the auth page
-					// Needed because we pass in tokens from OAuth logins via URL fragments
-					if ($page.url.pathname !== '/auth') {
-						await goto('/auth');
-					}
-				}
+				console.log('detecting token', !!localStorage.token);
+				// region UMC
+				await login();
+				// endregion
 			}
 		} else {
 			// Redirect to /error when Backend Not Detected

@@ -994,7 +994,7 @@ async def chat_completion(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
-
+    print(123123)
     try:
         response = await chat_completion_handler(request, form_data, user)
 

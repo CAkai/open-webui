@@ -364,7 +364,7 @@ export const generateOpenAIChatCompletion = async (
 	url: string = `${WEBUI_BASE_URL}/api`
 ) => {
 	let error = null;
-
+	console.log("generateOpenAIChatCompletion.body", body);
 	const res = await fetch(`${url}/chat/completions`, {
 		method: 'POST',
 		headers: {

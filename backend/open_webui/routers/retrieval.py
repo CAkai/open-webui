@@ -859,9 +859,10 @@ def process_file(
     form_data: ProcessFileForm,
     user=Depends(get_verified_user),
 ):
+    print("form_data", form_data)
     try:
         file = Files.get_file_by_id(form_data.file_id)
-
+        print("file", file)
         collection_name = form_data.collection_name
 
         if collection_name is None:
@@ -922,6 +923,7 @@ def process_file(
             # Process the file and save the content
             # Usage: /files/
             file_path = file.path
+            print("meta", file.filename, file.meta, file.path)
             if file_path:
                 file_path = Storage.get_file(file_path)
                 loader = Loader(

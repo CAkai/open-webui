@@ -33,7 +33,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/umc';  // region UMC
+	import { getSessionUser } from '$lib/apis/umc'; // region UMC
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -55,7 +55,7 @@
 	//region UMC 自動登入&註冊機制
 	let targetURL = '';
 	const login = async () => {
-		console.log("Current URL", targetURL);
+		console.log('Current URL', targetURL);
 		// Get Session User Info
 		const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
 			toast.error(`${error}`);
@@ -74,12 +74,17 @@
 			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
 			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
 			// 因為 $page.url.pathname 會擷取 http(s)://ip:port 後的路徑，所以直接導向 targetURL 即可
+			console.log("localStorage.token", localStorage.token);
 			console.log('Redirecting to', targetURL);
 			await goto(targetURL);
 		} else {
 			// Redirect Invalid Session User to /auth Page
 			localStorage.removeItem('token');
-			await goto('/auth');
+			// Don't redirect if we're already on the auth page
+			// Needed because we pass in tokens from OAuth logins via URL fragments
+			if ($page.url.pathname !== '/auth') {
+				await goto('/auth');
+			}
 		}
 	};
 
@@ -98,6 +103,7 @@
 		if (isIgnoredEvent) {
 			return;
 		}
+		console.log('detect iCloud Token', !!event.data);
 		// 讓網站記錄 token。這麼做的原因是，iframe 無法直接存取 iCloud 的 cookie。
 		localStorage.setItem(UMC_TOKEN_COOKIE_KEY, String(event.data));
 		await login();
@@ -538,17 +544,10 @@
 				// 這個不能關，不然 Chat 要不到 $socket.id，導致整個系統停擺
 				await setupSocket($config.features?.enable_websocket ?? true);
 
-				if (localStorage.token) {
-					// region UMC
-					await login();
-					// endregion
-				} else {
-					// Don't redirect if we're already on the auth page
-					// Needed because we pass in tokens from OAuth logins via URL fragments
-					if ($page.url.pathname !== '/auth') {
-						await goto('/auth');
-					}
-				}
+				console.log('detecting token', !!localStorage.token);
+				// region UMC
+				await login();
+				// endregion
 			}
 		} else {
 			// Redirect to /error when Backend Not Detected
