@@ -52,19 +52,7 @@
 
 	const bc = new BroadcastChannel('active-tab-channel');
 
-	//region UMC 自動登入&註冊機制&攔截 img
-	function hookImg() {
-		const property = Object.getOwnPropertyDescriptor(Image.prototype, 'src');
-		const nativeSet = property?.set;
-
-		function customiseSrcSet(url) {
-			// do something
-			nativeSet?.call(this, url);
-		}
-		Object.defineProperty(Image.prototype, 'src', {
-			set: customiseSrcSet
-		});
-	}
+	//region UMC 自動登入&註冊機制
 	let targetURL = '';
 	const login = async () => {
 		console.log('Current URL', targetURL);
@@ -101,6 +89,7 @@
 	};
 
 	import { UMC_TOKEN_COOKIE_KEY } from '$lib/constants_umc';
+	import { CohereTokenizer } from '@huggingface/transformers';
 	// 讓系統監控 iframe 傳來的訊息，並自動登入
 	// 這個會跑得比較慢，所以裡面必須再登入一遍
 	const autoLoginFromICloud = async (event) => {
@@ -467,7 +456,6 @@
 	};
 
 	onMount(async () => {
-		hookImg();
 		if (typeof window !== 'undefined' && window.applyTheme) {
 			window.applyTheme();
 		}
