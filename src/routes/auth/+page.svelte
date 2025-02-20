@@ -30,6 +30,12 @@
 
 	let ldapUsername = '';
 
+	const querystringValue = (key) => {
+		const querystring = window.location.search;
+		const urlParams = new URLSearchParams(querystring);
+		return urlParams.get(key);
+	};
+
 	const setSessionUser = async (sessionUser) => {
 		if (sessionUser) {
 			toast.success($i18n.t(`You're now logged in.`));
@@ -40,7 +46,9 @@
 			$socket?.emit('user-join', { auth: { token: sessionUser.token } });
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
-			await goto('/');
+
+			const redirectPath = querystringValue('redirect') || '/';
+			goto(redirectPath);
 		}
 	};
 
