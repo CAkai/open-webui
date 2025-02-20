@@ -52,7 +52,19 @@
 
 	const bc = new BroadcastChannel('active-tab-channel');
 
-	//region UMC 自動登入&註冊機制
+	//region UMC 自動登入&註冊機制&攔截 img
+	function hookImg() {
+		const property = Object.getOwnPropertyDescriptor(Image.prototype, 'src');
+		const nativeSet = property?.set;
+
+		function customiseSrcSet(url) {
+			// do something
+			nativeSet?.call(this, url);
+		}
+		Object.defineProperty(Image.prototype, 'src', {
+			set: customiseSrcSet
+		});
+	}
 	let targetURL = '';
 	const login = async () => {
 		console.log('Current URL', targetURL);
@@ -74,7 +86,7 @@
 			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
 			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
 			// 因為 $page.url.pathname 會擷取 http(s)://ip:port 後的路徑，所以直接導向 targetURL 即可
-			console.log("localStorage.token", localStorage.token);
+			console.log('localStorage.token', localStorage.token);
 			console.log('Redirecting to', targetURL);
 			await goto(targetURL);
 		} else {
@@ -455,6 +467,7 @@
 	};
 
 	onMount(async () => {
+		hookImg();
 		if (typeof window !== 'undefined' && window.applyTheme) {
 			window.applyTheme();
 		}

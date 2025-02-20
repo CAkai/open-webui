@@ -163,9 +163,14 @@
 		editor = new Editor({
 			element: element,
 			extensions: [
-				StarterKit,
+				//# region UMC
+				// https://github.com/ueberdosis/tiptap/discussions/3030
+				StarterKit.configure({
+					codeBlock: false
+				}),
+				//# endregion
 				CodeBlockLowlight.configure({
-					lowlight
+					lowlight,
 				}),
 				Highlight,
 				Typography,
