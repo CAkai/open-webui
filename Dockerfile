@@ -33,9 +33,11 @@ COPY package.json package-lock.json ./
 # npm ci 會出現 Exit Handler never called
 RUN --mount=type=cache,target=/root/.npm \
     set -xe && \
+    # 使用 npm 鏡像
+    npm config set registry https://registry.npmmirror.com/ && \
     npm cache clean --force && \
     npm install -g npm@${NPM_VERSION} && \
-    npm install
+    npm ci --loglevel verbose
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
