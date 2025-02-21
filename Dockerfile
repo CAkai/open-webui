@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/root/.npm \
     set -xe && \
     npm cache clean --force && \
     npm install -g npm@${NPM_VERSION} && \
-    npm ci --loglevel verbose
+    npm install
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
