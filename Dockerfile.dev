@@ -128,7 +128,10 @@ RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants
     # endregion
 # endregion
 
-RUN npm ci && npm run build
+RUN --mount=type=cache,target=/root/.npm \
+    set -xe && npm config set registry https://registry.npmmirror.com && npm ci
+
+RUN set -xe && npm run build
 
 WORKDIR /app/backend
 

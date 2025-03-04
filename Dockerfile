@@ -57,7 +57,7 @@ RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants
     cp umc/lib/umc-api.ts src/lib/apis/umc/index.ts && \
     cp umc/lib/apis.ts src/lib/apis/index.ts
 # endregion
-RUN npm run build
+RUN set -xe && npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base
