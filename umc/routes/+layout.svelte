@@ -41,7 +41,7 @@
 	import 'tippy.js/dist/tippy.css';
 
 	import { WEBUI_BASE_URL, WEBUI_HOSTNAME } from '$lib/constants';
-	import i18n, { initI18n, getLanguages } from '$lib/i18n';
+	import i18n, { initI18n, getLanguages, changeLanguage } from '$lib/i18n';
 	import { bestMatchingLanguage } from '$lib/utils';
 	import { getAllTags, getChatList } from '$lib/apis/chats';
 	import NotificationToast from '$lib/components/NotificationToast.svelte';
@@ -74,6 +74,7 @@
 			// 這裡不用再 await goto('/')，會讓使用者從 openwebui.com 導入 prompts、tools 等內容。
 			// 但是沒有設定的話，從 iCloud 導入的使用者會停在 /auth 頁面
 			// 因為 $page.url.pathname 會擷取 http(s)://ip:port 後的路徑，所以直接導向 targetURL 即可
+			console.log('localStorage.token', localStorage.token);
 			console.log('Redirecting to', targetURL);
 			await goto(targetURL);
 		} else {
@@ -88,6 +89,7 @@
 	};
 
 	import { UMC_TOKEN_COOKIE_KEY } from '$lib/constants_umc';
+	import { CohereTokenizer } from '@huggingface/transformers';
 	// 讓系統監控 iframe 傳來的訊息，並自動登入
 	// 這個會跑得比較慢，所以裡面必須再登入一遍
 	const autoLoginFromICloud = async (event) => {
@@ -502,6 +504,7 @@
 		targetURL = $page.url.pathname;
 
 		mobile.set(window.innerWidth < BREAKPOINT);
+
 		const onResize = () => {
 			if (window.innerWidth < BREAKPOINT) {
 				mobile.set(true);
@@ -509,8 +512,20 @@
 				mobile.set(false);
 			}
 		};
-
 		window.addEventListener('resize', onResize);
+
+		user.subscribe((value) => {
+			if (value) {
+				$socket?.off('chat-events', chatEventHandler);
+				$socket?.off('channel-events', channelEventHandler);
+
+				$socket?.on('chat-events', chatEventHandler);
+				$socket?.on('channel-events', channelEventHandler);
+			} else {
+				$socket?.off('chat-events', chatEventHandler);
+				$socket?.off('channel-events', channelEventHandler);
+			}
+		});
 
 		let backendConfig = null;
 		try {
@@ -531,7 +546,7 @@
 			const lang = backendConfig.default_locale
 				? backendConfig.default_locale
 				: bestMatchingLanguage(languages, browserLanguages, 'en-US');
-			$i18n.changeLanguage(lang);
+			changeLanguage(lang);
 		}
 
 		if (backendConfig) {
