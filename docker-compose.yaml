@@ -50,9 +50,9 @@ services:
     # depends_on:
     #   - ollama
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
-      - "OLLAMA_BASE_URL=http://10.13.186.242:11434 ; http://172.16.41.100:11434 ; http://172.16.40.240:11434"
+      - "OLLAMA_BASE_URL=http://172.23.36.36:11434 ; http://10.13.186.242:11434 ; http://172.16.41.100:11434"
       # - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
       - "WEBUI_SECRET_KEY="
       - "WEBUI_NAME= U-Ai"
@@ -61,6 +61,9 @@ services:
       - "USE_CUDA_DOCKER= true"
       - "COMFYUI_BASE_URL=http://172.16.41.100:8188/"
       - "ENABLE_WEBSOCKET_SUPPORT=false"
+      - "EABLE_REALTIME_CHAT_SAVE=True"
+      - "AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=30"
+      - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
       - "ENV=dev"
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
@@ -73,13 +76,15 @@ services:
       resources:
         reservations:
           devices:
-            - driver: ${OLLAMA_GPU_DRIVER-nvidia}
+            - driver: nvidia
               count: all
               capabilities:
                 - gpu
     networks:
       ollama_net:
         ipv4_address: 172.30.0.10
+      open-wenui-pipeline_pipeline_net:
+        ipv4_address: 172.38.1.10
 
   # dozzle:
   #   container_name: dozzle
@@ -92,24 +97,46 @@ services:
   #   networks:
   #     ollama_net:
   #       ipv4_address: 172.30.0.99
-
-  pipelines:
-    container_name: webui-pipelines
-    build: ./pipelines
-    restart: on-failure:5
-    depends_on:
-      - open-webui
-    networks:
-      aivm_aivm_app_net:
-        ipv4_address: 172.29.0.34
-      ollama_net:
-        ipv4_address: 172.30.0.35
-    ports:
-      - 9099:9099
-    extra_hosts:
-      - host.docker.internal:host-gateway
+  webui-db:
+    user: root
+    container_name: webui-db
+    build: ./postgres
+    command: sh -c "cron && docker-entrypoint.sh postgres"
+    # 原始映像檔
+    #    image: postgres:14.6-alpine
+    # 內/外資料夾名稱
     volumes:
-      - pipelines:/app/pipelines
+      - webui_data:/var/lib/postgresql/data/
+    # 帳號/密碼
+    environment:
+      - POSTGRES_DB=webui-db
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=QAZwsx!
+    # 內/外埠號
+    networks:
+      ollama_net:
+        ipv4_address: 172.30.0.15
+    # 內/外埠號
+    ports:
+      - "5533:5432"
+
+  # pipelines:
+  #   container_name: webui-pipelines
+  #   build: ./pipelines
+  #   restart: on-failure:5
+  #   depends_on:
+  #     - open-webui
+  #   networks:
+  #     aivm_aivm_app_net:
+  #       ipv4_address: 172.29.0.34
+  #     ollama_net:
+  #       ipv4_address: 172.30.0.35
+  #   ports:
+  #     - 9099:9099
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
+  #   volumes:
+  #     - pipelines:/app/pipelines
 
   # whisper:
   #   container_name: whisper
@@ -151,10 +178,13 @@ services:
   #       ipv4_address: 172.30.0.135
 volumes:
   open-webui: {}
-  pipelines:
+  # pipelines:
+  webui_data:
 
 networks:
   aivm_aivm_app_net:
+    external: true
+  open-wenui-pipeline_pipeline_net:
     external: true
   ollama_net:
     driver: bridge
