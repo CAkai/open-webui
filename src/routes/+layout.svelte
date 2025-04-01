@@ -26,14 +26,15 @@
 		temporaryChatEnabled,
 		isLastActiveTab,
 		isApp,
-		appInfo
+		appInfo,
+		toolServers
 	} from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { Toaster, toast } from 'svelte-sonner';
 
-	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/umc'; // region UMC
+	import { executeToolServer, getBackendConfig } from '$lib/apis';
+	import { getSessionUser } from '$lib/apis/auths';
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -83,7 +84,8 @@
 			// Don't redirect if we're already on the auth page
 			// Needed because we pass in tokens from OAuth logins via URL fragments
 			if ($page.url.pathname !== '/auth') {
-				await goto('/auth');
+				const encodedUrl = encodeURIComponent(targetURL);
+				await goto(`/auth?redirect=${encodedUrl}`);
 			}
 		}
 	};
@@ -263,6 +265,37 @@
 		};
 	};
 
+	const executeTool = async (data, cb) => {
+		const toolServer = $toolServers?.find((server) => server.url === data.server?.url);
+
+		console.log('executeTool', data, toolServer);
+
+		if (toolServer) {
+			const res = await executeToolServer(
+				toolServer.key,
+				toolServer.url,
+				data?.name,
+				data?.params,
+				toolServer
+			);
+
+			console.log('executeToolServer', res);
+			if (cb) {
+				cb(JSON.parse(JSON.stringify(res)));
+			}
+		} else {
+			if (cb) {
+				cb(
+					JSON.parse(
+						JSON.stringify({
+							error: 'Tool Server Not Found'
+						})
+					)
+				);
+			}
+		}
+	};
+
 	const chatEventHandler = async (event, cb) => {
 		const chat = $page.url.pathname.includes(`/c/${event.chat_id}`);
 
@@ -316,6 +349,9 @@
 			if (type === 'execute:python') {
 				console.log('execute:python', data);
 				executePythonAsWorker(data.id, data.code, cb);
+			} else if (type === 'execute:tool') {
+				console.log('execute:tool', data);
+				executeTool(data, cb);
 			} else if (type === 'request:chat:completion') {
 				console.log(data, $socket.id);
 				const { session_id, channel, form_data, model } = data;
@@ -501,7 +537,7 @@
 		handleVisibilityChange();
 
 		theme.set(localStorage.theme);
-		targetURL = $page.url.pathname;
+		targetURL = `${window.location.pathname}${window.location.search}`;
 
 		mobile.set(window.innerWidth < BREAKPOINT);
 
@@ -557,6 +593,9 @@
 			if ($config) {
 				// 這個不能關，不然 Chat 要不到 $socket.id，導致整個系統停擺
 				await setupSocket($config.features?.enable_websocket ?? true);
+
+				const currentUrl = `${window.location.pathname}${window.location.search}`;
+				const encodedUrl = encodeURIComponent(currentUrl);
 
 				console.log('detecting token', !!localStorage.token);
 				// region UMC

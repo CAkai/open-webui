@@ -11,6 +11,8 @@ ARG USE_CUDA_VER=cu121
 # IMPORTANT: If you change the embedding model (sentence-transformers/all-MiniLM-L6-v2) and vice versa, you aren't able to use RAG Chat with your previous documents loaded in the WebUI! You need to re-embed them.
 ARG USE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 ARG USE_RERANKING_MODEL=""
+ARG NODE_VERSION=22.4.1
+ARG NPM_VERSION=10.8.2
 
 ######## WebUI frontend & backend ########
 FROM python:3.11-slim-bookworm as base
@@ -24,6 +26,8 @@ ARG USE_RERANKING_MODEL
 # region UMC
 ARG ICLOUD_API_BASE_URL
 ENV ICLOUD_API_BASE_URL=${ICLOUD_API_BASE_URL}
+ARG NODE_VERSION
+ARG NPM_VERSION
 # endregion
 
 ## Basis ##
@@ -102,10 +106,10 @@ RUN set -xe ; \
 # Install NodeJS
 RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     set -xe && \
-    wget -P /tmp https://nodejs.org/dist/v21.7.3/node-v21.7.3-linux-x64.tar.xz && \
-    tar xf /tmp/node-v21.7.3-linux-x64.tar.xz -C /tmp && \
-    ln -s /tmp/node-v21.7.3-linux-x64/bin/node /usr/local/bin/node && \
-    ln -s /tmp/node-v21.7.3-linux-x64/bin/npm /usr/local/bin/npm
+    wget -P /tmp https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz && \
+    tar xf /tmp/node-v${NODE_VERSION}-linux-x64.tar.xz -C /tmp && \
+    ln -s /tmp/node-v${NODE_VERSION}-linux-x64/bin/node /usr/local/bin/node && \
+    ln -s /tmp/node-v${NODE_VERSION}-linux-x64/bin/npm /usr/local/bin/npm
 
 # region UMC
 # 複製檔案到前端
@@ -129,13 +133,15 @@ RUN envsubst '${ICLOUD_API_BASE_URL}' < umc/lib/constants.ts > src/lib/constants
 # endregion
 
 RUN --mount=type=cache,target=/root/.npm \
-    set -xe && npm config set registry https://registry.npmmirror.com && npm ci
+    set -xe &&  \
+    # npm config set registry https://registry.npmmirror.com && \
+    npm ci
 
 RUN set -xe && npm run build
 
 WORKDIR /app/backend
 
-RUN pip3 install uv && \
+RUN pip3 install --no-cache-dir  uv && \
     if [ "$USE_CUDA" = "true" ]; then \
         # If you use CUDA the whisper and embedding model will be downloaded on first use
         pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir && \

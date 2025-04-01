@@ -8,7 +8,7 @@ services:
         OLLAMA_BASE_URL: '/ollama'
         USE_CUDA: true
         USE_OLLAMA: false
-        ICLOUD_API_BASE_URL: 'http://192.168.1.104:3003'
+        ICLOUD_API_BASE_URL: 'http://192.168.1.113:3003'
       dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     init: true
@@ -33,7 +33,7 @@ services:
       - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
       - 'OPENAI_API_KEYS= sadfjlkwer.msdf ; 0p3n-w3bu!'
     extra_hosts:
-      - "host.docker.internal:192.168.1.105"
+      - "host.docker.internal:192.168.1.103"
     # Allow access to host network
     # extra_hosts:
     #   - host.docker.internal:host-gateway

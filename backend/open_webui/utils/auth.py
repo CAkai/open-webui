@@ -1,3 +1,4 @@
+#複製到 backend/open_webui/utils/auth.py
 import logging
 import uuid
 import jwt
