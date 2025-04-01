@@ -61,7 +61,7 @@ services:
       - "USE_CUDA_DOCKER= true"
       - "COMFYUI_BASE_URL=http://172.16.41.100:8188/"
       - "ENABLE_WEBSOCKET_SUPPORT=false"
-      - "EABLE_REALTIME_CHAT_SAVE=True"
+      - "ENABLE_REALTIME_CHAT_SAVE=True"
       - "AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=30"
       - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
       - "ENV=dev"

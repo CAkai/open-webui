@@ -8,7 +8,7 @@ services:
         OLLAMA_BASE_URL: '/ollama'
         USE_CUDA: true
         USE_OLLAMA: false
-        ICLOUD_API_BASE_URL: 'http://192.168.1.165:3003'
+        ICLOUD_API_BASE_URL: 'http://192.168.1.104:3003'
       dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     init: true
