@@ -31,7 +31,10 @@ RUN npm ci
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
-RUN npm run build
+# 複製檔案到前端
+RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte
+# endregion
+RUN set -xe && npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base
