@@ -34,7 +34,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { executeToolServer, getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	import { getSessionUser } from '$lib/apis/umc'; // region UMC
 
 	import '../tailwind.css';
 	import '../app.css';
