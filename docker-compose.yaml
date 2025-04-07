@@ -1,34 +1,166 @@
 services:
-  ollama:
-    volumes:
-      - ollama:/root/.ollama
-    container_name: ollama
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
-    image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
+  # ollama:
+  #   volumes:
+  #     - ollama:/root/.ollama
+  #   container_name: ollama
+  #   pull_policy: always
+  #   tty: true
+  #   restart: unless-stopped
+  #   image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
 
   open-webui:
     build:
       context: .
       args:
-        OLLAMA_BASE_URL: '/ollama'
+        OLLAMA_BASE_URL: "http://172.23.36.36:11434"
       dockerfile: Dockerfile
-    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    image: ghcr.io/open-webui/open-webui:latest
     container_name: open-webui
     volumes:
       - open-webui:/app/backend/data
-    depends_on:
-      - ollama
+    # depends_on:
+    #   - ollama
     ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
+      - 8080:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'WEBUI_SECRET_KEY='
+      - "OLLAMA_BASE_URL=http://172.23.36.36:11434 ; http://10.13.186.242:11434 ; http://172.16.41.100:11434"
+      # - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
+      - "WEBUI_SECRET_KEY="
+      - "WEBUI_NAME= U-Ai"
+      - "OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://172.16.41.100:9099 ; http://172.23.36.36:9099"
+      - "OPENAI_API_KEYS= ; 0p3n-w3bu!"
+      - "USE_CUDA_DOCKER= true"
+      - "COMFYUI_BASE_URL=http://10.13.186.242:8188/"
+      - "ENABLE_WEBSOCKET_SUPPORT=false"
+      - "ENABLE_REALTIME_CHAT_SAVE=True"
+      - "AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=5"
+      # - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
+      - "ENV=dev"
+      # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
+      # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
+      # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
+      # - 'RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=true'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    networks:
+      ollama_net:
+        ipv4_address: 172.30.0.10
+      open-wenui-pipeline_pipeline_net:
+        ipv4_address: 172.38.1.10
 
+  # dozzle:
+  #   container_name: dozzle
+  #   image: amir20/dozzle:latest
+  #   init: true
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   ports:
+  #     - 9999:8080
+  #   networks:
+  #     ollama_net:
+  #       ipv4_address: 172.30.0.99
+  webui-db:
+    user: root
+    container_name: webui-db
+    build: ./postgres
+    command: sh -c "cron && docker-entrypoint.sh postgres"
+    # 原始映像檔
+    #    image: postgres:14.6-alpine
+    # 內/外資料夾名稱
+    volumes:
+      - webui_data:/var/lib/postgresql/data/
+    # 帳號/密碼
+    environment:
+      - POSTGRES_DB=webui-db
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=QAZwsx!
+    # 內/外埠號
+    networks:
+      ollama_net:
+        ipv4_address: 172.30.0.15
+    # 內/外埠號
+    ports:
+      - "5533:5432"
+
+  # pipelines:
+  #   container_name: webui-pipelines
+  #   build: ./pipelines
+  #   restart: on-failure:5
+  #   depends_on:
+  #     - open-webui
+  #   networks:
+  #     aivm_aivm_app_net:
+  #       ipv4_address: 172.29.0.34
+  #     ollama_net:
+  #       ipv4_address: 172.30.0.35
+  #   ports:
+  #     - 9099:9099
+  #   extra_hosts:
+  #     - host.docker.internal:host-gateway
+  #   volumes:
+  #     - pipelines:/app/pipelines
+
+  # whisper:
+  #   container_name: whisper
+  #   image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+  #   # GPU support
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: ${OLLAMA_GPU_DRIVER-nvidia}
+  #             count: all
+  #             capabilities:
+  #               - gpu
+  #   environment:
+  #     - ASR_ENGINE="openai_whisper"
+  #     - ASR_MODEL_PATH=/tmp/whisper
+  #     # 以下是模型下載地址
+  #     # 請存放到 ./whisper-model 目錄下，並修改 ASR_MODEL 為下載的模型名稱
+  #     # "tiny.en": "https://openaipublic.azureedge.net/main/whisper/models/d3dd57d32accea0b295c96e26691aa14d8822fac7d9d27d5dc00b4ca2826dd03/tiny.en.pt",
+  #     # "tiny": "https://openaipublic.azureedge.net/main/whisper/models/65147644a518d12f04e32d6f3b26facc3f8dd46e5390956a9424a650c0ce22b9/tiny.pt",
+  #     # "base.en": "https://openaipublic.azureedge.net/main/whisper/models/25a8566e1d0c1e2231d1c762132cd20e0f96a85d16145c3a00adf5d1ac670ead/base.en.pt",
+  #     # "base": "https://openaipublic.azureedge.net/main/whisper/models/ed3a0b6b1c0edf879ad9b11b1af5a0e6ab5db9205f891f668f8b0e6c6326e34e/base.pt",
+  #     # "small.en": "https://openaipublic.azureedge.net/main/whisper/models/f953ad0fd29cacd07d5a9eda5624af0f6bcf2258be67c92b79389873d91e0872/small.en.pt",
+  #     # "small": "https://openaipublic.azureedge.net/main/whisper/models/9ecf779972d90ba49c06d968637d720dd632c55bbf19d441fb42bf17a411e794/small.pt",
+  #     # "medium.en": "https://openaipublic.azureedge.net/main/whisper/models/d7440d1dc186f76616474e0ff0b3b6b879abc9d1a4926b7adfa41db2d497ab4f/medium.en.pt",
+  #     # "medium": "https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt",
+  #     # "large-v1": "https://openaipublic.azureedge.net/main/whisper/models/e4b87e7e0bf463eb8e6956e646f1e277e901512310def2c24bf0e11bd3c28e9a/large-v1.pt",
+  #     # "large-v2": "https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt",
+  #     # "large-v3": "https://openaipublic.azureedge.net/main/whisper/models/e5b1a55b89c1367dacf97e3e19bfd829a01529dbfdeefa8caeb59b3f1b81dadb/large-v3.pt",
+  #     # "large": "https://openaipublic.azureedge.net/main/whisper/models/e5b1a55b89c1367dacf97e3e19bfd829a01529dbfdeefa8caeb59b3f1b81dadb/large-v3.pt",
+  #     # "large-v3-turbo": https://openaipublic.azureedge.net/main/whisper/models/aff26ae408abcba5fbf8813c21e62b0941638c5f6eebfb145be0c9839262a19a/large-v3-turbo.pt
+  #     - ASR_MODEL=large-v3-turbo
+  #   ports:
+  #     - 9000:9000
+  #   volumes:
+  #     - ./whisper-model:/tmp/whisper
+  #   networks:
+  #     ollama_net:
+  #       ipv4_address: 172.30.0.135
 volumes:
   ollama: {}
   open-webui: {}
+  # pipelines:
+  webui_data: {}
+
+networks:
+  aivm_aivm_app_net:
+    external: true
+  open-wenui-pipeline_pipeline_net:
+    external: true
+  ollama_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/16

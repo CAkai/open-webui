@@ -1,0 +1,143 @@
+{
+  "chat": {
+    "id": "32cd3e33-cccb-45ee-9e7a-b27a679f300b",
+    "user_id": "7aa1a550-5b64-4796-b3ca-5ee3d5d89341",
+    "title": "Stock Market Analysis Updates \ud83d\udcca",
+    "chat": {
+      "id": "",
+      "title": "Stock Market Analysis Updates \ud83d\udcca",
+      "models": [
+        "llama3.2:1b"
+      ],
+      "params": {},
+      "history": {
+        "messages": {
+          "76ae83c7-83db-403e-80d6-efdb071ce1ce": {
+            "id": "76ae83c7-83db-403e-80d6-efdb071ce1ce",
+            "parentId": null,
+            "childrenIds": [
+              "2378b193-6142-4b52-addf-a29900d9161e"
+            ],
+            "role": "user",
+            "content": "hello",
+            "timestamp": 1743311515,
+            "models": [
+              "llama3.2:1b"
+            ]
+          },
+          "2378b193-6142-4b52-addf-a29900d9161e": {
+            "parentId": "76ae83c7-83db-403e-80d6-efdb071ce1ce",
+            "id": "2378b193-6142-4b52-addf-a29900d9161e",
+            "childrenIds": [],
+            "role": "assistant",
+            "content": "Hello. Is there something I can help you with or would you like to chat?",
+            "model": "llama3.2:1b",
+            "modelName": "llama3.2:1b",
+            "modelIdx": 0,
+            "userContext": null,
+            "timestamp": 1743311515,
+            "usage": {
+              "response_token/s": 14.91,
+              "prompt_token/s": 107.23,
+              "total_duration": 1479599460,
+              "load_duration": 29039065,
+              "prompt_eval_count": 26,
+              "prompt_tokens": 26,
+              "prompt_eval_duration": 242473042,
+              "eval_count": 18,
+              "completion_tokens": 18,
+              "eval_duration": 1207395254,
+              "approximate_total": "0h0m1s",
+              "total_tokens": 44,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            },
+            "done": true,
+            "annotation": {
+              "rating": -1,
+              "tags": [
+                "General",
+                "CustomerSupport"
+              ]
+            },
+            "feedbackId": "6d7fce85-ac23-486f-988f-6ecd9a171a21"
+          }
+        },
+        "currentId": "2378b193-6142-4b52-addf-a29900d9161e"
+      },
+      "messages": [
+        {
+          "id": "76ae83c7-83db-403e-80d6-efdb071ce1ce",
+          "parentId": null,
+          "childrenIds": [
+            "2378b193-6142-4b52-addf-a29900d9161e"
+          ],
+          "role": "user",
+          "content": "hello",
+          "timestamp": 1743311515,
+          "models": [
+            "llama3.2:1b"
+          ]
+        },
+        {
+          "parentId": "76ae83c7-83db-403e-80d6-efdb071ce1ce",
+          "id": "2378b193-6142-4b52-addf-a29900d9161e",
+          "childrenIds": [],
+          "role": "assistant",
+          "content": "Hello. Is there something I can help you with or would you like to chat?",
+          "model": "llama3.2:1b",
+          "modelName": "llama3.2:1b",
+          "modelIdx": 0,
+          "userContext": null,
+          "timestamp": 1743311515,
+          "usage": {
+            "response_token/s": 14.91,
+            "prompt_token/s": 107.23,
+            "total_duration": 1479599460,
+            "load_duration": 29039065,
+            "prompt_eval_count": 26,
+            "prompt_tokens": 26,
+            "prompt_eval_duration": 242473042,
+            "eval_count": 18,
+            "completion_tokens": 18,
+            "eval_duration": 1207395254,
+            "approximate_total": "0h0m1s",
+            "total_tokens": 44,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "done": true,
+          "annotation": {
+            "rating": -1,
+            "tags": [
+              "General",
+              "CustomerSupport"
+            ]
+          },
+          "feedbackId": "6d7fce85-ac23-486f-988f-6ecd9a171a21"
+        }
+      ],
+      "tags": [],
+      "timestamp": 1743311515771,
+      "files": []
+    },
+    "updated_at": 1743311537,
+    "created_at": 1743311515,
+    "share_id": null,
+    "archived": false,
+    "pinned": false,
+    "meta": {
+      "tags": [
+        "chat",
+        "general"
+      ]
+    },
+    "folder_id": null
+  }
+}

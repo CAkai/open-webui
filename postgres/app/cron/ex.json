@@ -1,0 +1,127 @@
+{
+  "chat": {
+    "id": "b4f2da00-5af9-4fe4-8baa-e5196bcc79bb",
+    "user_id": "9dfce755-a9a2-4086-bb6e-a17c82879bf2",
+    "title": "Stock Market Trends \ud83d\udcc8",
+    "chat": {
+      "id": "",
+      "title": "Stock Market Trends \ud83d\udcc8",
+      "models": [
+        "llama3.2:1b"
+      ],
+      "params": {},
+      "history": {
+        "messages": {
+          "62d56b2d-e093-44e6-a399-a456de9748dd": {
+            "id": "62d56b2d-e093-44e6-a399-a456de9748dd",
+            "parentId": null,
+            "childrenIds": [
+              "d7aeef38-9652-4c38-8c60-16f9a59ea915"
+            ],
+            "role": "user",
+            "content": "hi",
+            "timestamp": 1742459456,
+            "models": [
+              "llama3.2:1b"
+            ]
+          },
+          "d7aeef38-9652-4c38-8c60-16f9a59ea915": {
+            "parentId": "62d56b2d-e093-44e6-a399-a456de9748dd",
+            "id": "d7aeef38-9652-4c38-8c60-16f9a59ea915",
+            "childrenIds": [],
+            "role": "assistant",
+            "content": "How can I help you today?",
+            "model": "llama3.2:1b",
+            "modelName": "llama3.2:1b",
+            "modelIdx": 0,
+            "userContext": null,
+            "timestamp": 1742459456,
+            "usage": {
+              "response_token/s": 13.52,
+              "prompt_token/s": 6.65,
+              "total_duration": 4539144891,
+              "load_duration": 38832062,
+              "prompt_eval_count": 26,
+              "prompt_tokens": 26,
+              "prompt_eval_duration": 3907888949,
+              "eval_count": 8,
+              "completion_tokens": 8,
+              "eval_duration": 591903021,
+              "approximate_total": "0h0m4s",
+              "total_tokens": 34,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            },
+            "done": true
+          }
+        },
+        "currentId": "d7aeef38-9652-4c38-8c60-16f9a59ea915"
+      },
+      "messages": [
+        {
+          "id": "62d56b2d-e093-44e6-a399-a456de9748dd",
+          "parentId": null,
+          "childrenIds": [
+            "d7aeef38-9652-4c38-8c60-16f9a59ea915"
+          ],
+          "role": "user",
+          "content": "hi",
+          "timestamp": 1742459456,
+          "models": [
+            "llama3.2:1b"
+          ]
+        },
+        {
+          "parentId": "62d56b2d-e093-44e6-a399-a456de9748dd",
+          "id": "d7aeef38-9652-4c38-8c60-16f9a59ea915",
+          "childrenIds": [],
+          "role": "assistant",
+          "content": "How can I help you today?",
+          "model": "llama3.2:1b",
+          "modelName": "llama3.2:1b",
+          "modelIdx": 0,
+          "userContext": null,
+          "timestamp": 1742459456,
+          "usage": {
+            "response_token/s": 13.52,
+            "prompt_token/s": 6.65,
+            "total_duration": 4539144891,
+            "load_duration": 38832062,
+            "prompt_eval_count": 26,
+            "prompt_tokens": 26,
+            "prompt_eval_duration": 3907888949,
+            "eval_count": 8,
+            "completion_tokens": 8,
+            "eval_duration": 591903021,
+            "approximate_total": "0h0m4s",
+            "total_tokens": 34,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "done": true
+        }
+      ],
+      "tags": [],
+      "timestamp": 1742459456937,
+      "files": []
+    },
+    "updated_at": 1742459465,
+    "created_at": 1742459457,
+    "share_id": null,
+    "archived": false,
+    "pinned": false,
+    "meta": {
+      "tags": [
+        "general",
+        "technology"
+      ]
+    },
+    "folder_id": null
+  }
+}
