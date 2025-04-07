@@ -296,7 +296,7 @@
 						<div class="flex-1">
 							<input
 								list="voice-list"
-								class="w-full rounded-lg py-2 px-4 text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
+								class="w-full text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
 								bind:value={voice}
 								placeholder="Select a voice"
 							/>
@@ -333,7 +333,7 @@
 				<div class="flex w-full">
 					<div class="flex-1">
 						<select
-							class="w-full rounded-lg py-2 px-4 text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
+							class="w-full text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
 							bind:value={voice}
 						>
 							<option value="" selected={voice !== ''}>{$i18n.t('Default')}</option>
@@ -364,7 +364,7 @@
 					<div class="flex-1">
 						<input
 							list="voice-list"
-							class="w-full rounded-lg py-2 px-4 text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
+							class="w-full text-sm bg-white dark:text-gray-300 dark:bg-gray-850 outline-hidden"
 							bind:value={voice}
 							placeholder="Select a voice"
 						/>
