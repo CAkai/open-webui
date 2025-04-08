@@ -31,9 +31,17 @@ RUN npm ci
 
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
+
+# region UMC
 # 複製檔案到前端
-RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte
+RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
+    cp umc/src-routes-+layout.svelte src/routes/+layout.svelte && \
+    cp umc/src-lib-components-chat-Settings-Audio.svelte src/lib/components/chat/Settings/Audio.svelte && \
+    cp umc/src-lib-components-common-Image.svelte src/lib/components/common/Image.svelte && \
+    cp umc/src-lib-apis-images-index.ts src/lib/apis/images/index.ts && \
+    cp umc/src-lib-apis-index.ts src/lib/apis/index.ts
 # endregion
+
 RUN set -xe && npm run build
 
 ######## WebUI backend ########
@@ -165,6 +173,11 @@ COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
+
+# region UMC
+# 複製檔案到後端
+COPY --chown=$UID:$GID ./umc/backend-open_webui-main.py ./open_webui/main.py
+# endregion
 
 EXPOSE 8080
 

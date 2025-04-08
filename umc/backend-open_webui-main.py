@@ -1200,7 +1200,7 @@ async def list_tasks_endpoint(user=Depends(get_verified_user)):
 
 @app.get("/api/config")
 async def get_app_config(request: Request):
-    # region UMC
+    # region UMC 修正無法顯示 Prompt 的問題
     # 完整驗證 token，判斷是不是使用者，不然顯示不了prompt
     user = None
     token = None

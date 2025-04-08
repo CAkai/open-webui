@@ -8,7 +8,7 @@
 
 	export let className = ' w-full outline-hidden focus:outline-hidden';
 	export let imageClassName = 'rounded-lg';
-
+	// region UMC 修正圖片因為抓不到 token 而無法顯示的問題
 	const fetchImage = async () => {
 		if (!localStorage.token || !src.startsWith('/')) {
 			return src;

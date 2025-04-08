@@ -35,7 +35,6 @@
 
 	const querystringValue = (key) => {
 		const querystring = window.location.search;
-		console.log(querystring, encodeURIComponent(querystring), decodeURIComponent(querystring));
 		const urlParams = new URLSearchParams(querystring);
 		return urlParams.get(key);
 	};
@@ -53,6 +52,7 @@
 			await config.set(await getBackendConfig());
 
 			const redirectPath = querystringValue("redirect") || "/";
+			console.log("redirect to ", redirectPath);
 			goto(redirectPath);
 		}
 	};
@@ -154,24 +154,24 @@
 	const randomPasswordSalt = "sadfwer@#@#OLSAEFj";
 	const autoSignInHandler = async () => {
 		console.log("autoSignInHandler");
-		const empNo = decodeURIComponent(window.location.search).match(
-			/empNo=([^&]*)/,
-		)?.[1];
-		console.log(empNo);
-		if (!empNo) {
+		const params = decodeURIComponent(window.location.search).match(/empNo=([^&]*)&empName=([^&]*)/);
+
+		console.log(params);
+		if (!params) {
 			return;
 		}
+		const empNo = params[1];
+		const empName = params[2];
 
 		const sessionUser = await userSignIn(
 			empNo + "@umc.com",
 			empNo + randomPasswordSalt,
 		).catch(async (error) => {
-			console.log(error);
 			return await userSignUp(
-				empNo,
+				empName,
 				empNo + "@umc.com",
 				empNo + randomPasswordSalt,
-				generateInitialsImage(empNo),
+				generateInitialsImage(empName),
 			).catch((error) => {
 				toast.error(`${error}`);
 				return null;

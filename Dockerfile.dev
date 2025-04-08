@@ -104,9 +104,16 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt_pkg,sharing=locked \
     ln -s /tmp/node-v${NODE_VERSION}-linux-x64/bin/node /usr/local/bin/node && \
     ln -s /tmp/node-v${NODE_VERSION}-linux-x64/bin/npm /usr/local/bin/npm
 
-    # region UMC
+# region UMC
 # 複製檔案到前端
-RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte
+RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
+    cp umc/src-routes-+layout.svelte src/routes/+layout.svelte && \
+    cp umc/src-lib-components-chat-Settings-Audio.svelte src/lib/components/chat/Settings/Audio.svelte && \
+    cp umc/src-lib-components-common-Image.svelte src/lib/components/common/Image.svelte && \
+    cp umc/src-lib-apis-images-index.ts src/lib/apis/images/index.ts && \
+    cp umc/src-lib-apis-index.ts src/lib/apis/index.ts && \
+# 複製檔案到後端
+    cp umc/backend-open_webui-main.py backend/open_webui/main.py
 # endregion
 
 RUN --mount=type=cache,target=/root/.npm \
