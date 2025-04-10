@@ -539,31 +539,9 @@
 				console.log('encodedUrl', encodedUrl);
 				console.log('params', params);
 
-				if (localStorage.token) {
-					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
-						toast.error(`${error}`);
-						return null;
-					});
-
-					if (sessionUser) {
-						// Save Session User to Store
-						$socket.emit('user-join', { auth: { token: sessionUser.token } });
-
-						await user.set(sessionUser);
-						await config.set(await getBackendConfig());
-					} else {
-						// Redirect Invalid Session User to /auth Page
-						localStorage.removeItem('token');
-						await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
-					}
-				} else {
-					// Don't redirect if we're already on the auth page
-					// Needed because we pass in tokens from OAuth logins via URL fragments
-					if ($page.url.pathname !== '/auth') {
-						await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
-					}
-				}
+				// 強制登出再登入，防止 iCloud 更換使用者時，Open WebUI 由於記錄 token 而留存上一個使用者
+				localStorage.removeItem('token');
+				await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
 				// endregion
 			}
 		} else {
