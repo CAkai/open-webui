@@ -211,9 +211,8 @@
 		console.log('executeTool', data, toolServer);
 
 		if (toolServer) {
-			console.log(toolServer);
 			const res = await executeToolServer(
-				(toolServer?.auth_type ?? 'bearer') === 'bearer' ? toolServer?.key : localStorage.token,
+				toolServer.key,
 				toolServer.url,
 				data?.name,
 				data?.params,
@@ -525,6 +524,8 @@
 			changeLanguage(lang);
 		}
 
+		localStorage.removeItem('token');
+
 		if (backendConfig) {
 			// Save Backend Status to Store
 			await config.set(backendConfig);
@@ -541,7 +542,6 @@
 				console.log('params', params);
 
 				// 強制登出再登入，防止 iCloud 更換使用者時，Open WebUI 由於記錄 token 而留存上一個使用者
-				localStorage.removeItem('token');
 				await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
 				// endregion
 			}
