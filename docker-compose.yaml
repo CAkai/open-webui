@@ -34,7 +34,7 @@ services:
       - "ENABLE_WEBSOCKET_SUPPORT=false"
       - "ENABLE_REALTIME_CHAT_SAVE=True"
       - "AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=5"
-      # - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
+      - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
       - "ENV=dev"
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
@@ -90,7 +90,16 @@ services:
     # 內/外埠號
     ports:
       - "5533:5432"
-
+  tika:
+    container_name: tika
+    image: apache/tika:latest-full
+    volumes:
+      - webui_data:/var/lib/tika/data/
+    ports:
+      - "9998:9998"
+    networks:
+      ollama_net:
+        ipv4_address: 172.30.0.19
   # pipelines:
   #   container_name: webui-pipelines
   #   build: ./pipelines
@@ -148,7 +157,7 @@ services:
   #     ollama_net:
   #       ipv4_address: 172.30.0.135
 volumes:
-  ollama: {}
+  # ollama: {}
   open-webui: {}
   # pipelines:
   webui_data: {}
