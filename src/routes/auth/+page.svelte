@@ -182,9 +182,11 @@
 	// endregion
 
 	onMount(async () => {
+		console.log("$user", $user);
 		if ($user !== undefined) {
 			const redirectPath = querystringValue("redirect") || "/";
 			goto(redirectPath);
+			return;
 		}
 		// await checkOauthCallback();
 
