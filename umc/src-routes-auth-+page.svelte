@@ -186,13 +186,12 @@
 			const redirectPath = querystringValue("redirect") || "/";
 			goto(redirectPath);
 		}
-		// await checkOauthCallback();
+		await checkOauthCallback();
 
 		loaded = true;
 		setLogoImage();
 		
 		await autoSignInHandler();
-
 	});
 </script>
 

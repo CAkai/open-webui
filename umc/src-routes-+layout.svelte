@@ -545,7 +545,10 @@
 				if (params && params[1] !== "" && params[2] !== "") {
 					localStorage.removeItem('token');
 					await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
-				// 如果是內部跳轉，就直接跳轉
+				// 如果有 token，拿這個去觸發 checkOAuthCallback
+				} else if (localStorage.token) {
+					await goto(`/auth?redirect=${encodedUrl}#token=${localStorage.token}`);
+				// 如果沒有 token，就跳轉到登入頁面
 				} else {
 					await goto(`/auth?redirect=${encodedUrl}`);
 				}
