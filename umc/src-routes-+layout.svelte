@@ -524,7 +524,7 @@
 				const currentUrl = `${window.location.pathname}${window.location.search}`;
 				const regex = /empNo=([^&]*)&empName=([^&]*)/;
 				const params = window.location.search.match(regex);
-				const encodedUrl = encodeURIComponent(currentUrl.replace(regex, '').replace("?", ""));
+				const encodedUrl = new URLSearchParams(window.location.search).get("redirect") || "";
 				console.log('currentUrl', currentUrl);
 				console.log('encodedUrl', encodedUrl);
 				console.log('params', params);
