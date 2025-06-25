@@ -8,6 +8,16 @@ services:
   #   restart: unless-stopped
   #   image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
 
+  mcpo:
+    build:
+        context: ./mcpo
+    container_name: mcpo
+    image: ghcr.io/alephpiece/mcpo # or alephpiece/mcpo from dockerhub
+    ports:
+      - "8111:8000"
+    volumes:
+      - ./mcpo/config.json:/app/config.json
+
   open-webui:
     build:
       context: .
