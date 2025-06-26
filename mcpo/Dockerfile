@@ -16,7 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install mcp-server-time
 
 # install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
+
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh \
+ && ls -l /usr/local/bin \
+ && which uvx
 
 WORKDIR /app
 EXPOSE 8000
