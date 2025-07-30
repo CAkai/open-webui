@@ -1,11 +1,11 @@
-FROM python:3.11-slim
+FROM ghcr.io/astral-sh/uv:0.8.3-python3.11-bookworm-slim
 
 LABEL org.opencontainers.image.title="mcpo"
 LABEL org.opencontainers.image.description="Docker image for mcpo (Model Context Protocol OpenAPI Proxy)"
 LABEL org.opencontainers.image.source="https://github.com/alephpiece/mcpo-docker"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# install npx
+# install nodejs and npm
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     nodejs \
@@ -13,13 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install mcp-server-time
-
-# install uv
-
-RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh \
- && ls -l /usr/local/bin \
- && which uvx
+# install mcp-server-time using uv
+RUN uv pip install --system mcp-server-time
 
 WORKDIR /app
 EXPOSE 8000
