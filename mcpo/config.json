@@ -10,6 +10,10 @@
         "aivm": {
             "type": "sse",
             "url": "http://172.23.36.36/mcp/sse"
+        },
+        "eaplog": {
+            "type": "sse",
+            "url": "http://172.16.32.81/mcp/sse"
         }
     }
 }
