@@ -17,6 +17,9 @@ services:
       - "8111:8000"
     volumes:
       - ./mcpo/config.json:/app/config.json
+    networks:
+          oi_net:
+            ipv4_address: 172.30.0.20
 
   open-webui:
     build:
