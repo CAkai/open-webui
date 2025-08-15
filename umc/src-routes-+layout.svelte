@@ -73,6 +73,12 @@
 
 		_socket.on('connect', () => {
 			console.log('connected', _socket.id);
+			if (localStorage.getItem('token')) {
+				// Emit user-join event with auth token
+				_socket.emit('user-join', { auth: { token: localStorage.token } });
+			} else {
+				console.warn('No token found in localStorage, user-join event not emitted');
+			}
 		});
 
 		_socket.on('reconnect_attempt', (attempt) => {
@@ -586,11 +592,6 @@
 <svelte:head>
 	<title>{$WEBUI_NAME}</title>
 	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
-
-	<!-- rosepine themes have been disabled as it's not up to date with our latest version. -->
-	<!-- feel free to make a PR to fix if anyone wants to see it return -->
-	<!-- <link rel="stylesheet" type="text/css" href="/themes/rosepine.css" />
-	<link rel="stylesheet" type="text/css" href="/themes/rosepine-dawn.css" /> -->
 </svelte:head>
 
 {#if loaded}
