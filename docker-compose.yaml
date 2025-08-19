@@ -38,7 +38,7 @@ services:
     environment:
       - "OLLAMA_BASE_URL=http://172.23.36.36:11434 ; http://10.13.186.242:11434 ; http://172.16.41.100:11434"
       # - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
-      - "WEBUI_SECRET_KEY="
+      - "WEBUI_SECRET_KEY=123456"
       - "WEBUI_NAME= U-Ai"
       - "OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://172.16.41.100:9099 ; http://172.23.36.36:9099"
       - "OPENAI_API_KEYS= ; 0p3n-w3bu!"
