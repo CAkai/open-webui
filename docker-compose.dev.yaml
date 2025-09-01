@@ -24,6 +24,15 @@ services:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11435'
       - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
       - 'OPENAI_API_KEYS= sadfjlkwer.msdf ; 0p3n-w3bu!'
+      # OAuth / OIDC settings
+      - 'ENABLE_OAUTH_SIGNUP=true'
+      - 'OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true'
+      - 'OAUTH_PROVIDER_NAME=Authentik'
+      - 'OPENID_PROVIDER_URL=http://192.168.1.109:9000/application/o/oidc/.well-known/openid-configuration'
+      - 'OAUTH_CLIENT_ID=oidc'
+      - 'OAUTH_CLIENT_SECRET=adsmf192885zLdfu09gfg90wer3'
+      - 'OAUTH_SCOPES=openid email profile'
+      - 'OPENID_REDIRECT_URI=http://192.168.1.109:11222/oauth/oidc/callback'
     extra_hosts:
       - "host.docker.internal:192.168.1.105"
     restart: unless-stopped
