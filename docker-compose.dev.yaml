@@ -25,14 +25,26 @@ services:
       - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
       - 'OPENAI_API_KEYS= sadfjlkwer.msdf ; 0p3n-w3bu!'
       # OAuth / OIDC settings
+      # - 'ENABLE_OAUTH_SIGNUP=true'
+      # - 'OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true'
+      # - 'OAUTH_PROVIDER_NAME=Hydra'
+      # - 'OPENID_PROVIDER_URL=http://192.168.1.109:4444/.well-known/openid-configuration'
+      # - 'OAUTH_CLIENT_ID=oidc'
+      # - 'OAUTH_CLIENT_SECRET=adsmf192885zLdfu09gfg90wer3'
+      # - 'OAUTH_SCOPES=openid email profile'
+      # - 'OPENID_REDIRECT_URI=http://192.168.1.109:11222/oauth/oidc/callback'
+      # Authentik
       - 'ENABLE_OAUTH_SIGNUP=true'
       - 'OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true'
-      - 'OAUTH_PROVIDER_NAME=Authentik'
-      - 'OPENID_PROVIDER_URL=http://192.168.1.109:9000/application/o/oidc/.well-known/openid-configuration'
-      - 'OAUTH_CLIENT_ID=oidc'
-      - 'OAUTH_CLIENT_SECRET=adsmf192885zLdfu09gfg90wer3'
+      - 'ENABLE_LOGIN_FORM=false'
+      - 'OAUTH_PROVIDER_NAME=iCloud'
+      - 'OPENID_PROVIDER_URL=http://192.168.1.109:9000/application/o/open-webui/.well-known/openid-configuration'
+      - 'OAUTH_CLIENT_ID=aCldnVb3fJNAZJjCLxg2RCUzUzN1FwXulMJQCOwi'
+      - 'OAUTH_CLIENT_SECRET=GhZL4fQyNBSq3v4mPybJXZN8g6Q4PTfZeSPJzEFEFZtQUqlqOXmuFcFQiaBCh6hp80DPUH36EUoDtqn38iDeCTpgrBfKWb8SiixNHzDIrZcLdRUuzU88rwCuhtwHhkWm'
       - 'OAUTH_SCOPES=openid email profile'
       - 'OPENID_REDIRECT_URI=http://192.168.1.109:11222/oauth/oidc/callback'
+      - 'WEBUI_AUTH_SIGNOUT_REDIRECT_URI=http://192.168.1.109:9000/application/o/open-webui/end-session/'
+      - 'WEBUI_URL=http://192.168.1.109:11222'
     extra_hosts:
       - "host.docker.internal:192.168.1.105"
     restart: unless-stopped

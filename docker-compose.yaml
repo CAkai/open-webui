@@ -53,6 +53,15 @@ services:
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
       # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_RERANKING_MODEL_TRUST_REMOTE_CODE=true'
+      # OAuth / OIDC settings
+      - 'ENABLE_OAUTH_SIGNUP=true'
+      - 'OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true'
+      - 'OAUTH_PROVIDER_NAME=Hydra'
+      - 'OPENID_PROVIDER_URL=http://172.16.32.83:4444/.well-known/openid-configuration'
+      - 'OAUTH_CLIENT_ID=oidc'
+      - 'OAUTH_CLIENT_SECRET=adsmf192885zLdfu09gfg90wer3'
+      - 'OAUTH_SCOPES=openid email profile'
+      - 'OPENID_REDIRECT_URI=http://172.23.36.36:8080/oauth/oidc/callback'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
