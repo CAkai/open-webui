@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import DOMPurify from 'dompurify';
 	import { marked } from 'marked';
 
@@ -19,12 +19,11 @@
 	import { WEBUI_API_BASE_URL, WEBUI_BASE_URL } from "$lib/constants";
 	import { WEBUI_NAME, config, user, socket } from "$lib/stores";
 
-	import { generateInitialsImage, canvasPixelTest } from '$lib/utils';
+	import { generateInitialsImage, canvasPixelTest, querystringValue } from '$lib/utils';
 
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
-	import { redirect } from '@sveltejs/kit';
 
 	const i18n = getContext("i18n");
 
@@ -41,7 +40,7 @@
 
 	let ldapUsername = '';
 
-	const setSessionUser = async (sessionUser, redirectPath: string | null = null) => {
+	const setSessionUser = async (sessionUser) => {
 		if (sessionUser) {
 			console.log(sessionUser);
 			toast.success($i18n.t(`You're now logged in.`));
@@ -52,12 +51,9 @@
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
 
-			if (!redirectPath) {
-				redirectPath = $page.url.searchParams.get('redirectPath') || '/';
-			}
-
+			const redirectPath = querystringValue("redirect") || "/";
+			console.log("redirect to ", redirectPath);
 			goto(redirectPath);
-			localStorage.removeItem('redirectPath');
 		}
 	};
 
@@ -108,7 +104,7 @@
 		}
 	};
 
-	const oauthCallbackHandler = async () => {
+	const checkOauthCallback = async () => {
 		// Get the value of the 'token' cookie
 		function getCookie(name) {
 			const match = document.cookie.match(
@@ -126,13 +122,12 @@
 			toast.error(`${error}`);
 			return null;
 		});
-
 		if (!sessionUser) {
 			return;
 		}
 
 		localStorage.token = token;
-		await setSessionUser(sessionUser, localStorage.getItem('redirectPath') || null);
+		await setSessionUser(sessionUser);
 	};
 
 	let onboarding = false;
@@ -194,21 +189,14 @@
 	// endregion
 
 	onMount(async () => {
-		const redirectPath = $page.url.searchParams.get('redirect');
+		console.log("$user", $user);
 		if ($user !== undefined) {
-			goto(redirectPath || '/');
-		} else {
-			if (redirectPath) {
-				localStorage.setItem('redirectPath', redirectPath);
-			}
+			const redirectPath = $page.url.searchParams.get('redirect') || '/';
+			goto(redirectPath);
+			return;
 		}
+		await checkOauthCallback();
 
-		const error = $page.url.searchParams.get('error');
-		if (error) {
-			toast.error(error);
-		}
-
-		await oauthCallbackHandler();
 		form = $page.url.searchParams.get('form');
 
 		loaded = true;

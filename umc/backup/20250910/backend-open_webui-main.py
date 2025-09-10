@@ -157,7 +157,6 @@ from open_webui.config import (
     IMAGE_SIZE,
     IMAGE_STEPS,
     IMAGES_OPENAI_API_BASE_URL,
-    IMAGES_OPENAI_API_VERSION,
     IMAGES_OPENAI_API_KEY,
     IMAGES_GEMINI_API_BASE_URL,
     IMAGES_GEMINI_API_KEY,
@@ -244,13 +243,8 @@ from open_webui.config import (
     EXTERNAL_DOCUMENT_LOADER_API_KEY,
     TIKA_SERVER_URL,
     DOCLING_SERVER_URL,
-    DOCLING_DO_OCR,
-    DOCLING_FORCE_OCR,
     DOCLING_OCR_ENGINE,
     DOCLING_OCR_LANG,
-    DOCLING_PDF_BACKEND,
-    DOCLING_TABLE_MODE,
-    DOCLING_PIPELINE,
     DOCLING_DO_PICTURE_DESCRIPTION,
     DOCLING_PICTURE_DESCRIPTION_MODE,
     DOCLING_PICTURE_DESCRIPTION_LOCAL,
@@ -597,7 +591,6 @@ app = FastAPI(
 )
 
 oauth_manager = OAuthManager(app)
-app.state.oauth_manager = oauth_manager
 
 app.state.instance_id = None
 app.state.config = AppConfig(
@@ -817,13 +810,8 @@ app.state.config.EXTERNAL_DOCUMENT_LOADER_URL = EXTERNAL_DOCUMENT_LOADER_URL
 app.state.config.EXTERNAL_DOCUMENT_LOADER_API_KEY = EXTERNAL_DOCUMENT_LOADER_API_KEY
 app.state.config.TIKA_SERVER_URL = TIKA_SERVER_URL
 app.state.config.DOCLING_SERVER_URL = DOCLING_SERVER_URL
-app.state.config.DOCLING_DO_OCR = DOCLING_DO_OCR
-app.state.config.DOCLING_FORCE_OCR = DOCLING_FORCE_OCR
 app.state.config.DOCLING_OCR_ENGINE = DOCLING_OCR_ENGINE
 app.state.config.DOCLING_OCR_LANG = DOCLING_OCR_LANG
-app.state.config.DOCLING_PDF_BACKEND = DOCLING_PDF_BACKEND
-app.state.config.DOCLING_TABLE_MODE = DOCLING_TABLE_MODE
-app.state.config.DOCLING_PIPELINE = DOCLING_PIPELINE
 app.state.config.DOCLING_DO_PICTURE_DESCRIPTION = DOCLING_DO_PICTURE_DESCRIPTION
 app.state.config.DOCLING_PICTURE_DESCRIPTION_MODE = DOCLING_PICTURE_DESCRIPTION_MODE
 app.state.config.DOCLING_PICTURE_DESCRIPTION_LOCAL = DOCLING_PICTURE_DESCRIPTION_LOCAL
@@ -1031,7 +1019,6 @@ app.state.config.ENABLE_IMAGE_GENERATION = ENABLE_IMAGE_GENERATION
 app.state.config.ENABLE_IMAGE_PROMPT_GENERATION = ENABLE_IMAGE_PROMPT_GENERATION
 
 app.state.config.IMAGES_OPENAI_API_BASE_URL = IMAGES_OPENAI_API_BASE_URL
-app.state.config.IMAGES_OPENAI_API_VERSION = IMAGES_OPENAI_API_VERSION
 app.state.config.IMAGES_OPENAI_API_KEY = IMAGES_OPENAI_API_KEY
 
 app.state.config.IMAGES_GEMINI_API_BASE_URL = IMAGES_GEMINI_API_BASE_URL
@@ -1418,14 +1405,6 @@ async def chat_completion(
     model_item = form_data.pop("model_item", {})
     tasks = form_data.pop("background_tasks", None)
 
-    oauth_token = None
-    try:
-        oauth_token = request.app.state.oauth_manager.get_oauth_token(
-            user.id, request.cookies.get("oauth_session_id", None)
-        )
-    except Exception as e:
-        log.error(f"Error getting OAuth token: {e}")
-
     metadata = {}
     try:
         if not model_item.get("direct", False):
@@ -1540,7 +1519,7 @@ async def chat_completion(
             try:
                 event_emitter = get_event_emitter(metadata)
                 await event_emitter(
-                    {"type": "chat:tasks:cancel"},
+                    {"type": "task-cancelled"},
                 )
             except Exception as e:
                 pass
@@ -1556,20 +1535,13 @@ async def chat_completion(
                             "error": {"content": str(e)},
                         },
                     )
-
-                    event_emitter = get_event_emitter(metadata)
-                    await event_emitter(
-                        {
-                            "type": "chat:message:error",
-                            "data": {"error": {"content": str(e)}},
-                        }
-                    )
-                    await event_emitter(
-                        {"type": "chat:tasks:cancel"},
-                    )
-
                 except:
                     pass
+
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
+            )
 
     if (
         metadata.get("session_id")
@@ -1674,26 +1646,24 @@ async def get_app_config(request: Request):
     user = None
     token = None
 
-    auth_header = request.headers.get("Authorization")
-    if auth_header:
-        cred = get_http_authorization_cred(auth_header)
-        if cred:
-            token = cred.credentials
+    if (auth_token := request.headers.get("Authorization")) is not None:
+        token = auth_token[7:]
 
-    if not token and "token" in request.cookies:
+    if token is None and "token" in request.cookies:
         token = request.cookies.get("token")
 
-    if token:
-        try:
-            data = decode_token(token)
-        except Exception as e:
-            log.debug(e)
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
-            )
-        if data is not None and "id" in data:
-            user = Users.get_user_by_id(data["id"])
+    try:
+        data = decode_token(token)
+    except Exception as e:
+        log.debug(e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+        )
+    
+    if data is not None and "id" in data:
+        user = Users.get_user_by_id(data["id"])
+    # endregion
 
     user_count = Users.get_num_users()
     onboarding = False
