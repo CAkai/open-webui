@@ -53,7 +53,7 @@
 			await config.set(await getBackendConfig());
 
 			if (!redirectPath) {
-				redirectPath = $page.url.searchParams.get('redirectPath') || '/';
+				redirectPath = $page.url.searchParams.get('redirect') || '/';
 			}
 
 			goto(redirectPath);
