@@ -1428,7 +1428,7 @@ export const getVersion = async (token: string) => {
 		throw error;
 	}
 
-	return res;
+	return res?.version ?? null;
 };
 
 export const getVersionUpdates = async (token: string) => {
