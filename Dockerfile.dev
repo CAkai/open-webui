@@ -112,6 +112,7 @@ RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
     cp umc/src-lib-components-common-Image.svelte src/lib/components/common/Image.svelte && \
     cp umc/src-lib-apis-images-index.ts src/lib/apis/images/index.ts && \
     cp umc/src-lib-apis-index.ts src/lib/apis/index.ts && \
+    cp umc/src-lib-components-notes-Notes-NoteEditor.svelte src/lib/components/notes/Notes/NoteEditor.svelte && \
 # 複製檔案到後端
     cp umc/backend-open_webui-main.py backend/open_webui/main.py
 # endregion

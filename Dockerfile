@@ -47,7 +47,8 @@ RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
     cp umc/src-lib-components-chat-Settings-Audio.svelte src/lib/components/chat/Settings/Audio.svelte && \
     cp umc/src-lib-components-common-Image.svelte src/lib/components/common/Image.svelte && \
     cp umc/src-lib-apis-images-index.ts src/lib/apis/images/index.ts && \
-    cp umc/src-lib-apis-index.ts src/lib/apis/index.ts
+    cp umc/src-lib-apis-index.ts src/lib/apis/index.ts && \
+    cp umc/src-lib-components-notes-Notes-NoteEditor.svelte src/lib/components/notes/Notes/NoteEditor.svelte
 # endregion
 
 RUN set -xe && npm run build
