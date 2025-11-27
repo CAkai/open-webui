@@ -115,8 +115,8 @@ RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
     cp umc/src-lib-components-notes-Notes-NoteEditor.svelte src/lib/components/notes/Notes/NoteEditor.svelte && \
 # 複製檔案到後端
     cp umc/backend-open_webui-main.py backend/open_webui/main.py && \
-    cp ./umc/backend-open_webui-routers-models.py ./open_webui/routers/models.py && \
-    cp ./umc/backend-open_webui-routers-users.py ./open_webui/routers/users.py
+    cp ./umc/backend-open_webui-routers-models.py backend/open_webui/routers/models.py && \
+    cp ./umc/backend-open_webui-routers-users.py backend/open_webui/routers/users.py
 # endregion
 
 RUN --mount=type=cache,target=/root/.npm \

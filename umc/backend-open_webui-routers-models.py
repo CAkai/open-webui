@@ -284,6 +284,7 @@ async def get_model_by_id(id: str, user=Depends(get_verified_user)):
 
 
 @router.get("/model/profile/image")
+# async def get_model_profile_image(id: str, user=Depends(get_verified_user)):
 async def get_model_profile_image(id: str):
     model = Models.get_model_by_id(id)
     if model:
