@@ -185,6 +185,8 @@ COPY --chown=$UID:$GID ./backend .
 # region UMC
 # 複製檔案到後端
 COPY --chown=$UID:$GID ./umc/backend-open_webui-main.py ./open_webui/main.py
+COPY --chown=$UID:$GID ./umc/backend-open_webui-routers-models.py ./open_webui/routers/models.py
+COPY --chown=$UID:$GID ./umc/backend-open_webui-routers-users.py ./open_webui/routers/users.py
 # endregion
 
 EXPOSE 8080

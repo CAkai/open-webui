@@ -622,11 +622,13 @@
 				}
 				setTextScale($settings?.textScale ?? 1);
 
+				// region 停用自動登出
 				// Set up the token expiry check
-				if (tokenTimer) {
-					clearInterval(tokenTimer);
-				}
-				tokenTimer = setInterval(checkTokenExpiry, 15000);
+				// if (tokenTimer) {
+				// 	clearInterval(tokenTimer);
+				// }
+				// tokenTimer = setInterval(checkTokenExpiry, 15000);
+				// endregion
 			} else {
 				$socket?.off('events', chatEventHandler);
 				$socket?.off('events:channel', channelEventHandler);

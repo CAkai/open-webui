@@ -275,6 +275,12 @@ async def get_current_user(
     auth_token: HTTPAuthorizationCredentials = Depends(bearer_security),
 ):
     token = None
+    print("#################")
+    print("URL", request.url)
+    print("Header", request.headers)
+    print("Token", auth_token)
+    print("#################\n")
+
 
     if auth_token is not None:
         token = auth_token.credentials
