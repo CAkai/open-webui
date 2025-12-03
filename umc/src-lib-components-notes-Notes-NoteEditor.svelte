@@ -38,10 +38,10 @@
 		WEBUI_NAME
 	} from '$lib/stores';
 
-	import { downloadPdf } from '../src/lib/components/notes/utils';
+	import { downloadPdf } from './utils';
 
-	import Controls from '../src/lib/components/notes/NoteEditor/Controls.svelte';
-	import Chat from '../src/lib/components/notes/NoteEditor/Chat.svelte';
+	import Controls from './NoteEditor/Controls.svelte';
+	import Chat from './NoteEditor/Chat.svelte';
 
 	import NotePanel from '$lib/components/notes/NotePanel.svelte';
 	import AccessControlModal from '$lib/components/workspace/common/AccessControlModal.svelte';
@@ -62,33 +62,33 @@
 
 	import { deleteNoteById, getNoteById, updateNoteById } from '$lib/apis/notes';
 
-	import RichTextInput from '../src/lib/components/common/RichTextInput.svelte';
-	import Spinner from '../src/lib/components/common/Spinner.svelte';
-	import MicSolid from '../src/lib/components/icons/MicSolid.svelte';
-	import VoiceRecording from '../src/lib/components/chat/MessageInput/VoiceRecording.svelte';
+	import RichTextInput from '../common/RichTextInput.svelte';
+	import Spinner from '../common/Spinner.svelte';
+	import MicSolid from '../icons/MicSolid.svelte';
+	import VoiceRecording from '../chat/MessageInput/VoiceRecording.svelte';
 	import DeleteConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';
-	import ChatBubbleOval from '../src/lib/components/icons/ChatBubbleOval.svelte';
+	import ChatBubbleOval from '../icons/ChatBubbleOval.svelte';
 
-	import Calendar from '../src/lib/components/icons/Calendar.svelte';
-	import Users from '../src/lib/components/icons/Users.svelte';
+	import Calendar from '../icons/Calendar.svelte';
+	import Users from '../icons/Users.svelte';
 
-	import Image from '../src/lib/components/common/Image.svelte';
-	import FileItem from '../src/lib/components/common/FileItem.svelte';
-	import FilesOverlay from '../src/lib/components/chat/MessageInput/FilesOverlay.svelte';
-	import RecordMenu from '../src/lib/components/notes/RecordMenu.svelte';
-	import NoteMenu from '../src/lib/components/notes/Notes/NoteMenu.svelte';
-	import EllipsisHorizontal from '../src/lib/components/icons/EllipsisHorizontal.svelte';
-	import Sparkles from '../src/lib/components/icons/Sparkles.svelte';
-	import SparklesSolid from '../src/lib/components/icons/SparklesSolid.svelte';
-	import Tooltip from '../src/lib/components/common/Tooltip.svelte';
-	import Bars3BottomLeft from '../src/lib/components/icons/Bars3BottomLeft.svelte';
-	import ArrowUturnLeft from '../src/lib/components/icons/ArrowUturnLeft.svelte';
-	import ArrowUturnRight from '../src/lib/components/icons/ArrowUturnRight.svelte';
-	import Sidebar from '../src/lib/components/icons/Sidebar.svelte';
-	import ArrowRight from '../src/lib/components/icons/ArrowRight.svelte';
-	import Cog6 from '../src/lib/components/icons/Cog6.svelte';
-	import AiMenu from '../src/lib/components/notes/AIMenu.svelte';
-	import AdjustmentsHorizontalOutline from '../src/lib/components/icons/AdjustmentsHorizontalOutline.svelte';
+	import Image from '../common/Image.svelte';
+	import FileItem from '../common/FileItem.svelte';
+	import FilesOverlay from '../chat/MessageInput/FilesOverlay.svelte';
+	import RecordMenu from './RecordMenu.svelte';
+	import NoteMenu from './Notes/NoteMenu.svelte';
+	import EllipsisHorizontal from '../icons/EllipsisHorizontal.svelte';
+	import Sparkles from '../icons/Sparkles.svelte';
+	import SparklesSolid from '../icons/SparklesSolid.svelte';
+	import Tooltip from '../common/Tooltip.svelte';
+	import Bars3BottomLeft from '../icons/Bars3BottomLeft.svelte';
+	import ArrowUturnLeft from '../icons/ArrowUturnLeft.svelte';
+	import ArrowUturnRight from '../icons/ArrowUturnRight.svelte';
+	import Sidebar from '../icons/Sidebar.svelte';
+	import ArrowRight from '../icons/ArrowRight.svelte';
+	import Cog6 from '../icons/Cog6.svelte';
+	import AiMenu from './AIMenu.svelte';
+	import AdjustmentsHorizontalOutline from '../icons/AdjustmentsHorizontalOutline.svelte';
 
 	export let id: null | string = null;
 
@@ -295,8 +295,8 @@ ${content}
 		}
 
 		const model = $models
-			?.filter((model) => model.id === selectedModelId && !(model?.info?.meta?.hidden ?? false))
-			?.find((model) => model.id === selectedModelId);
+			.filter((model) => model.id === selectedModelId && !(model?.info?.meta?.hidden ?? false))
+			.find((model) => model.id === selectedModelId);
 
 		if (!model) {
 			selectedModelId = '';
@@ -1326,7 +1326,7 @@ Provide the enhanced notes in markdown format. Use markdown syntax for headings,
 					</RecordMenu>
 
 					<div
-						class="cursor-pointer flex gap-0.5 rounded-full border border-gray-50 dark:border-gray-850 dark:bg-gray-850 transition shadow-xl"
+						class="cursor-pointer flex gap-0.5 rounded-full border border-gray-50 dark:border-gray-850/30 dark:bg-gray-850 transition shadow-xl"
 					>
 						<Tooltip content={$i18n.t('AI')} placement="top">
 							{#if editing}

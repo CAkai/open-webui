@@ -5,6 +5,7 @@ import json
 import asyncio
 import logging
 
+from open_webui.models.groups import Groups
 from open_webui.models.models import (
     ModelForm,
     ModelModel,
@@ -78,6 +79,10 @@ async def get_models(
         filter["direction"] = direction
 
     if not user.role == "admin" or not BYPASS_ADMIN_ACCESS_CONTROL:
+        groups = Groups.get_groups_by_member_id(user.id)
+        if groups:
+            filter["group_ids"] = [group.id for group in groups]
+
         filter["user_id"] = user.id
 
     return Models.search_models(user.id, filter=filter, skip=skip, limit=limit)
@@ -284,6 +289,7 @@ async def get_model_by_id(id: str, user=Depends(get_verified_user)):
 
 
 @router.get("/model/profile/image")
+# region UMC
 # async def get_model_profile_image(id: str, user=Depends(get_verified_user)):
 async def get_model_profile_image(id: str):
     model = Models.get_model_by_id(id)
