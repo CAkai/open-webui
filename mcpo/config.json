@@ -7,13 +7,25 @@
                 "--local-timezone=Asia/Taipei"
             ]
         },
-        "aivm": {
-            "type": "sse",
-            "url": "http://172.23.36.36/mcp/sse"
-        },
         "eaplog": {
+            "type": "streamable-http",
+            "url": "http://172.16.32.81:8301/streamable"
+        },
+        "search": {
             "type": "sse",
-            "url": "http://172.16.32.81/mcp/sse"
+            "url": "http://172.16.128.33:8081/sse"
+        },
+        "8fmes": {
+            "type": "streamable-http",
+            "url": "http://172.23.36.36:8300/streamable"
+        },
+        "8dmes": {
+            "type": "streamable-http",
+            "url": "http://172.23.36.36:8301/streamable"
+        },
+        "aivm": {
+            "type": "streamable-http",
+            "url": "http://172.23.36.36:8302/streamable"
         }
     }
 }
