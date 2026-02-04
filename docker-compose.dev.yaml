@@ -1,5 +1,6 @@
 services:
   open-webui:
+    container_name: open-webui
     build:
       context: .
       args:
@@ -8,14 +9,13 @@ services:
         USE_OLLAMA: false
       dockerfile: Dockerfile.dev
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
+    networks:
+      - open-webui-network
     volumes:
       - open-webui:/app/backend/data
       - ./src:/app/src
       - ./backend:/app/backend
       - ./umc:/app/umc
-    ports:
-      - 11222:8080
     environment:
       - PORT=8080
       - ENV=dev
@@ -24,6 +24,7 @@ services:
       - 'OLLAMA_BASE_URL=http://host.docker.internal:11435'
       - 'OPENAI_API_BASE_URLS=http://host.docker.internal:10016 ; http://172.29.0.35:9099'
       - 'OPENAI_API_KEYS= sadfjlkwer.msdf ; 0p3n-w3bu!'
+      - 'CORS_ALLOWED_ORIGINS=*'
       # OAuth / OIDC settings
       # - 'ENABLE_OAUTH_SIGNUP=true'
       # - 'OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true'
@@ -46,7 +47,7 @@ services:
       # - 'WEBUI_AUTH_SIGNOUT_REDIRECT_URI=http://192.168.1.109:9000/application/o/open-webui/end-session/'
       # - 'WEBUI_URL=http://192.168.1.109:11222'
     extra_hosts:
-      - "host.docker.internal:192.168.1.105"
+      - "host.docker.internal:192.168.1.103"
     restart: unless-stopped
     # GPU support
     deploy:
@@ -68,7 +69,29 @@ services:
     volumes:
       - ./mcpo/config.json:/app/config.json
 
+  nginx:
+    image: nginx:1.25.2-alpine
+    container_name: nginx
+    networks:
+      - open-webui-network
+    ports:
+      - "11222:80"
+      - "11223:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/ssl
+    depends_on:
+      - open-webui
+
 
 volumes:
   ollama: {}
   open-webui: {}
+
+networks:
+  open-webui-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.88.0.0/16

@@ -33,8 +33,6 @@ services:
       - open-webui:/app/backend/data
     # depends_on:
     #   - ollama
-    ports:
-      - 8080:8080
     environment:
       - "OLLAMA_BASE_URL=http://172.23.36.36:11434 ; http://10.13.186.242:11434 ; http://172.16.41.100:11434"
       # - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
@@ -49,6 +47,7 @@ services:
       - "AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=5"
       - "DATABASE_URL=postgres://dbadmin:QAZwsx!@172.30.0.15:5432/webui-db"
       - "ENV=dev"
+      - 'CORS_ALLOWED_ORIGINS=*'
       # - 'RAG_EMBEDDING_MODEL_AUTO_UPDATE=true'
       # - 'RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE=true'
       # - 'RAG_RERANKING_MODEL_AUTO_UPDATE=true'
@@ -178,6 +177,22 @@ services:
   #   networks:
   #     oi_net
   #       ipv4_address: 172.30.0.135
+
+  nginx:
+    image: nginx:1.25.2-alpine
+    container_name: nginx
+    networks:
+      oi_net:
+        ipv4_address: 172.30.0.21
+    ports:
+      - "8081:80"
+      - "8080:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/ssl
+    depends_on:
+      - open-webui
+
 volumes:
   # ollama: {}
   open-webui: {}
