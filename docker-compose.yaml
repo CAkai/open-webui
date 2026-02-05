@@ -180,7 +180,7 @@ services:
 
   nginx:
     image: nginx:1.25.2-alpine
-    container_name: nginx
+    container_name: open-webui-proxy
     networks:
       oi_net:
         ipv4_address: 172.30.0.21
