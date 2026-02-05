@@ -763,17 +763,21 @@
 				const regex = /empNo=([^&]*)&empName=([^&]*)/;
 				const params = window.location.search.match(regex);
 				const encodedUrl = new URLSearchParams(window.location.search).get("redirect") || "";
+				const isSharedChat = window.location.pathname.startsWith('/s/');
+				const shareToken = new URLSearchParams(window.location.search).get('token');
 				console.log('currentUrl', currentUrl);
 				console.log('encodedUrl', encodedUrl);
 				console.log('params', params);
 
-				// 強制登出再登入，防止 iCloud 更換使用者時，Open WebUI 由於記錄 token 而留存上一個使用者
-				if (params && params[1] !== "" && params[2] !== "") {
-					localStorage.removeItem('token');
-					await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
-				// 如果是內部跳轉，就直接跳轉
-				} else {
-					await goto(`/auth?redirect=${encodedUrl}`);
+				if (!isSharedChat || !shareToken) {
+					// 強制登出再登入，防止 iCloud 更換使用者時，Open WebUI 由於記錄 token 而留存上一個使用者
+					if (params && params[1] !== "" && params[2] !== "") {
+						localStorage.removeItem('token');
+						await goto(`/auth?redirect=${encodedUrl}&empNo=${params ? params[1] : ''}&empName=${params ? params[2] : ''}`);
+					// 如果是內部跳轉，就直接跳轉
+					} else {
+						await goto(`/auth?redirect=${encodedUrl}`);
+					}
 				}
 				
 				// endregion

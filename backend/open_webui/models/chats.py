@@ -159,6 +159,10 @@ class ChatResponse(BaseModel):
     pinned: Optional[bool] = False
     meta: dict = {}
     folder_id: Optional[str] = None
+    #region UMC
+    # This field is not stored in the database, but is used to return the share token for a shared chat. It is populated by checking if the share_id exists and returning the corresponding share token from the Tags table.
+    share_token: Optional[str] = None
+    #endregion
 
 
 class ChatTitleIdResponse(BaseModel):

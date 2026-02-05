@@ -8,7 +8,8 @@
 	import { settings, chatId, WEBUI_NAME, models, config } from '$lib/stores';
 	import { convertMessagesToHistory, createMessagesList } from '$lib/utils';
 
-	import { getChatByShareId, cloneSharedChatById } from '$lib/apis/chats';
+	import { cloneSharedChatById, getChatByShareId } from '$lib/apis/chats';
+	import { getSharedChat } from '$lib/apis/umc';
 
 	import Messages from '$lib/components/chat/Messages.svelte';
 
@@ -32,6 +33,7 @@
 
 	let chat = null;
 	let user = null;
+	let loadError = '';
 
 	let title = '';
 	let files = [];
@@ -46,12 +48,9 @@
 
 	$: if ($page.params.id) {
 		(async () => {
-			if (await loadSharedChat()) {
-				await tick();
-				loaded = true;
-			} else {
-				await goto('/');
-			}
+			const ok = await loadSharedChat();
+			await tick();
+			loaded = true;
 		})();
 	}
 
@@ -60,13 +59,39 @@
 	//////////////////////////
 
 	const loadSharedChat = async () => {
-		const userSettings = await getUserSettings(localStorage.token).catch((error) => {
-			console.error(error);
-			return null;
-		});
+		const shareToken = $page.url.searchParams.get('token') ?? '';
+		const hasShareToken = shareToken.length > 0;
+		if (!hasShareToken && !localStorage.token) {
+			loadError = $i18n.t('Please sign in to view this shared chat.');
+			return false;
+		}
 
-		if (userSettings) {
-			settings.set(userSettings.ui);
+		if (localStorage.token) {
+			const userSettings = await getUserSettings(localStorage.token).catch((error) => {
+				console.error(error);
+				return null;
+			});
+
+			if (userSettings) {
+				settings.set(userSettings.ui);
+			} else {
+				let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
+
+				try {
+					localStorageSettings = JSON.parse(localStorage.getItem('settings') ?? '{}');
+				} catch (e: unknown) {
+					console.error('Failed to parse settings from localStorage', e);
+				}
+
+				settings.set(localStorageSettings);
+			}
+
+			await models.set(
+				await getModels(
+					localStorage.token,
+					$config?.features?.enable_direct_connections && ($settings?.directConnections ?? null)
+				)
+			);
 		} else {
 			let localStorageSettings = {} as Parameters<(typeof settings)['set']>[0];
 
@@ -77,26 +102,47 @@
 			}
 
 			settings.set(localStorageSettings);
+			models.set([]);
 		}
-
-		await models.set(
-			await getModels(
-				localStorage.token,
-				$config?.features?.enable_direct_connections && ($settings?.directConnections ?? null)
-			)
-		);
 		await chatId.set($page.params.id);
-		chat = await getChatByShareId(localStorage.token, $chatId).catch(async (error) => {
-			await goto('/');
-			return null;
-		});
+		if (hasShareToken) {
+			const shared = await getSharedChat($chatId, shareToken).catch((error) => {
+				if (error?.detail) {
+					loadError = `${$i18n.t('Share link is invalid or has expired.')} (${error.detail})`;
+				} else if (error?.error) {
+					loadError = `${$i18n.t('Share link is invalid or has expired.')} (${error.error})`;
+				} else if (typeof error === 'string') {
+					loadError = `${$i18n.t('Share link is invalid or has expired.')} (${error})`;
+				} else {
+					loadError = $i18n.t('Share link is invalid or has expired.');
+				}
+				return null;
+			});
 
-		if (chat) {
-			user = await getUserById(localStorage.token, chat.user_id).catch((error) => {
+			if (!shared) {
+				return false;
+			}
+
+			chat = shared.chat;
+			user = shared.user;
+		} else {
+			chat = await getChatByShareId(localStorage.token, $chatId).catch((error) => {
 				console.error(error);
 				return null;
 			});
 
+			if (!chat) {
+				loadError = $i18n.t('Share link is invalid or has expired.');
+				return false;
+			}
+
+			user = await getUserById(localStorage.token, chat.user_id).catch((error) => {
+				console.error(error);
+				return null;
+			});
+		}
+
+		if (chat) {
 			const chatContent = chat.chat;
 
 			if (chatContent) {
@@ -122,13 +168,21 @@
 
 				return true;
 			} else {
-				return null;
+				loadError = $i18n.t('Shared chat data is unavailable.');
+				return false;
 			}
 		}
+
+		loadError = $i18n.t('Shared chat data is unavailable.');
+		return false;
 	};
 
 	const cloneSharedChat = async () => {
 		if (!chat) return;
+		if (!localStorage.token) {
+			toast.error($i18n.t('Please sign in to clone this chat.'));
+			return;
+		}
 
 		const res = await cloneSharedChatById(localStorage.token, chat.id).catch((error) => {
 			toast.error(`${error}`);
@@ -150,6 +204,16 @@
 </svelte:head>
 
 {#if loaded}
+	{#if loadError}
+		<div
+			class="h-screen max-h-[100dvh] w-full flex items-center justify-center text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900"
+		>
+			<div class="text-center px-6">
+				<div class="text-lg font-medium mb-2">{$i18n.t('Unable to open shared chat')}</div>
+				<div class="text-sm text-gray-500 dark:text-gray-400">{loadError}</div>
+			</div>
+		</div>
+	{:else}
 	<div
 		class="h-screen max-h-[100dvh] w-full flex flex-col text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900"
 	>
@@ -208,4 +272,5 @@
 			</div>
 		</div>
 	</div>
+	{/if}
 {/if}

@@ -458,6 +458,31 @@
 							</div>
 						{/if}
 					</div>
+					<!-- region UMC - 新增 share_token 的過期時間設定 -->
+
+					<div class=" mb-2.5 w-full justify-between">
+						<div class="flex w-full justify-between">
+							<div class=" self-center text-xs font-medium">
+								{$i18n.t('Share Token Expiration')}
+							</div>
+						</div>
+
+						<div class="flex mt-2 space-x-2">
+							<input
+								class="w-full rounded-lg py-2 px-4 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden"
+								type="text"
+								placeholder={`e.g.) "30m","1h", "10d". `}
+								bind:value={adminConfig.SHARE_TOKEN_EXPIRES_IN}
+							/>
+						</div>
+
+						<div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+							{$i18n.t('Applies to share links that use a token.')}
+							<span class=" text-gray-300 font-medium"
+								>{$i18n.t("'s', 'm', 'h', 'd', 'w' or '-1' for no expiration.")}</span
+							>
+						</div>
+					</div>
 
 					<div class=" space-y-3">
 						<div class="mt-2 space-y-2 pr-1.5">

@@ -94,6 +94,7 @@ from open_webui.routers import (
     utils,
     scim,
 )
+from umc import router as umc_router
 
 from open_webui.routers.retrieval import (
     get_embedding_function,
@@ -360,6 +361,7 @@ from open_webui.config import (
     ADMIN_EMAIL,
     SHOW_ADMIN_DETAILS,
     JWT_EXPIRES_IN,
+    SHARE_TOKEN_EXPIRES_IN,
     ENABLE_SIGNUP,
     ENABLE_LOGIN_FORM,
     ENABLE_API_KEYS,
@@ -770,6 +772,7 @@ app.state.config.ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS = (
 app.state.config.API_KEYS_ALLOWED_ENDPOINTS = API_KEYS_ALLOWED_ENDPOINTS
 
 app.state.config.JWT_EXPIRES_IN = JWT_EXPIRES_IN
+app.state.config.SHARE_TOKEN_EXPIRES_IN = SHARE_TOKEN_EXPIRES_IN
 
 app.state.config.SHOW_ADMIN_DETAILS = SHOW_ADMIN_DETAILS
 app.state.config.ADMIN_EMAIL = ADMIN_EMAIL
@@ -1423,6 +1426,7 @@ app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 
 app.include_router(channels.router, prefix="/api/v1/channels", tags=["channels"])
 app.include_router(chats.router, prefix="/api/v1/chats", tags=["chats"])
+app.include_router(umc_router.router, prefix="/api/v1/umc", tags=["umc"])
 app.include_router(notes.router, prefix="/api/v1/notes", tags=["notes"])
 
 

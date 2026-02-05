@@ -20,7 +20,11 @@
 		const _chat = chat;
 
 		const sharedChat = await shareChatById(localStorage.token, chatId);
-		shareUrl = `${window.location.origin}/s/${sharedChat.id}`;
+		// region UMC - 保留原本的分享機制，但提供匿名分享的選項，讓使用者可以選擇是否要帶有 token 的分享連結
+		const shareId = sharedChat?.share_id ?? sharedChat?.id;
+		const shareToken = sharedChat?.share_token ?? null;
+		shareUrl = `${window.location.origin}/s/${shareId}${shareToken ? `?token=${shareToken}` : ''}`;
+		// endregion
 		console.log(shareUrl);
 		chat = await getChatById(localStorage.token, chatId);
 
@@ -121,6 +125,10 @@
 							"Messages you send after creating your link won't be shared. Users with the URL will be able to view the shared chat."
 						)}
 					{/if}
+				</div>
+				<!-- region UMC -->
+				<div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+					{$i18n.t('Shared links are protected by a token with configurable expiration.')}
 				</div>
 
 				<div class="flex justify-end">

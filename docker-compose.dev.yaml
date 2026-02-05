@@ -11,6 +11,8 @@ services:
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     networks:
       - open-webui-network
+    ports:
+      - "11224:8080"
     volumes:
       - open-webui:/app/backend/data
       - ./src:/app/src

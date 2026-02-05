@@ -316,6 +316,13 @@ API_KEYS_ALLOWED_ENDPOINTS = PersistentConfig(
 JWT_EXPIRES_IN = PersistentConfig(
     "JWT_EXPIRES_IN", "auth.jwt_expiry", os.environ.get("JWT_EXPIRES_IN", "4w")
 )
+#region UMC - 新增 share_token 的過期時間設定
+SHARE_TOKEN_EXPIRES_IN = PersistentConfig(
+    "SHARE_TOKEN_EXPIRES_IN",
+    "chat.share_token_expiry",
+    os.environ.get("SHARE_TOKEN_EXPIRES_IN", "1d"),
+)
+#endregion
 
 if JWT_EXPIRES_IN.value == "-1":
     log.warning(

@@ -33,6 +33,7 @@ from pydantic import BaseModel
 
 
 from open_webui.utils.auth import get_admin_user, get_verified_user
+from umc.auth import create_share_token
 from open_webui.utils.access_control import has_permission
 
 log = logging.getLogger(__name__)
@@ -1328,7 +1329,15 @@ async def share_chat_by_id(
     if chat:
         if chat.share_id:
             shared_chat = Chats.update_shared_chat_by_chat_id(chat.id, db=db)
-            return ChatResponse(**shared_chat.model_dump())
+            #region UMC - 夾 share_token
+            share_id = shared_chat.share_id or shared_chat.id
+            return ChatResponse(
+                **{
+                    **shared_chat.model_dump(),
+                    "share_token": create_share_token(share_id),
+                }
+            )
+            #endregion
 
         shared_chat = Chats.insert_shared_chat_by_chat_id(chat.id, db=db)
         if not shared_chat:
@@ -1336,7 +1345,15 @@ async def share_chat_by_id(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=ERROR_MESSAGES.DEFAULT(),
             )
-        return ChatResponse(**shared_chat.model_dump())
+        #region UMC - 夾 share_token
+        share_id = shared_chat.share_id or shared_chat.id
+        return ChatResponse(
+            **{
+                **shared_chat.model_dump(),
+                "share_token": create_share_token(share_id),
+            }
+        )
+        #endregion
 
     else:
         raise HTTPException(
