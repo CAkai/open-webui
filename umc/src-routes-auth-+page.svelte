@@ -209,19 +209,17 @@
 				localStorage.setItem('redirectPath', redirectPath);
 			}
 		}
-
 		const error = $page.url.searchParams.get('error');
 		if (error) {
 			toast.error(error);
 		}
+		await autoSignInHandler();
 
-		await oauthCallbackHandler();
+		// await oauthCallbackHandler();
 		form = $page.url.searchParams.get('form');
 
 		loaded = true;
 		setLogoImage();
-		
-		await autoSignInHandler();
 
 	});
 </script>
@@ -376,6 +374,7 @@
 												placeholder={$i18n.t('Enter Your Password')}
 												autocomplete={mode === 'signup' ? 'new-password' : 'current-password'}
 												name="password"
+												screenReader={false}
 												required
 											/>
 										</div>
