@@ -757,7 +757,7 @@
 			const browserLanguages = navigator.languages
 				? navigator.languages
 				: [navigator.language || navigator.userLanguage];
-			const lang = backendConfig.default_locale
+			const lang = backendConfig?.default_locale
 				? backendConfig.default_locale
 				: bestMatchingLanguage(languages, browserLanguages, 'en-US');
 			changeLanguage(lang);
@@ -833,7 +833,11 @@
 		}
 
 		// Auto-show SyncStatsModal when opened with ?sync=true (from community)
-		if ((window.opener ?? false) && $page.url.searchParams.get('sync') === 'true') {
+		if (
+			(window.opener ?? false) &&
+			$page.url.searchParams.get('sync') === 'true' &&
+			($config?.features?.enable_community_sharing ?? false)
+		) {
 			showSyncStatsModal = true;
 		}
 
