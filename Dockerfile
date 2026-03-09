@@ -142,6 +142,7 @@ RUN set -xe && \
     sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources && \
     apt-get install -y --no-install-recommends \
     git build-essential pandoc gcc netcat-openbsd curl jq \
+    libmariadb-dev \
     python3-dev \
     ffmpeg libsm6 libxext6 zstd \
     && rm -rf /var/lib/apt/lists/*
