@@ -46,6 +46,7 @@ ENV APP_BUILD_HASH=${BUILD_HASH}
 RUN cp umc/src-routes-auth-+page.svelte src/routes/auth/+page.svelte && \
     cp umc/src-routes-+layout.svelte src/routes/+layout.svelte && \
     cp umc/src-lib-components-chat-Settings-Audio.svelte src/lib/components/chat/Settings/Audio.svelte && \
+    cp umc/src-lib-components-chat-ShareChatModal.svelte src/lib/components/chat/ShareChatModal.svelte && \
     cp umc/src-lib-components-common-Image.svelte src/lib/components/common/Image.svelte && \
     cp umc/src-lib-apis-images-index.ts src/lib/apis/images/index.ts && \
     cp umc/src-lib-apis-index.ts src/lib/apis/index.ts && \
