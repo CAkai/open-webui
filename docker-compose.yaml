@@ -192,12 +192,28 @@ services:
       - ./nginx/certs:/etc/nginx/ssl
     depends_on:
       - open-webui
+  
+
+  open-terminal:
+    container_name: open-terminal
+    image: ghcr.io/open-webui/open-terminal:latest
+    restart: unless-stopped
+    networks:
+      oi_net:
+        ipv4_address: 172.30.0.22
+    ports:
+      - "8082:8000"
+    volumes:
+      - open_terminal:/home/user
+    environment:
+      - OPEN_TERMINAL_API_KEY=your-secret-key
 
 volumes:
   # ollama: {}
   open-webui: {}
   # pipelines:
   webui_data: {}
+  open_terminal: {}
 
 networks:
   aivm_aivm_app_net:
