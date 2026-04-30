@@ -482,8 +482,8 @@
 			}
 			return;
 		}
-		
-		if ((event.chat_id !== $chatId && !$temporaryChatEnabled) || isFocused) {
+
+		if ((event.chat_id !== $chatId && !$temporaryChatEnabled) || !isInBackground) {
 			if (type === 'chat:completion') {
 				const { done, content, title } = data;
 				const displayTitle = title || $i18n.t('New Chat');
@@ -1037,7 +1037,7 @@
 						if (timezone) {
 							updateUserTimezone(localStorage.token, timezone);
 						}
-						
+
 						// Relay auth token to desktop app for API access
 						if (window.electronAPI?.send) {
 							window.electronAPI
@@ -1050,7 +1050,7 @@
 						await goto(`/auth?redirect=${encodedUrl}`);
 					}
 				}
-				
+
 				// endregion
 			}
 		} else {

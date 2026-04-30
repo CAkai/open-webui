@@ -26,7 +26,9 @@ services:
       context: .
       args:
         OLLAMA_BASE_URL: "http://172.23.36.36:11434"
+        USE_SLIM: "true"
       dockerfile: Dockerfile
+      network: host
     image: ghcr.io/open-webui/open-webui:latest
     container_name: open-webui
     volumes:
@@ -194,7 +196,7 @@ services:
       - ./nginx/certs:/etc/nginx/ssl
     depends_on:
       - open-webui
-  
+
 
   open-terminal:
     container_name: open-terminal

@@ -312,3 +312,11 @@ cypress/screenshots
 .vscode/settings.json
 
 .history/
+
+# GitHub Copilot customization files (personal, not for sharing)
+.github/copilot-instructions.md
+.github/instructions/
+.github/prompts/
+.github/agents/
+.github/hooks/
+.github/skills/
