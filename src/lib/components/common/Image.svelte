@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { safeImageUrl } from '$lib/utils/safeImageUrl';
 
 	import { settings } from '$lib/stores';
 	import ImagePreview from './ImagePreview.svelte';
@@ -33,7 +34,7 @@
 	const i18n = getContext('i18n');
 
 	let _src = '';
-	$: _src = src.startsWith('/') ? `${WEBUI_BASE_URL}${src}` : src;
+	$: _src = safeImageUrl(src.startsWith('/') ? `${WEBUI_BASE_URL}${src}` : src);
 
 	onMount(async () => {
 		_src = await fetchImage();
