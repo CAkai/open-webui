@@ -1216,6 +1216,12 @@ TOOL_SERVER_CONNECTIONS = PersistentConfig(
     tool_server_connections,
 )
 
+OAUTH_CLIENT_TIMEOUT = PersistentConfig(
+    'OAUTH_CLIENT_TIMEOUT',
+    'oauth.client.timeout',
+    os.environ.get('OAUTH_CLIENT_TIMEOUT', ''),
+)
+
 ####################################
 # TERMINAL_SERVER
 ####################################
