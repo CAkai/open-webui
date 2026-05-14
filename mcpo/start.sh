@@ -22,8 +22,10 @@ for i in $(seq 1 30); do
 done
 
 # 每 45 秒呼叫 /search/help，維持 search SSE session 存活
-# search server 的 idle session timeout 約 1-2 分鐘，keepalive 頻率需小於此值
-echo "[keepalive] Starting search SSE session keepalive (interval: 45s)..."
+# 同時偵測 session 重連完成（每次 keepalive 成功代表 session 已就緒）
+# search server 在每次回應後會關閉 SSE stream，MCPO 需要重連（約 5-10 秒）
+# keepalive 間隔設為 10 秒，讓重連窗口最短化
+echo "[keepalive] Starting search SSE session keepalive (interval: 10s)..."
 while kill -0 $MCPO_PID 2>/dev/null; do
   result=$(curl -sf --max-time 10 http://localhost:8000/search/help \
     -X POST -H 'Content-Type: application/json' -d '{}' 2>&1)
@@ -32,7 +34,7 @@ while kill -0 $MCPO_PID 2>/dev/null; do
   else
     echo "[keepalive] $(date '+%H:%M:%S') search session ping failed, MCPO will reconnect automatically"
   fi
-  sleep 45
+  sleep 10
 done
 
 # MCPO 已結束，等待並傳遞退出碼
