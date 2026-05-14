@@ -19,5 +19,8 @@ RUN uv pip install --system mcp-server-time
 WORKDIR /app
 EXPOSE 8000
 
-ENTRYPOINT ["uvx", "mcpo"]
-CMD ["--config", "/app/config.json"]
+# keepalive 啟動腳本：每 45 秒 ping search SSE session，防止 idle timeout 斷線
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+ENTRYPOINT ["/bin/sh", "/app/start.sh"]

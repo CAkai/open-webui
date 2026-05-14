@@ -13,10 +13,18 @@ services:
         context: ./mcpo
     container_name: mcpo
     image: ghcr.io/alephpiece/mcpo # or alephpiece/mcpo from dockerhub
+    restart: unless-stopped
     ports:
       - "8111:8000"
     volumes:
       - ./mcpo/config.json:/app/config.json
+    healthcheck:
+      # 直接呼叫 search 工具端點驗證 MCP session 確實可用（curl -sf: HTTP 非 2xx 時回傳 exit 1）
+      test: ["CMD", "sh", "-c", "curl -sf --max-time 10 -X POST -H 'Content-Type: application/json' -d '{}' http://localhost:8000/search/help"]
+      interval: 60s
+      timeout: 15s
+      retries: 2
+      start_period: 30s
     networks:
           oi_net:
             ipv4_address: 172.30.0.20
@@ -38,11 +46,11 @@ services:
     ports:
       - "8083:8080"
     environment:
-      - "OLLAMA_BASE_URL=http://172.23.36.36:11434 ; http://10.13.186.242:11434 ; http://172.16.41.100:11434"
+      - "OLLAMA_BASE_URL= http://10.13.186.242:11434 ; http://172.16.41.100:11434"
       # - 'AUTOMATIC1111_BASE_URL= http://10.13.186.242:8181'
       - "WEBUI_SECRET_KEY=123456"
       - "WEBUI_NAME= U-Ai"
-      - "OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://172.16.41.100:9099 ; http://172.23.36.36:9099"
+      - "OPENAI_API_BASE_URLS=http://172.16.128.9:3003 ; http://172.16.41.100:9099"
       - "OPENAI_API_KEYS= ; 0p3n-w3bu!"
       - "USE_CUDA_DOCKER= true"
       - "COMFYUI_BASE_URL=http://10.13.186.242:8188/"
@@ -208,6 +216,21 @@ services:
     ports:
       - "8082:8000"
     volumes:
+      - open_terminal-all:/home
+    environment:
+      - OPEN_TERMINAL_MULTI_USER=true
+      - OPEN_TERMINAL_API_KEY=your-secret-key
+
+  open-terminal-user:
+    container_name: open-terminal-user
+    image: ghcr.io/open-webui/open-terminal:latest
+    restart: unless-stopped
+    networks:
+      oi_net:
+        ipv4_address: 172.30.0.33
+    ports:
+      - "8092:8000"
+    volumes:
       - open_terminal:/home/user
     environment:
       - OPEN_TERMINAL_API_KEY=your-secret-key
@@ -217,6 +240,7 @@ volumes:
   open-webui: {}
   # pipelines:
   webui_data: {}
+  open_terminal-all: {}
   open_terminal: {}
 
 networks:
